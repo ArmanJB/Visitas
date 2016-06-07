@@ -4,6 +4,7 @@
 @include('alerts.errors')
 
 @section('content')
+	<div id="divider"></div>
 	<table class="table">
 		<thead>
 			<th>Nombre</th>

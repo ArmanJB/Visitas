@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-	@include('departamento.modal')
+	@include('area.modal')
 	<div id="divider"></div>
 	<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">
-		<strong>Departamento Editado Exitosamente!</strong>
+		<strong>Area Editada Exitosamente!</strong>
 	</div>
 	<table class="table">
 		<thead>
@@ -16,5 +16,5 @@
 @endsection
 
 @section('scripts')
-	{!!Html::script('js/scripts.js')!!}
+	{!!Html::script('js/area.js')!!}
 @endsection

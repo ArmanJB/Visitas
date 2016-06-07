@@ -17,9 +17,21 @@ Route::get('admin', 'FrontController@admin');
 
 
 Route::resource('usuario', 'UsuarioController');
+Route::resource('log', 'LogController');
+Route::get('logout', 'LogController@logout');
+
 Route::resource('departamento', 'DepartamentoController');
 Route::get('departamentos', 'DepartamentoController@listing');
 
+Route::resource('escuela', 'EscuelaController');
+Route::get('escuelas', 'EscuelaController@listing');
+//Route::get('escuelas/{id}', 'EscuelaController@getEscuelas');
 
-Route::resource('log', 'LogController');
-Route::get('logout', 'LogController@logout');
+Route::resource('area', 'AreaController');
+Route::get('areas', 'AreaController@listing');
+
+Route::resource('oficial', 'OficialController');
+Route::get('oficiales', 'OficialController@listing');
+
+Route::resource('motivo', 'MotivoController');
+Route::get('motivos', 'MotivoController@listing');
