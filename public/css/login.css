@@ -1,0 +1,19 @@
+.form-control{
+	border: 1px solid #aeec66;
+    background-color: #85c23c;
+    color: #eee;
+    /*font-weight: bold;*/
+}
+
+.form-control::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #FFF;
+}
+.form-control::-moz-placeholder { /* Firefox 19+ */
+  color: #FFF;
+}
+.form-control:-ms-input-placeholder { /* IE 10+ */
+  color: #FFF;
+}
+.form-control:-moz-placeholder { /* Firefox 18- */
+  color: #FFF;
+}

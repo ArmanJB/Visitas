@@ -47,10 +47,10 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <!--<li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>-->
+                        <li><a href="/menu"><i class="fa fa-th fa-fw"></i> Regresar al menú</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Ajustes</a>
-                        </li>
-                        <li class="divider"></li>-->
+                        <li class="divider"></li>
                         <li><a href="{!!URL::to('logout')!!}"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
                         </li>
                     </ul>
@@ -149,7 +149,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
+                        <!--<li>
                             <a href="#"><i class="fa fa-bookmark-o fa-fw"></i> Pendientes<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -159,7 +159,7 @@
                                     <a href="{!!URL::to('/pendiente')!!}"><i class='fa fa-list-ol fa-fw'></i> Pendientes</a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
 
 
                     </ul>

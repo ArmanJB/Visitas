@@ -13,7 +13,9 @@
 
 //Route::get('/', function () {return view('index');});
 Route::get('/', 'FrontController@index');
+Route::get('menu', 'FrontController@menu');
 Route::get('admin', 'FrontController@admin');
+Route::get('visitaAdmin', 'FrontController@visitaAdmin');
 
 
 Route::resource('usuario', 'UsuarioController');
@@ -35,3 +37,6 @@ Route::get('oficiales', 'OficialController@listing');
 
 Route::resource('motivo', 'MotivoController');
 Route::get('motivos', 'MotivoController@listing');
+
+Route::resource('visita', 'VisitaController');
+Route::get('visitas', 'VisitaController@listing');

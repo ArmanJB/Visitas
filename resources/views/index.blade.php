@@ -8,11 +8,14 @@
 
 	    {!!Html::style('css/bootstrap.min.css')!!}
 	    {!!Html::style('css/style.css')!!}
+	    {!!Html::style('css/login.css')!!}
 	</head>
 	<body>
 		<div id="divider"></div>
+		<div id="divider"></div>
+		<div id="divider"></div>
 		<div id="logbody">
-			<h1 id="logh1">Inicia Sesión</h1>
+			<h1 id="logh1">Iniciar Sesión</h1>
 			{!!Form::open(['route'=>'log.store', 'method'=>'POST'])!!}
 				<div class="form-group">
 					{!!Form::label('correo', 'Correo:', ['class'=>'loglabel'])!!}

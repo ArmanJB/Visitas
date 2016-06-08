@@ -15,7 +15,7 @@ class LogController extends Controller
     public function store(LoginRequest $req){
     	if (Auth::attempt(['email'=>$req['email'], 'password'=>$req['password']])) {
     		//return Redirect::to('/usuario');
-            return Redirect::to('/admin');
+            return Redirect::to('/menu');
     	}
     	Session::flash('message-error', 'Datos son incorrectos');
     	return Redirect::to('/');

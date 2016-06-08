@@ -27,6 +27,7 @@
 	text-align: center;
 	color: #FFF;
 	text-shadow: 0.5px 0.5px #000;
+	margin: 1rem;
 }
 #logbutton{
 	background-color: #18a0e3;
@@ -41,3 +42,34 @@
 
 
 /*****************************/
+
+.card-content{
+	padding: 10px;
+}
+nav{
+	background-color: #7fc836;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating){
+	color: #18a0e3;
+}
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover{
+	color: #70B7E7;
+}
+
+/************************************/
+
+.li-visita{
+	width: 49%;
+	text-align: center;
+	font-weight: bold;
+	color: white;
+}
+.navbar-top-links li:last-child{
+	margin-right: 0px;
+}
+
+.content-visita{
+	margin-left: 5rem;
+	margin-right: 5rem;
+}
