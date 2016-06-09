@@ -60,4 +60,11 @@ class OficialController extends Controller
 
         return response()->json(['mensaje'=>'borrado']);
     }
+
+    public function oficialByArea($id){
+        $oficiales = DB::select('SELECT * FROM oficiales WHERE id_area = '.$id);
+        return response()->json(
+            $oficiales
+        );
+    }
 }

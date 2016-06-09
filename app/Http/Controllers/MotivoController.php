@@ -60,4 +60,11 @@ class MotivoController extends Controller
 
         return response()->json(['mensaje'=>'borrado']);
     }
+
+    public function motivoByArea($id){
+        $motivos = DB::select('SELECT * FROM motivos WHERE id_area = '.$id);
+        return response()->json(
+            $motivos
+        );
+    }
 }

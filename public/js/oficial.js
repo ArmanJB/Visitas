@@ -48,7 +48,14 @@ $('#registro').on('click', function(){
 			$('#msj-success').fadeIn();
 		},
 		error:function(msj){
-			$('#msj').html(msj.responseJSON.nombre);
+			if (msj.responseJSON.nombres == undefined) {
+				$('#msj').html(msj.responseJSON.apellidos);
+			}else if(msj.responseJSON.apellidos == undefined){
+				$('#msj').html(msj.responseJSON.nombres);
+			}else{
+				$('#msj').html(msj.responseJSON.nombres+'</br>'+msj.responseJSON.apellidos);
+			}
+			
 			$('#msj-error').fadeIn();
 		}
 	})

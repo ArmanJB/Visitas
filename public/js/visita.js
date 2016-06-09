@@ -1,34 +1,8 @@
 $(document).ready(function(){
+	setAreas();
 	setEscuelas();
-	setOficiales();
 	listar();
 });
-
-function setEscuelas(){
-	var select = $('#escuelas');
-	var route = '/escuelas';
-
-	select.empty();
-
-	$.get(route, function(res){
-		$(res).each(function(key, value){
-			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
-		})
-	});
-}
-
-function setOficiales(){
-	var select = $('#oficiales');
-	var route = '/oficiales';
-
-	select.empty();
-
-	$.get(route, function(res){
-		$(res).each(function(key, value){
-			select.append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
-		})
-	});
-}
 
 function listar(){
 	var tablaDatos = $('#datos');
@@ -43,6 +17,78 @@ function listar(){
 				'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
 		})
 	});
+}
+
+function setAreas(){
+	var select = $('#areas');
+	var route = '/areas';
+
+	$.get(route, function(res){
+		$(res).each(function(key, value){
+			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
+		})
+	});
+}
+function setEscuelas(){
+	var select = $('#escuelas');
+	var route = '/escuelas';
+
+	select.empty();
+
+	$.get(route, function(res){
+		$(res).each(function(key, value){
+			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
+		})
+	});
+}
+
+$('#areas').change(function(){
+	$('.row').show(1000);
+	//
+	if ($('#areas').val() != 'placeholder') {
+		$('#motivosList').empty();
+		setMotivos($('#areas').val());
+		setOficiales($('#areas').val());
+	}else{
+		$('.row').hide(1000);
+	}
+});
+
+function setMotivos(id){
+	var select = $('#motivos');
+	var route = '/motivo/byArea/'+id;
+
+	select.empty();
+
+	$.get(route, function(res){
+		$(res).each(function(key, value){
+			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
+		})
+	});
+}
+function setOficiales(id){
+	var select = $('#oficiales');
+	var route = '/oficial/byArea/'+id;
+
+	select.empty();
+
+	$.get(route, function(res){
+		$(res).each(function(key, value){
+			select.append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
+		})
+	});
+}
+
+$('#addMotivo').on('click', function(){
+	if ($('#motivos').val() != null) {
+		$('#motivosList').append('<a href="#" class="list-group-item " data="'+$('#motivos').val()+'" OnClick="removeM(this);">'+$('#motivos option:selected').text()+'</a>');
+		$('#motivos option').remove('[value="'+$('#motivos').val()+'"]');
+	}
+});
+function removeM(btn){
+	$('#motivos').append('<option value="'+btn.getAttribute('data')+'">'+btn.innerHTML+'</option>');
+	btn.remove();
+	//$('a').remove('[data="'+btn.getAttribute('data')+'"]');
 }
 
 $('#registro').on('click', function(){
@@ -63,7 +109,7 @@ $('#registro').on('click', function(){
 			$('#msj-success').fadeIn();
 		},
 		error:function(msj){
-			$('#msj').html(msj.responseJSON.nombre);
+			$('#msj').html(msj.responseJSON.fecha);
 			$('#msj-error').fadeIn();
 		}
 	})
@@ -96,7 +142,6 @@ function mostrar(btn){
 		$('#oficiales').val(res.id_oficial);
 	})	
 }
-
 $('#actualizar').on('click', function(){
 	var value = $('#id').val();
 	var fecha = $('#fecha').val();
