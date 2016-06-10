@@ -1,6 +1,10 @@
 <div class="form-group">
 	{!!Form::label('Fecha: ')!!}
-	{!!Form::date('fecha', null, ['id'=>'fecha', 'class'=>'form-control', 'placeholder'=>'2016-06-08'])!!}
+	{!!Form::date('fecha', null, ['id'=>'fecha', 'class'=>'form-control ', 'placeholder'=>'2016-06-08'])!!}
+</div>
+<div class="form-group">
+	{!!Form::label('Departamento: ')!!}
+	{!!Form::select('departamentos', ['placeholder'=>'Selecciona'], null, ['id'=>'departamentos'])!!}
 </div>
 <div class="form-group">
 	{!!Form::label('Escuela: ')!!}

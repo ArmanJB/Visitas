@@ -22,8 +22,10 @@ class VisitaController extends Controller
     public function store(VisitaRequest $req){
     	if($req->ajax() ){
     		Visitas::create($req->all());
+            $user = Visitas::all();
+            $visita = $user->last();
     		return response()->json([
-    			'mensaje' => "creado"
+    			'resp' => $visita->id
     		]);
     	}
     }

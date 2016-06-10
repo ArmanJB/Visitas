@@ -1,6 +1,7 @@
 @extends('layouts.visitaAdmin')
 
 @section('content')
+	{!!Html::style('css/checkbox.css')!!}
 	<div class="content-visita">
 		<div id="divider"></div>
 		<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">
@@ -16,18 +17,26 @@
 			</div>
 		{!!Form::close()!!}
 		<div class="row" style="display: none;">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				{!!Form::open()!!}
 					<input type="hidden" name="_token" value="{{csrf_token()}}" id="token">
 					@include('visita.forms.visita')
 				{!!Form::close()!!}
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				@include('visita.forms.motivo')
 				<div class="motivos-content">
 					<h5><b>Motivos: </b></h5>
 					<div id="motivosList" class="list-group">
-						<!--<a href="#" class="list-group-item active">Hola</a>-->
+						<!--<p><input type="checkbox" class="filled-in" id="filled-in-box" /><label for="filled-in-box">Motivo</label></p>-->
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="motivos-content">
+					<h5><b>Otros motivos: </b></h5>
+					<div id="otrosMotivosList" class="list-group">
+						<!--<p><input type="checkbox" class="filled-in" id="filled-in-box" /><label for="filled-in-box">Motivo</label></p>-->
 					</div>
 				</div>
 			</div>
@@ -40,5 +49,6 @@
 @endsection
 
 @section('scripts')
+	{!!Html::script('js/materialize.min.js')!!}
 	{!!Html::script('js/visita.js')!!}
 @endsection

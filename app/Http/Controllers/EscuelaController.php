@@ -60,4 +60,11 @@ class EscuelaController extends Controller
 
         return response()->json(['mensaje'=>'borrado']);
     }
+
+    public function escuelaByDep($id){
+        $motivos = DB::select('SELECT * FROM escuelas WHERE id_departamento = '.$id);
+        return response()->json(
+            $motivos
+        );
+    }
 }

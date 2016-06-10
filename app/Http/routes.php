@@ -27,6 +27,7 @@ Route::get('departamentos', 'DepartamentoController@listing');
 
 Route::resource('escuela', 'EscuelaController');
 Route::get('escuelas', 'EscuelaController@listing');
+Route::get('escuela/byDep/{id}', 'EscuelaController@escuelaByDep');
 //Route::get('escuelas/{id}', 'EscuelaController@getEscuelas');
 
 Route::resource('area', 'AreaController');
@@ -42,3 +43,8 @@ Route::get('motivo/byArea/{id}', 'MotivoController@motivoByArea');
 
 Route::resource('visita', 'VisitaController');
 Route::get('visitas', 'VisitaController@listing');
+
+Route::resource('detalle', 'DetalleController');
+Route::get('detalles', 'DetalleController@listing');
+Route::get('detalle/byVisita/{id}', 'DetalleController@detalleByVisita');
+Route::get('detalle/sbyVisita/{id}', 'DetalleController@detallesByVisita');
