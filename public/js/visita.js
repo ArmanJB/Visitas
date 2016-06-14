@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	setAreas();
+	setOficial();
 	setEscuelas();
 	setDepartamentos();
 	listar();
@@ -13,7 +14,7 @@ function listar(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
-				'<td><button value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+				'<td><button dep='+value.dep+' value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 				'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
 				'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
 		})
@@ -27,6 +28,18 @@ function setAreas(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
+		})
+	});
+}
+function setOficial(){
+	var select = $('#oficiales');
+	var route = '/oficiales';
+
+	select.empty();
+
+	$.get(route, function(res){
+		$(res).each(function(key, value){
+			select.append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
 		})
 	});
 }
@@ -69,11 +82,18 @@ $('#areas').change(function(){
 	$('.row').show(1000);
 	//
 	if ($('#areas').val() != 'placeholder') {
+		$('#otrosMotivosList').show();
+		$('#otrosMotivosList').attr('data', 'on');
+
 		$('#motivosList').empty();
 		$('#otrosMotivosList').empty();
 		setMotivos($('#areas').val());
 		setOtrosMotivos(4);
 		setOficiales($('#areas').val());
+		if ($('#areas').val() == 4) {
+			$('#otrosMotivosList').hide();
+			$('#otrosMotivosList').attr('data', 'off');
+		}
 	}else{
 		$('.row').hide(1000);
 	}
@@ -159,6 +179,21 @@ function addMotivos(id){
 			
 		});
 	});
+
+	if ($('#otrosMotivosList').attr('data') == 'on') {
+		var total = $('#otrosMotivosList p input:checkbox:checked').length;
+	
+		$('#otrosMotivosList p input:checkbox:checked').each(function(index){
+			$.ajax({
+				url: '/detalle',
+				headers: {'X-CSRF-TOKEN': token},
+				type: 'POST',
+				dataType: 'json',
+				data: {id_visita: id, id_motivo: this.value}
+				
+			});
+		});
+	}
 }
 
 function eliminarV(id){
@@ -209,20 +244,26 @@ function mostrarDet(btn){
 	var tabla = document.getElementById("tabla-visitas");
 	var fecha = tabla.rows[index].cells[0].innerHTML;
 	var oficial = tabla.rows[index].cells[1].innerHTML;
-	var escuela = tabla.rows[index].cells[2].innerHTML;	
-
-	$('#title-det').html(oficial+' / '+fecha+'</br>'+escuela);
+	var escuela = tabla.rows[index].cells[2].innerHTML;
+	var dep = btn.getAttribute('dep');
+	
+	$('#title-det').html('Oficial: '+oficial+'</br>Fecha: '+fecha+'</br>Departamento: '+dep+'</br>Escuela: '+escuela);
 
 	var route = '/detalle/sbyVisita/'+btn.value;
 	var datos = $('#list-motivos');
+	var datosO = $('#list-otrosMotivos');
 	datos.empty();
+	datosO.empty();
 	$.get(route, function(res){
 		$(res).each(function(key, value){
-			console.log(value)
-			datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+			console.log(value.id_area)
+			if (value.id_area != 4) {
+				datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+			}else{
+				datosO.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+			}
 		})
 	});
-
 }
 
 function mostrar(btn){
@@ -233,7 +274,15 @@ function mostrar(btn){
 		$('#fecha').val(res.fecha);
 		$('#escuelas').val(res.id_escuela);
 		$('#oficiales').val(res.id_oficial);
-	})	
+	});
+
+	var datos = $('#list-motivos2');
+	datos.empty();
+	$.get('/detalle/sbyVisita/'+btn.value, function(res){
+		$(res).each(function(key, value){
+			datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+		})
+	});
 }
 $('#actualizar').on('click', function(){
 	var value = $('#id').val();

@@ -16,6 +16,7 @@ Route::get('/', 'FrontController@index');
 Route::get('menu', 'FrontController@menu');
 Route::get('admin', 'FrontController@admin');
 Route::get('visitaAdmin', 'FrontController@visitaAdmin');
+Route::get('visita/charts', 'FrontController@charts');
 
 
 Route::resource('usuario', 'UsuarioController');
@@ -28,6 +29,7 @@ Route::get('departamentos', 'DepartamentoController@listing');
 Route::resource('escuela', 'EscuelaController');
 Route::get('escuelas', 'EscuelaController@listing');
 Route::get('escuela/byDep/{id}', 'EscuelaController@escuelaByDep');
+Route::get('escuela/depBy/{id}', 'EscuelaController@depByEscuela');
 //Route::get('escuelas/{id}', 'EscuelaController@getEscuelas');
 
 Route::resource('area', 'AreaController');

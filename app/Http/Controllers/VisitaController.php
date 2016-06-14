@@ -11,6 +11,11 @@ use DB;
 
 class VisitaController extends Controller
 {
+    public function __construct(){
+        //$this->middleware('auth', ['only' => ['admin', 'menu', 'visitaAdmin']]);
+        $this->middleware('auth');
+    }
+
     public function index(){
         return view('visita.index');
     }
@@ -32,11 +37,12 @@ class VisitaController extends Controller
 
     public function listing(){
         $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
-        	escuelas.nombre AS escuela, 
-        	CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial 
-        	FROM visitas, escuelas, oficiales 
-        	WHERE visitas.id_escuela = escuelas.id 
-        	AND visitas.id_oficial = oficiales.id");
+            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial 
+            FROM visitas, escuelas, oficiales, departamentos 
+            WHERE visitas.id_escuela = escuelas.id
+            AND escuelas.id_departamento = departamentos.id
+            AND visitas.id_oficial = oficiales.id");
         //$visitas = Escuelas::all();
         return response()->json(
             $visitas
@@ -67,4 +73,5 @@ class VisitaController extends Controller
 
         return response()->json(['mensaje'=>'borrado']);
     }
+
 }

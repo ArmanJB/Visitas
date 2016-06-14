@@ -42,7 +42,7 @@
 		              <p>Agrega nuevos registros de visitas.</p>
 		            </div>
 		            <div class="card-action">
-		              <a href="/visitaAdmin">Ir a Visitas</a>
+		              <a href="/visita/create">Ir a Visitas</a>
 		            </div>
 		          </div>
 		        </div>

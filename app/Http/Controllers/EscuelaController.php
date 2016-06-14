@@ -62,9 +62,19 @@ class EscuelaController extends Controller
     }
 
     public function escuelaByDep($id){
-        $motivos = DB::select('SELECT * FROM escuelas WHERE id_departamento = '.$id);
+        $escuelas = DB::select('SELECT * FROM escuelas WHERE id_departamento = '.$id);
         return response()->json(
-            $motivos
+            $escuelas
+        );
+    }
+
+    public function depByEscuela($id){
+        $dep = DB::select('SELECT escuelas.id, departamentos.nombre 
+            From escuelas, departamentos 
+            WHERE escuelas.id_departamento = departamentos.id 
+            AND escuelas.id = '.$id);
+        return response()->json(
+            $dep
         );
     }
 }

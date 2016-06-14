@@ -28,4 +28,8 @@ class FrontController extends Controller
     public function menu(){
     	return view('menu');
     }
+
+    public function charts(){
+        return view('visita.charts');
+    }
 }
