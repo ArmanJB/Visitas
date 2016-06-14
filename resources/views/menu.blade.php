@@ -33,28 +33,24 @@
 			<div class="row">
 				<div class="col s12 m3"><p></p></div>
 		        <div class="col s12 m3">
-		          <div class="card small">
+		          <div class="card hoverable">
 		            <div class="card-image">
 		              <img src="/img/arrow.png">
 		              <span class="card-title loglabel">Visitas</span>
 		            </div>
-		            <div class="card-content">
-		              <p>Agrega nuevos registros de visitas.</p>
-		            </div>
+		            
 		            <div class="card-action">
 		              <a href="/visita/create">Ir a Visitas</a>
 		            </div>
 		          </div>
 		        </div>
 		        <div class="col s12 m3">
-		          <div class="card small">
+		          <div class="card hoverable">
 		            <div class="card-image">
 		              <img src="/img/man.png">
 		              <span class="card-title loglabel">Administración</span>
 		            </div>
-		            <div class="card-content">
-		              <p>Agrega nuevos datos.</p>
-		            </div>
+		            
 		            <div class="card-action">
 		              <a href="/admin">Ir al panel de administración</a>
 		            </div>

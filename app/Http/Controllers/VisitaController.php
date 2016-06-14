@@ -138,4 +138,74 @@ class VisitaController extends Controller
         );
     }
 
+    //***************************************************
+
+    public function visitasByArea($ini, $fin){
+        $resp = [];
+        $idVisitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, areas.nombre
+            FROM visitas, oficiales, areas
+            WHERE visitas.id_oficial = oficiales.id 
+            AND oficiales.id_area = areas.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            GROUP BY oficiales.id_area");
+
+        $visitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, areas.nombre
+            FROM visitas, oficiales, areas
+            WHERE visitas.id_oficial = oficiales.id 
+            AND oficiales.id_area = areas.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_area==$visitas[$indice]->id_area) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant, $idVisitas[$index]->id_area]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+
+    public function visitasByAreaDet($ini, $fin, $idArea){
+        $resp = [];
+        $idVisitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS nombre
+            FROM visitas, oficiales, areas
+            WHERE visitas.id_oficial = oficiales.id 
+            AND oficiales.id_area = areas.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            AND areas.id = '$idArea'
+            GROUP BY visitas.id_oficial");
+
+        $visitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS nombre
+            FROM visitas, oficiales, areas
+            WHERE visitas.id_oficial = oficiales.id 
+            AND oficiales.id_area = areas.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            AND areas.id = '$idArea'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_oficial==$visitas[$indice]->id_oficial) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+
 }

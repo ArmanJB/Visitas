@@ -45,8 +45,15 @@ Route::get('motivo/byArea/{id}', 'MotivoController@motivoByArea');
 
 Route::resource('visita', 'VisitaController');
 Route::get('visitas', 'VisitaController@listing');
+
 Route::get('visitas/byDep/{ini}/{fin}', 'VisitaController@visitasByDep');
 Route::get('visitas/byDepDet/{ini}/{fin}/{idDep}', 'VisitaController@visitasByDepDet');
+
+Route::get('visitas/byArea/{ini}/{fin}', 'VisitaController@visitasByArea');
+Route::get('visitas/byAreaDet/{ini}/{fin}/{idArea}', 'VisitaController@visitasByAreaDet');
+
+Route::get('visitas/byMot/{ini}/{fin}', 'VisitaController@visitasByMot');
+Route::get('visitas/byMotDet/{ini}/{fin}/{idArea}', 'VisitaController@visitasByMotDet');
 
 Route::resource('detalle', 'DetalleController');
 Route::get('detalles', 'DetalleController@listing');

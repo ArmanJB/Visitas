@@ -3,12 +3,13 @@
 @section('content')
 	<div class="row row-chart">
 		<div class="col-md-2 col-chart">
+			<div id="divider"></div>
+			<div id="divider"></div>
+			<div id="divider"></div>
 			<div class="list-group">
-				<a href="#" class="list-group-item active" id="dep">Visitas por Departamento</a>
-				<a href="#" class="list-group-item">Visitas por Área</a>
-				<a href="#" class="list-group-item"></a>
-				<a href="#" class="list-group-item">Ejemplo3</a>
-				<a href="#" class="list-group-item">Ejemplo4</a>
+				<a href="#" id="Dep" class="list-group-item active" onclick="active(this);">Visitas por Departamento</a>
+				<a href="#" id="Area" class="list-group-item" onclick="active(this);">Visitas por Área</a>
+				<a href="#" id="Mot" class="list-group-item" onclick="active(this);">Visitas por Motivo</a>
 			</div>
 		</div>
 		<div class="col-md-10 col-chart" id="chart-content">

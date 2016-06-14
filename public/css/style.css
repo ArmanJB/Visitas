@@ -92,3 +92,7 @@ nav{
 .input-chart{
 	margin: 1rem;
 }
+.input-group-addon{
+	background-color: #337ab7;
+	color: #fff;
+}

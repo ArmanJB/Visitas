@@ -4,16 +4,26 @@ $(function(){
 
 });
 
+var route = 'byDep';
+
 $('#fechaIni').on('change', function(){
 	if ($('#fechaIni').val() == '' || $('#fechaFin').val() == '') {$('#actualizar').attr('disabled', true)}
 	else{$('#actualizar').removeAttr('disabled')}
 	if ($('#fechaIni').val() > $('#fechaFin').val()) {$('#actualizar').attr('disabled', true)}
-})
+});
 $('#fechaFin').on('change', function(){
 	if ($('#fechaIni').val() == '' || $('#fechaFin').val() == '') {$('#actualizar').attr('disabled', true)}
 	else{$('#actualizar').removeAttr('disabled')}
 	if ($('#fechaIni').val() > $('#fechaFin').val()) {$('#actualizar').attr('disabled', true)}
-})
+});
+
+function active(link){
+	$('.list-group-item').removeClass('active');
+	link.classList.add('active');
+	route = 'by'+link.id;
+	titulo = ''+link.text;
+}
+/**************************************************************************/
 
 $('#actualizar').on('click', function(){
 	//if ($('#fechaIni').val() == $('#fechaFin').val()) {}
@@ -31,13 +41,13 @@ var subdata = [];
 function setData($ini, $fin){
 	subtitulo = 'de '+$ini+' a '+$fin;
 
-	$.get('/visitas/byDep/'+$ini+'/'+$fin, function(res){
+	$.get('/visitas/'+route+'/'+$ini+'/'+$fin, function(res){
 		dataPadre = [];
 		data = [];
 		subdata = [];
 		$(res).each(function(key, value){
 			dataPadre.push({name: value[0], y: value[1], drilldown: value[0]});
-				$.get('/visitas/byDepDet/'+$ini+'/'+$fin+'/'+value[2], function(resp){
+				$.get('/visitas/'+route+'Det/'+$ini+'/'+$fin+'/'+value[2], function(resp){
 					subdata = [];
 					$(resp).each(function(key, index){
 						subdata.push([index[0], index[1]]);
