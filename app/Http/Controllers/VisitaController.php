@@ -74,4 +74,68 @@ class VisitaController extends Controller
         return response()->json(['mensaje'=>'borrado']);
     }
 
+    public function visitasByDep($ini, $fin){
+        $resp = [];
+        $idVisitas = DB::select("SELECT visitas.id, visitas.id_escuela, escuelas.id_departamento, departamentos.nombre 
+            FROM visitas, escuelas, departamentos 
+            WHERE visitas.id_escuela = escuelas.id 
+            AND escuelas.id_departamento = departamentos.id 
+            AND visitas.fecha >= '$ini' AND visitas.fecha <= '$fin' 
+            GROUP BY escuelas.id_departamento");
+
+        $visitas = DB::select("SELECT visitas.id, visitas.id_escuela, escuelas.id_departamento, departamentos.nombre 
+            FROM visitas, escuelas, departamentos 
+            WHERE visitas.id_escuela = escuelas.id 
+            AND escuelas.id_departamento = departamentos.id 
+            AND visitas.fecha >= '$ini' AND visitas.fecha <= '$fin'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_departamento==$visitas[$indice]->id_departamento) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant, $idVisitas[$index]->id_departamento]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+
+    public function visitasByDepDet($ini, $fin, $idDep){
+        $resp = [];
+        $idVisitas = DB::select("SELECT visitas.id, visitas.id_escuela, escuelas.id_departamento, escuelas.nombre
+            FROM visitas, escuelas, departamentos 
+            WHERE visitas.id_escuela = escuelas.id 
+            AND escuelas.id_departamento = departamentos.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            AND departamentos.id = '$idDep'
+            GROUP BY visitas.id_escuela");
+
+        $visitas = DB::select("SELECT visitas.id, visitas.id_escuela, escuelas.id_departamento, escuelas.nombre
+            FROM visitas, escuelas, departamentos 
+            WHERE visitas.id_escuela = escuelas.id 
+            AND escuelas.id_departamento = departamentos.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            AND departamentos.id = '$idDep'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_escuela==$visitas[$indice]->id_escuela) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+
 }

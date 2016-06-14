@@ -45,6 +45,8 @@ Route::get('motivo/byArea/{id}', 'MotivoController@motivoByArea');
 
 Route::resource('visita', 'VisitaController');
 Route::get('visitas', 'VisitaController@listing');
+Route::get('visitas/byDep/{ini}/{fin}', 'VisitaController@visitasByDep');
+Route::get('visitas/byDepDet/{ini}/{fin}/{idDep}', 'VisitaController@visitasByDepDet');
 
 Route::resource('detalle', 'DetalleController');
 Route::get('detalles', 'DetalleController@listing');

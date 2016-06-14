@@ -77,3 +77,18 @@ nav{
 .areas{
 	text-align: center;
 }
+
+/**************************************/
+.col-chart{
+	padding-right: 0px;
+
+}
+.row-chart{
+	width: 99.99%;
+}
+#chart-content{
+	padding: 0px;
+}
+.input-chart{
+	margin: 1rem;
+}
