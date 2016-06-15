@@ -52,6 +52,9 @@ Route::get('visitas/byDepDet/{ini}/{fin}/{idDep}', 'VisitaController@visitasByDe
 Route::get('visitas/byArea/{ini}/{fin}', 'VisitaController@visitasByArea');
 Route::get('visitas/byAreaDet/{ini}/{fin}/{idArea}', 'VisitaController@visitasByAreaDet');
 
+Route::get('visitas/byOfi/{ini}/{fin}', 'VisitaController@visitasByOfi');
+Route::get('visitas/byOfiDet/{ini}/{fin}/{idOfi}', 'VisitaController@visitasByOfiDet');
+
 Route::get('visitas/byMot/{ini}/{fin}', 'VisitaController@visitasByMot');
 Route::get('visitas/byMotDet/{ini}/{fin}/{idArea}', 'VisitaController@visitasByMotDet');
 

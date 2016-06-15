@@ -94,3 +94,52 @@ function chart(){
 
 
 
+/*
+series: [{
+    name: 'Things',
+    colorByPoint: true,
+    data: [{
+        name: 'Animals',
+        y: 5,
+        drilldown: 'animals'
+    },{
+        name: 'Food',
+        y: 4,
+        drilldown: 'food'
+    }]
+}],
+drilldown: {
+    series: [
+	    {
+	        id: 'food',
+	        name: 'Food',
+	        data: [
+	        	{
+	            	name: 'Apple',
+	            	y: 1.5,
+	            	drilldown: 'apple'
+	        	},['Banana', 1],['Peer', 0.5],['Pineapple', 1]
+	        ]
+	    }, 
+	    {
+	        id: 'apple',
+	        data: [['1/6' ,1],['1/3' , 2],['1/2' , 3]]
+	    },
+	    {
+	        id: 'animals',
+	        name: 'Animals',
+	        data: [
+	        	{
+		            name: 'Cats',
+		            y: 5,
+		            drilldown: 'cats'
+	        	}, ['Dogs', 2],['Cows', 1],['Sheep', 1],['Pigs', 1]
+	        ]
+	    }, 
+	    {
+	        id: 'cats',
+	        data: [1, 2, 3]
+	    }
+    ]
+}
+*/

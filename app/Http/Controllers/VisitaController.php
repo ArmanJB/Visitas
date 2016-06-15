@@ -103,7 +103,6 @@ class VisitaController extends Controller
             $resp   
         );
     }
-
     public function visitasByDepDet($ini, $fin, $idDep){
         $resp = [];
         $idVisitas = DB::select("SELECT visitas.id, visitas.id_escuela, escuelas.id_departamento, escuelas.nombre
@@ -137,7 +136,6 @@ class VisitaController extends Controller
             $resp   
         );
     }
-
     //***************************************************
 
     public function visitasByArea($ini, $fin){
@@ -171,7 +169,6 @@ class VisitaController extends Controller
             $resp   
         );
     }
-
     public function visitasByAreaDet($ini, $fin, $idArea){
         $resp = [];
         $idVisitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, 
@@ -207,5 +204,143 @@ class VisitaController extends Controller
             $resp   
         );
     }
+    //***************************************************
 
+    public function visitasByOfi($ini, $fin){
+        $resp = [];
+        $idVisitas = DB::select("SELECT visitas.id, visitas.id_oficial, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS nombre
+            FROM visitas, oficiales
+            WHERE visitas.id_oficial=oficiales.id
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            GROUP BY visitas.id_oficial");
+
+        $visitas = DB::select("SELECT visitas.id, visitas.id_oficial, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS nombre
+            FROM visitas, oficiales
+            WHERE visitas.id_oficial=oficiales.id
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_oficial==$visitas[$indice]->id_oficial) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant, $idVisitas[$index]->id_oficial]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+    public function visitasByOfiDet($ini, $fin, $idOfi){
+        $resp = [];
+        $idVisitas = DB::select("SELECT detalle_visita.id, detalle_visita.id_motivo, motivos.nombre, visitas.id, visitas.id_oficial 
+            FROM detalle_visita, motivos, visitas, oficiales 
+            WHERE detalle_visita.id_motivo=motivos.id 
+            AND detalle_visita.id_visita=visitas.id 
+            AND visitas.id_oficial=oficiales.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin' 
+            AND visitas.id_oficial = '$idOfi' 
+            GROUP BY detalle_visita.id_motivo");
+
+        $visitas = DB::select("SELECT detalle_visita.id, detalle_visita.id_motivo, motivos.nombre, visitas.id, visitas.id_oficial 
+            FROM detalle_visita, motivos, visitas, oficiales 
+            WHERE detalle_visita.id_motivo=motivos.id 
+            AND detalle_visita.id_visita=visitas.id 
+            AND visitas.id_oficial=oficiales.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin' 
+            AND visitas.id_oficial = '$idOfi'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_motivo==$visitas[$indice]->id_motivo) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+    //***************************************************
+
+    public function visitasByMot($ini, $fin){
+        $resp = [];
+        $idVisitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, areas.nombre
+            FROM visitas, oficiales, areas
+            WHERE visitas.id_oficial = oficiales.id 
+            AND oficiales.id_area = areas.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'
+            GROUP BY oficiales.id_area");
+
+        $visitas = DB::select("SELECT visitas.id, visitas.id_oficial, oficiales.id_area, areas.nombre
+            FROM visitas, oficiales, areas
+            WHERE visitas.id_oficial = oficiales.id 
+            AND oficiales.id_area = areas.id 
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin'");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id_area==$visitas[$indice]->id_area) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant, $idVisitas[$index]->id_area]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
+    public function visitasByMotDet($ini, $fin, $idArea){
+        $resp = [];
+        $idVisitas = DB::select("SELECT motivos.id, motivos.nombre, detalle_visita.id_visita, visitas.id_oficial, oficiales.id_area
+            FROM detalle_visita, motivos, visitas, oficiales, areas
+            WHERE detalle_visita.id_motivo=motivos.id
+            AND detalle_visita.id_visita=visitas.id
+            AND visitas.id_oficial=oficiales.id
+            AND oficiales.id_area=areas.id
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin' 
+            AND oficiales.id_area = '$idArea'
+            GROUP BY motivos.id");
+
+        $visitas = DB::select("SELECT motivos.id, motivos.nombre, detalle_visita.id_visita, visitas.id_oficial, oficiales.id_area
+            FROM detalle_visita, motivos, visitas, oficiales, areas
+            WHERE detalle_visita.id_motivo=motivos.id
+            AND detalle_visita.id_visita=visitas.id
+            AND visitas.id_oficial=oficiales.id
+            AND oficiales.id_area=areas.id
+            AND visitas.fecha >= '$ini' 
+            AND visitas.fecha <= '$fin' 
+            AND oficiales.id_area = '$idArea'
+            GROUP BY motivos.id");
+
+        for($index=0; $index < count($idVisitas); $index++) { 
+            $cant=0;
+            for($indice=0; $indice < count($visitas); $indice++) { 
+                if ($idVisitas[$index]->id==$visitas[$indice]->id) {
+                    $cant++;
+                }
+            }
+            array_push($resp, [$idVisitas[$index]->nombre, $cant]);
+        }
+
+        return response()->json(
+            $resp   
+        );
+    }
 }
