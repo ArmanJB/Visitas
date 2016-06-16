@@ -37,6 +37,7 @@ function eliminar(btn){
 		success: function(){
 			listar();
 			$('#msj-success').fadeIn();
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}
 	});
 }
@@ -55,10 +56,13 @@ $('#registro').on('click', function(){
 
 		success: function(){
 			$('#msj-success').fadeIn();
+			$('#nombre').val('');
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		},
 		error:function(msj){
 			$('#msj').html(msj.responseJSON.nombre);
 			$('#msj-error').fadeIn();
+			window.setTimeout(function(){$('#msj-error').fadeOut();}, 2000);
 		}
 	})
 });
@@ -80,6 +84,7 @@ $('#actualizar').on('click', function(){
 			listar();
 			$('#myModal').modal('toggle');
 			$('#msj-success').fadeIn();
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}
 	});
 })

@@ -4,7 +4,7 @@
 	@include('motivo.modal')
 	<div id="divider"></div>
 	<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">
-		<strong>Motivo Editado Exitosamente!</strong>
+		<strong>Motivos Actualizados Exitosamente!</strong>
 	</div>
 	<table class="table">
 		<thead>

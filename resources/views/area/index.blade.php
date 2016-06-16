@@ -4,7 +4,7 @@
 	@include('area.modal')
 	<div id="divider"></div>
 	<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">
-		<strong>Area Editada Exitosamente!</strong>
+		<strong>Áreas Actualizadas Exitosamente!</strong>
 	</div>
 	<table class="table">
 		<thead>

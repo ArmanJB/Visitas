@@ -46,6 +46,9 @@ $('#registro').on('click', function(){
 
 		success: function(){
 			$('#msj-success').fadeIn();
+			$('#nombres').val('');
+			$('#apellidos').val('');
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		},
 		error:function(msj){
 			if (msj.responseJSON.nombres == undefined) {
@@ -57,6 +60,7 @@ $('#registro').on('click', function(){
 			}
 			
 			$('#msj-error').fadeIn();
+			window.setTimeout(function(){$('#msj-error').fadeOut();}, 2000);
 		}
 	})
 });
@@ -74,6 +78,7 @@ function eliminar(btn){
 		success: function(){
 			listar();
 			$('#msj-success').fadeIn();
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}
 	});
 }
@@ -108,6 +113,7 @@ $('#actualizar').on('click', function(){
 			listar();
 			$('#myModal').modal('toggle');
 			$('#msj-success').fadeIn();
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}
 	});
 })

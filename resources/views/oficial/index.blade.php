@@ -4,7 +4,7 @@
 	@include('oficial.modal')
 	<div id="divider"></div>
 	<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">
-		<strong>Oficial Editado Exitosamente!</strong>
+		<strong>Oficiales Actualizados Exitosamente!</strong>
 	</div>
 	<table class="table">
 		<thead>
