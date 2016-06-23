@@ -14,7 +14,7 @@ function listar(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
-				'<td><button dep='+value.dep+' value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+				'<td><button dep="'+value.dep+'"" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 				'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
 				'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
 		})
