@@ -68,3 +68,6 @@ Route::resource('detalle', 'DetalleController');
 Route::get('detalles', 'DetalleController@listing');
 Route::get('detalle/byVisita/{id}', 'DetalleController@detalleByVisita');
 Route::get('detalle/sbyVisita/{id}', 'DetalleController@detallesByVisita');
+
+Route::get('obtener_datos/{user}/{token}', 'MobileController@data');
+Route::get('insertar_visita', 'MobileController@insert');
