@@ -129,8 +129,9 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Administador', 'admin@admin.com', '$2y$10$0iVCZ/o1TWbQlhGsfy/OROYu8UzDzD9dGbiujFTORbCYetobsmj/i', 'LduL9JM4ZKkPwPDhXHy4Gag0X9tY2PGu8LbtqbubGbbaM1GN5HuAw9zsQidS', '2016-05-31 22:35:06', '2016-06-10 15:03:15'),
-(3, 'Armando Bustos', 'armanjbustos596@gmail.com', '$2y$10$dtL0L085RJ3OGyS3jhhAe.XK694yrsUfoCcER7MEVfDChcxKf/YWm', 'BaE3egEZaLbCZUiBnjZGpgsiTno0GD9MxoVsga0Way81yEAkoHsYmSpQLASB', '2016-06-02 21:38:29', '2016-06-10 16:07:41');
+(1, 'Administador', 'admin@admin.com', '$2y$10$0iVCZ/o1TWbQlhGsfy/OROYu8UzDzD9dGbiujFTORbCYetobsmj/i', '6M89cw5DMRROviuVV64EvRFuPZ6e4vYCt1vnZCci7WHDwKfWnM1vaHYe6Xqv', '2016-06-01 04:35:06', '2016-06-20 14:56:03'),
+(2, 'FZTMobile', 'fztmobile@admin.com', '$2y$10$YKPJOauMci4/PwWITARbXezDNhNWtLmbN5/Tsi2cjZEa8Xw.SMjIW', 'lTlQtkURI6BmxXKSfk4vqxVapZAWlLYUFDCwfOgAG3nvlspFZ3pV8llzKUzn', '2016-06-03 03:38:29', '2016-06-20 14:28:12'),
+(3, 'Armando Bustos', 'armanjbustos596@gmail.com', '$2y$10$cdEgezrFB/URjYn2M1OGROM0VHZjOv/lF6403KQKtCr8kP3qnmkou', 'LUSLZSVNZ8M4BX1G4yAjkRNCKGSBnNOnyw73OUCsuLz7100ChI67f50S0xwv', '2016-06-20 14:27:40', '2016-06-20 14:27:57');
 
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`),
@@ -143,7 +144,7 @@ ALTER TABLE `password_resets`
   ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
---*****************************************************
+-- *****************************************************
 INSERT INTO `areas` (`id`, `nombre`) VALUES
 (1, 'Soporte Técnico'),
 (2, 'Área Educativa'),

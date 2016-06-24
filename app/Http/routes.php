@@ -43,6 +43,9 @@ Route::resource('motivo', 'MotivoController');
 Route::get('motivos', 'MotivoController@listing');
 Route::get('motivo/byArea/{id}', 'MotivoController@motivoByArea');
 
+Route::resource('pendiente', 'pendienteController');
+Route::get('pendientes', 'pendienteController@listing');
+
 Route::resource('visita', 'VisitaController');
 Route::get('visitas', 'VisitaController@listing');
 
