@@ -22,7 +22,7 @@ use DB;
 class MobileController extends Controller
 {
     public function data($user, $token){
-		$users = DB::select("SELECT users.id FROM users WHERE users.email='$user' AND users.password='$token'");
+		$users = DB::select("SELECT users.id FROM users WHERE users.email='$user' AND users.id='$token'");
 		if (Count($users) > 0) {
 			$area = Areas::all();
 	    	$departamento = Departamentos::all();
