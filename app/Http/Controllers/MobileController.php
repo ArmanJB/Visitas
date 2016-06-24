@@ -21,41 +21,36 @@ use DB;
 
 class MobileController extends Controller
 {
-    public function data(Request $req){
-    	if ($req->ajax() ) {
-    		$user = $req->input('user');
-    		$token = $req->input('token');
+    public function data($user, $token){
+		$users = DB::select("SELECT users.id FROM users WHERE users.email='$user' AND users.password='$token'");
+		if (Count($users) > 0) {
+			$area = Areas::all();
+	    	$departamento = Departamentos::all();
+	    	$oficial = Oficiales::all();
+	    	$motivo = Motivos::all();
+	    	$escuela = Escuelas::all();
 
-    		$users = DB::select("SELECT users.id FROM users WHERE users.email='$user' AND users.password='$token'");
-			if ($users > 0) {
-				$area = Areas::all();
-		    	$departamento = Departamentos::all();
-		    	$oficial = Oficiales::all();
-		    	$motivo = Motivos::all();
-		    	$escuela = Escuelas::all();
+	        if ($area and $departamento and $oficial and $motivo and $escuela) {
+	            $datos["estado"] = 1;
+	            $datos["areas"] = $area->toArray();
+	            $datos["departamentos"] = $departamento->toArray();
+	            $datos["oficiales"] = $oficial->toArray();
+	            $datos["motivos"] = $motivo->toArray();
+	            $datos["escuelas"] = $escuela->toArray();
 
-		        if ($area and $departamento and $oficial and $motivo and $escuela) {
-		            $datos["estado"] = 1;
-		            $datos["areas"] = $area->toArray();
-		            $datos["departamentos"] = $departamento->toArray();
-		            $datos["oficiales"] = $oficial->toArray();
-		            $datos["motivos"] = $motivo->toArray();
-		            $datos["escuelas"] = $escuela->toArray();
-
-		            print json_encode(Count($users));
-		        } else {
-		            print json_encode(array(
-		                "estado" => 2,
-		                "mensaje" => "Ha ocurrido un error"
-		            ));
-		        }
-			}else{
-				print json_encode(array(
-		            "estado" => 2,
-		            "mensaje" => "Token no existe"
-		        ));
-			}
-    	}
+	            print json_encode($datos);
+	        } else {
+	            print json_encode(array(
+	                "estado" => 2,
+	                "mensaje" => "Ha ocurrido un error"
+	            ));
+	        }
+		}else{
+			print json_encode(array(
+	            "estado" => 2,
+	            "mensaje" => "Token no existe"
+	        ));
+		}
 
     }
 
