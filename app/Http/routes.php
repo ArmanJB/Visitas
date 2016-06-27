@@ -71,3 +71,4 @@ Route::get('detalle/sbyVisita/{id}', 'DetalleController@detallesByVisita');
 
 Route::resource('mobile', 'MobileController');
 Route::get('obtener_datos/{user}/{token}', 'MobileController@data');
+Route::get('insertar_visita/{fecha}/{id_escuela}/{id_oficial}/{pendiente}/{motivos}', 'MobileController@insert');

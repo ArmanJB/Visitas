@@ -54,7 +54,14 @@ class MobileController extends Controller
 
     }
 
-    public function insert(){
-    	return 'hola';
+    public function insert($fecha, $id_escuela, $id_oficial, $pendiente, $motivos){
+    	print json_encode([
+    		"fecha"=>$fecha,
+    		"escuela"=>$id_escuela,
+    		"oficial"=>$id_oficial,
+    		"pendiente"=>$pendiente,
+    		"motivo"=>$motivos
+
+    	]);
     }
 }
