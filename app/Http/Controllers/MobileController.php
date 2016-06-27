@@ -13,8 +13,6 @@ use visitas\Motivos;
 use visitas\Escuelas;
 
 use visitas\Visitas;
-use visitas\Detalles;
-use visitas\Pendientes;
 
 use visitas\User;
 use DB;
@@ -56,17 +54,15 @@ class MobileController extends Controller
 
     public function insert($fecha, $id_escuela, $id_oficial, $pendiente, $motivos){
     	$new = explode(",", $motivos);
-    	$visita = json_encode(["fecha"=>$fecha, "id_escuela"=>$id_escuela, "id_oficial"=>$id_oficial]);
-    	Visitas::create($visita->all());
-    	$records = Visitas::all();
-    	$record = $records->last();
-
+    	$id = DB::table('visitas')->insertGetId(["fecha"=>$fecha, "id_escuela"=>$id_escuela, "id_oficial"=>$id_oficial]);
+    	//$records = Visitas::all();
+    	//$record = $records->last();
     	for ($i=1; $i < count($new); $i++) { 
-    		$detalle = json_encode(["id_visita"=>$record->id, "id_motivo"=>$new[$i]]);
-    		Detalles::create($detalle->all());
+    		DB::table('detalle_visita')->insert(["id_visita"=>$id, "id_motivo"=>$new[$i]]);
     	}
+    	DB::table('pendientes')->insert(["nombre"=>$pendiente, "finalizado"=>false, "id_visita"=>$id]);
 
-    	if ($record > 0) {
+    	if ($id > 0) {
 	        print json_encode(
 	            array(
 	                'estado' => '1',
