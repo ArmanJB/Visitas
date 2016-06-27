@@ -56,13 +56,28 @@ class MobileController extends Controller
 
     public function insert($fecha, $id_escuela, $id_oficial, $pendiente, $motivos){
     	$new = explode(",", $motivos);
-    	print json_encode([
-    		"fecha"=>$fecha,
-    		"escuela"=>$id_escuela,
-    		"oficial"=>$id_oficial,
-    		"pendiente"=>$pendiente,
-    		"motivo"=>$new
+    	$visita = json_encode(["fecha"=>$fecha, "id_escuela"=>$id_escuela, "id_oficial"=>$id_oficial]);
+    	Visitas::create($visita->all());
+    	$records = Visitas::all();
+    	$record = $records->last();
 
-    	]);
+    	for ($i=1; $i < count($new); $i++) { 
+    		$detalle = json_encode(["id_visita"=>$record->id, "id_motivo"=>$new[$i]]);
+    		Detalles::create($detalle->all());
+    	}
+
+    	if ($record > 0) {
+	        print json_encode(
+	            array(
+	                'estado' => '1',
+	                'mensaje' => 'Creación éxitosa')
+	        );
+	    } else {
+	        print json_encode(
+	            array(
+	                'estado' => '2',
+	                'mensaje' => 'Creación fallida')
+	        );
+	    }
     }
 }
