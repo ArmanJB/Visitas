@@ -60,7 +60,7 @@ class MobileController extends Controller
     		"escuela"=>$id_escuela,
     		"oficial"=>$id_oficial,
     		"pendiente"=>$pendiente,
-    		"motivo"=>$motivos
+    		"motivo"=>unserialize($motivos)
 
     	]);
     }
