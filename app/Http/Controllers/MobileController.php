@@ -55,12 +55,13 @@ class MobileController extends Controller
     }
 
     public function insert($fecha, $id_escuela, $id_oficial, $pendiente, $motivos){
+    	$new = explode(",", $motivos);
     	print json_encode([
     		"fecha"=>$fecha,
     		"escuela"=>$id_escuela,
     		"oficial"=>$id_oficial,
     		"pendiente"=>$pendiente,
-    		"motivo"=>$motivos
+    		"motivo"=>$new
 
     	]);
     }
