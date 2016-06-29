@@ -14,6 +14,10 @@
 				<div id="list-otrosMotivos" class="list-group">
 					
 				</div>
+				<h5>Pendientes: </h5>
+				<div id="list-pendientes" class="list-group">
+					
+				</div>
 			</div>
 			<!--<div class="modal-footer">
 				{!!link_to('#', $title='Editar', $attributes=['id'=>'editarDet', 'class'=>'btn btn-primary'], $secure=null)!!}

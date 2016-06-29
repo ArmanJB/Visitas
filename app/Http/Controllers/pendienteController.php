@@ -60,4 +60,17 @@ class pendienteController extends Controller
         return response()->json(['mensaje'=>'borrado']);
     }
 
+    public function pendienteByVisita($id){
+        $pendiente = DB::select('SELECT * FROM pendientes WHERE id_visita = '.$id);
+        return response()->json(
+            $pendiente
+        );
+    }
+    public function pendientesByVisita($id){
+        $pendiente = DB::select('SELECT * FROM pendientes WHERE pendientes.id_visita = '.$id);
+        return response()->json(
+            $pendiente
+        );
+    }
+
 }

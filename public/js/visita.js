@@ -137,14 +137,29 @@ function setOficiales(id){
 	});
 }
 
-
 $('#registro').on('click', function(){
 	var fecha = $('#fecha').val();
 	var escuela = $('#escuelas').val();
 	var oficial = $('#oficiales').val();
 	var route = '/visita';
 	var token = $('#token').val();
-	
+
+	if (fecha.length==0 || escuela=="" || oficial=="") {
+		$('#msj').html("Existen campos incompletos!");
+		$('#msj-error').fadeIn();
+		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
+		return;
+	}else if ($('#pendientes').val().length < 10) {
+		$('#msj').html("Campo pendientes debe tener al menos 10 caracteres!");
+		$('#msj-error').fadeIn();
+		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
+		return;
+	}else if ($('#motivosList p input:checkbox:checked').length==0 && $('#otrosMotivosList p input:checkbox:checked').length==0){
+		$('#msj').html("Se debe seleccionar al menos un motivo!");
+		$('#msj-error').fadeIn();
+		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
+		return;
+	}	
 	$.ajax({
 		url: route,
 		headers: {'X-CSRF-TOKEN': token},
@@ -155,11 +170,18 @@ $('#registro').on('click', function(){
 		success: function(resp){
 			$('#msj-success').fadeIn();
 			//console.log(resp.resp);
-			addMotivos(resp.resp)
+			addMotivos(resp.resp);
+			addPendiente(resp.resp);
+			//
+			$('#areas').change();
+			$('#fecha').val('');
+			$('#pendientes').val('');
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		},
 		error:function(msj){
 			$('#msj').html(msj.responseJSON.fecha);
 			$('#msj-error').fadeIn();
+			window.setTimeout(function(){$('#msj-error').fadeOut();}, 2000);
 		}
 	})
 });
@@ -196,21 +218,59 @@ function addMotivos(id){
 	}
 }
 
-function eliminarV(id){
-	var route = '/visita/'+id+'';
+function addPendiente(id){
 	var token = $('#token').val();
+	var pendiente = $('#pendientes').val();
 
 	$.ajax({
-		url: route,
+		url: '/pendiente',
 		headers: {'X-CSRF-TOKEN': token},
+		type: 'POST',
+		dataType: 'json',
+		data: {nombre: pendiente, finalizado: false, id_visita: id}
+	});
+}
+
+function eliminarV(id){
+	$.ajax({
+		url: '/visita/'+id+'',
+		headers: {'X-CSRF-TOKEN': $('#token').val()},
 		type: 'DELETE',
 		dataType: 'json',
 
 		success: function(){
 			listar();
 			$('#msj-success').fadeIn();
+			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}
 	});
+}
+
+function eliminarP(id){
+	$.get('pendiente/byVisita/'+id, function(res){
+		var cant = res.length;
+		if(cant == 0){
+			eliminarV(id);
+		}else{
+			$(res).each(function(key, value){
+				//console.log(value.id)
+				$.ajax({
+					url: '/pendiente/'+value.id,
+					headers: {'X-CSRF-TOKEN': $('#token').val()},
+					type: 'DELETE',
+					dataType: 'json',
+					success: function(){
+						if (key == (cant-1)) {
+							//
+							eliminarV(id);
+							//
+						}
+					}
+				});
+			});
+		}
+	});
+
 }
 
 function eliminar(btn){
@@ -219,7 +279,7 @@ function eliminar(btn){
 	$.get(route, function(res){
 		var cant = res.length;
 		if (cant == 0) {
-			eliminarV(btn.value);
+			eliminarP(btn.value);
 		}else{
 			$(res).each(function(key, value){
 				//console.log(value.id);
@@ -230,7 +290,7 @@ function eliminar(btn){
 					dataType: 'json',
 					success: function(){
 						if (key == (cant-1)) {
-							eliminarV(btn.value);
+							eliminarP(btn.value);
 						}
 					}
 				});
@@ -256,13 +316,24 @@ function mostrarDet(btn){
 	datosO.empty();
 	$.get(route, function(res){
 		$(res).each(function(key, value){
-			console.log(value.id_area)
+			//console.log(value.id_area)
 			if (value.id_area != 4) {
 				datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
 			}else{
 				datosO.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
 			}
 		})
+	});
+
+	route = '/pendiente/sbyVisita/'+btn.value;
+	var pendiente = $('#list-pendientes');
+	pendiente.empty();
+	$.get(route, function(res){
+		//console.log(res)
+		$(res).each(function(key, value){
+			//console.log(value)
+			pendiente.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+		});
 	});
 }
 
