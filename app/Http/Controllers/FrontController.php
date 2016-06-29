@@ -9,7 +9,7 @@ use visitas\Http\Requests;
 class FrontController extends Controller
 {
 	public function __construct(){
-		$this->middleware('auth', ['only' => ['admin', 'menu', 'visitaAdmin']]);
+		$this->middleware('auth', ['only' => ['admin', 'menu', 'visitaAdmin', 'charts']]);
 		//$this->middleware('auth', ['only' => 'admin']);
 	}
 

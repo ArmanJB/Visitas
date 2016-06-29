@@ -11,6 +11,9 @@ use DB;
 
 class DetalleController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
 
     public function store(DetalleRequest $req){
     	if($req->ajax() ){
