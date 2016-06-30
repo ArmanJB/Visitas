@@ -12,6 +12,10 @@ function setDepartamentos(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
+			//
+			$('#deps').append('<li><a href="#" class="option-dep" data="'+value.id+'" OnClick="cambiarFiltro(this);">'+value.nombre+'</a></li>');
+			$('#label-dep').html(value.nombre);
+			$('#label-dep').attr('data', value.id);
 		})
 	});
 }
@@ -106,3 +110,45 @@ $('#actualizar').on('click', function(){
 		}
 	});
 })
+
+
+/******************************************/
+$('#select-esc').on('click', function(){
+	$('#filtrar').html('Escuela');
+	$('#search-dep').addClass('hide');
+	$('#search-esc').removeClass('hide');
+});
+$('#select-dep').on('click', function(){
+	$('#filtrar').html('Departamento');
+	$('#search-dep').removeClass('hide');
+	$('#search-esc').addClass('hide');
+});
+function cambiarFiltro(btn){
+	$('#label-dep').html(btn.text);
+	$('#label-dep').attr('data', btn.getAttribute('data'));
+}
+$('#search').on('click', function(){
+	if ($('#filtrar').html() == 'Escuela') {
+		if ($('#search-esc').val()!="") {
+			$('#datos').empty();
+			$.get('/escuelas/bySearch/'+$('#search-esc').val(), function(res){
+				$(res).each(function(key, value){
+					$('#datos').append('<tr><td>'+value.nombre+'</td><td>'+value.nombreDep+'</td>'+
+						'<td><button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+				})
+			});
+		}else{
+			listar();
+		}
+	}else{
+		$('#datos').empty();
+		$.get('/escuelas/bySearchDep/'+$('#label-dep').attr('data'), function(res){
+			$(res).each(function(key, value){
+				$('#datos').append('<tr><td>'+value.nombre+'</td><td>'+value.nombreDep+'</td>'+
+					'<td><button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+					'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+			})
+		});
+	}
+});

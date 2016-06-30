@@ -30,7 +30,8 @@ Route::resource('escuela', 'EscuelaController');
 Route::get('escuelas', 'EscuelaController@listing');
 Route::get('escuela/byDep/{id}', 'EscuelaController@escuelaByDep');
 Route::get('escuela/depBy/{id}', 'EscuelaController@depByEscuela');
-//Route::get('escuelas/{id}', 'EscuelaController@getEscuelas');
+Route::get('escuelas/bySearch/{search}', 'EscuelaController@escuelasBySearch');
+Route::get('escuelas/bySearchDep/{id}', 'EscuelaController@escuelasBySearchDep');
 
 Route::resource('area', 'AreaController');
 Route::get('areas', 'AreaController@listing');

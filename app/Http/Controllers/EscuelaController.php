@@ -81,4 +81,17 @@ class EscuelaController extends Controller
             $dep
         );
     }
+
+    public function escuelasBySearch($search){
+        $escuelas = DB::select('SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS nombreDep FROM escuelas, departamentos WHERE escuelas.id_departamento = departamentos.id AND escuelas.nombre LIKE "%'.$search.'%"');
+        return response()->json(
+            $escuelas
+        ); 
+    }
+    public function escuelasBySearchDep($id){
+        $escuelas = DB::select('SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS nombreDep FROM escuelas, departamentos WHERE escuelas.id_departamento = departamentos.id AND escuelas.id_departamento = '.$id);
+        return response()->json(
+            $escuelas
+        ); 
+    }
 }
