@@ -44,7 +44,7 @@
 				{!!link_to('#', $title='Registrar', $attributes = ['id'=>'registro', 'class'=>'btn btn-primary'], $secure = null)!!}
 			</div>
 		</div>
-		
+		<div id="divider"></div>
 	</div>
 @endsection
 

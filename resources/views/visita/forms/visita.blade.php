@@ -15,6 +15,10 @@
 	{!!Form::select('oficiales', ['placeholder'=>'Selecciona'], null, ['id'=>'oficiales'])!!}
 </div>
 <div class="form-group">
+	{!!Form::label('Cantidad de aulas Visitadas: ')!!}
+	{!!Form::number('aulas', null, ['id'=>'aulas', 'class'=>'form-control', 'min'=>1, 'max'=>15])!!}
+</div>
+<div class="form-group">
 	{!!Form::label('Pendientes: ')!!}
 	{!!Form::textArea('pendientes', null, 
 	['id'=>'pendientes', 'class'=>'form-control', 'placeholder'=>'Pendientes...', 'style'=>'resize: vertical'])!!}

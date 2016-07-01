@@ -10,6 +10,6 @@ class Detalles extends Model
 
     protected $table = 'detalle_visita';
 
-    protected $fillable = ['id_visita', 'id_motivo'];
+    protected $fillable = ['id_visita', 'id_motivo', 'horas'];
 
 }

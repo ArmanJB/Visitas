@@ -17,6 +17,7 @@ Route::get('menu', 'FrontController@menu');
 Route::get('admin', 'FrontController@admin');
 Route::get('visitaAdmin', 'FrontController@visitaAdmin');
 Route::get('visita/charts', 'FrontController@charts');
+Route::get('visita/informe', 'FrontController@informe');
 
 
 Route::resource('usuario', 'UsuarioController');

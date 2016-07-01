@@ -14,6 +14,10 @@
 				<div id="list-otrosMotivos" class="list-group">
 					
 				</div>
+				<h5>Cantidad de aulas visitadas: </h5>
+				<div id="list-aulas" class="list-group">
+					
+				</div>
 				<h5>Pendientes: </h5>
 				<div id="list-pendientes" class="list-group">
 					

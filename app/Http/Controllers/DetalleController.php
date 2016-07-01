@@ -54,7 +54,7 @@ class DetalleController extends Controller
     }
 
     public function detallesByVisita($id){
-        $detalles = DB::select('SELECT detalle_visita.id, motivos.nombre, motivos.id_area 
+        $detalles = DB::select('SELECT detalle_visita.id, detalle_visita.horas, motivos.nombre, motivos.id_area 
             FROM detalle_visita, motivos 
             WHERE detalle_visita.id_motivo = motivos.id 
             AND id_visita = '.$id);

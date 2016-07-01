@@ -10,7 +10,8 @@
 		<thead>
 			<th>Nombres</th>
 			<th>Apellidos</th>
-			<th>Area</th>
+			<th>Área</th>
+			<th>Meta mensual</th>
 			<th>Opciones</th>
 		</thead>
 		<tbody id="datos"></tbody>

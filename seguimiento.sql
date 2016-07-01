@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS `areas`;
 CREATE TABLE `areas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `meta` int(11),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -53,6 +54,7 @@ CREATE TABLE `oficiales` (
   `nombres` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `apellidos` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `id_area` int(11) NOT NULL,
+  `meta` int(11),
   PRIMARY KEY (`id`),
   KEY `oficiales_id_area_fk` (`id_area`),
   CONSTRAINT `oficiales_id_area_fk` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id`)
@@ -66,6 +68,7 @@ CREATE TABLE `visitas` (
   `fecha` date NOT NULL,
   `id_escuela` int(11) NOT NULL,
   `id_oficial` int(11) NOT NULL,
+  `aulas` int(11),
   PRIMARY KEY (`id`),
   KEY `visitas_id_escuela_fk` (`id_escuela`),
   CONSTRAINT `visitas_id_escuela_fk` FOREIGN KEY (`id_escuela`) REFERENCES `escuelas` (`id`),
@@ -93,6 +96,7 @@ CREATE TABLE `detalle_visita` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_visita` int(11) NOT NULL,
   `id_motivo` int(11) NOT NULL,
+  `horas` double,
   PRIMARY KEY (`id`),
   KEY `detvisita_id_visita_fk` (`id_visita`),
   CONSTRAINT `detvisita_id_visita_fk` FOREIGN KEY (`id_visita`) REFERENCES `visitas` (`id`),

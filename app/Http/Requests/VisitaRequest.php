@@ -26,7 +26,8 @@ class VisitaRequest extends Request
         return [
             'fecha' => 'required',
             'id_escuela' => 'required',
-            'id_oficial' => 'required'
+            'id_oficial' => 'required',
+            'aulas' => 'required'
         ];
     }
 }

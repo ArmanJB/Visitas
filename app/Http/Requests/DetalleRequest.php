@@ -25,7 +25,8 @@ class DetalleRequest extends Request
     {
         return [
             'id_visita' => 'required',
-            'id_motivo' => 'required'
+            'id_motivo' => 'required',
+            'horas' => 'required'
         ];
     }
 }

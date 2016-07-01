@@ -9,6 +9,7 @@
 	<table class="table">
 		<thead>
 			<th>Nombre</th>
+			<th>Meta mensual</th>
 			<th>Opciones</th>
 		</thead>
 		<tbody id="datos"></tbody>

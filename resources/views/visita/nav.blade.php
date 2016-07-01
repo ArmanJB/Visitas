@@ -9,6 +9,9 @@
 	    <li class="li-visita">
 	        <a href="{!!URL::to('/visita/charts')!!}"><i class='fa fa-line-chart fa-fw'></i> Resumen de Visitas</a>
 	    </li>
+	    <li class="li-visita">
+	        <a href="{!!URL::to('/visita/informe')!!}"><i class='fa fa-line-chart fa-fw'></i> Informes de Visitas</a>
+	    </li>
 	</ul>
 
 </nav>

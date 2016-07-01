@@ -14,7 +14,7 @@ function listar(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
-				'<td><button dep="'+value.dep+'"" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+				'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 				'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
 				'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
 		})
@@ -99,6 +99,15 @@ $('#areas').change(function(){
 	}
 });
 
+function setHora(btn){
+	if ($('#box-'+btn.getAttribute('value')).is(':checked')) {
+		$('#hora'+btn.getAttribute('value')).attr('disabled', true);
+		$('#hora'+btn.getAttribute('value')).val('');
+	}else{
+		$('#hora'+btn.getAttribute('value')).removeAttr('disabled');
+	}
+}
+
 function setMotivos(id){
 	var select = $('#motivosList');
 	var route = '/motivo/byArea/'+id;
@@ -108,7 +117,10 @@ function setMotivos(id){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			//select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
-			select.append('<p><input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+'"/><label for="box-'+value.id+'">'+value.nombre+'</label></p>');
+			select.append('<p><input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+
+				'" /><label for="box-'+value.id+'" value="'+value.id+'" OnClick="setHora(this);">'+value.nombre+
+				'</label> <input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control" id="hora'+
+				value.id+'" disabled/></p>');
 		})
 	});
 }
@@ -120,7 +132,10 @@ function setOtrosMotivos(id){
 
 	$.get(route, function(res){
 		$(res).each(function(key, value){
-			select.append('<p><input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+'"/><label for="box-'+value.id+'">'+value.nombre+'</label></p>');
+			select.append('<p><input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+
+				'" /><label for="box-'+value.id+'" value="'+value.id+'" OnClick="setHora(this);">'+value.nombre+
+				'</label> <input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control" id="hora'+
+				value.id+'" disabled/></p>');
 		})
 	});
 }
@@ -141,10 +156,11 @@ $('#registro').on('click', function(){
 	var fecha = $('#fecha').val();
 	var escuela = $('#escuelas').val();
 	var oficial = $('#oficiales').val();
+	var aulas = $('#aulas').val();
 	var route = '/visita';
 	var token = $('#token').val();
 
-	if (fecha.length==0 || escuela=="" || oficial=="") {
+	if (fecha.length==0 || escuela=="" || oficial=="" || aulas.length==0) {
 		$('#msj').html("Existen campos incompletos!");
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
@@ -159,13 +175,18 @@ $('#registro').on('click', function(){
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
 		return;
-	}	
+	}else if (isNaN(aulas)){
+		$('#msj').html("Campo aulas tiene caracteres no válidos!");
+		$('#msj-error').fadeIn();
+		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
+		return;
+	}
 	$.ajax({
 		url: route,
 		headers: {'X-CSRF-TOKEN': token},
 		type: 'POST',
 		dataType: 'json',
-		data: {fecha: fecha, id_escuela: escuela, id_oficial: oficial},
+		data: {fecha: fecha, id_escuela: escuela, id_oficial: oficial, aulas: aulas},
 
 		success: function(resp){
 			$('#msj-success').fadeIn();
@@ -175,6 +196,7 @@ $('#registro').on('click', function(){
 			//
 			$('#areas').change();
 			$('#fecha').val('');
+			$('#aulas').val('');
 			$('#pendientes').val('');
 			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		},
@@ -197,7 +219,7 @@ function addMotivos(id){
 			headers: {'X-CSRF-TOKEN': token},
 			type: 'POST',
 			dataType: 'json',
-			data: {id_visita: id, id_motivo: this.value}
+			data: {id_visita: id, id_motivo: this.value, horas: $('#hora'+this.value).val()}
 			
 		});
 	});
@@ -211,7 +233,7 @@ function addMotivos(id){
 				headers: {'X-CSRF-TOKEN': token},
 				type: 'POST',
 				dataType: 'json',
-				data: {id_visita: id, id_motivo: this.value}
+				data: {id_visita: id, id_motivo: this.value, horas: $('#hora'+this.value).val()}
 				
 			});
 		});
@@ -318,9 +340,17 @@ function mostrarDet(btn){
 		$(res).each(function(key, value){
 			//console.log(value.id_area)
 			if (value.id_area != 4) {
-				datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+				if (value.horas < 2){
+					datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+' ... '+value.horas+' hora</a>');
+				}else{
+					datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+' ... '+value.horas+' horas</a>');
+				}
 			}else{
-				datosO.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+				if (value.horas < 2){
+					datosO.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+' ... '+value.horas+' hora</a>');
+				}else{
+					datosO.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+' ... '+value.horas+' horas</a>');
+				}
 			}
 		})
 	});
@@ -335,6 +365,8 @@ function mostrarDet(btn){
 			pendiente.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
 		});
 	});
+	$('#list-aulas').empty();
+	$('#list-aulas').append('<a href="#" class="list-group-item">'+btn.getAttribute('aulas')+'</a>');
 }
 
 function mostrar(btn){

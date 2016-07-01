@@ -12,7 +12,7 @@ use DB;
 class VisitaController extends Controller
 {
     public function __construct(){
-        //$this->middleware('auth', ['only' => ['admin', 'menu', 'visitaAdmin']]);
+        $this->middleware('admin', ['only' => ['edit', 'update', 'destroy']]);
         $this->middleware('auth');
     }
 
@@ -38,7 +38,7 @@ class VisitaController extends Controller
     public function listing(){
         $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
             escuelas.nombre AS escuela, departamentos.nombre AS dep, 
-            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
             FROM visitas, escuelas, oficiales, departamentos 
             WHERE visitas.id_escuela = escuelas.id
             AND escuelas.id_departamento = departamentos.id

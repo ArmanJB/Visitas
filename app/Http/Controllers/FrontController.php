@@ -32,4 +32,8 @@ class FrontController extends Controller
     public function charts(){
         return view('visita.charts');
     }
+
+    public function informe(){
+        return view('visita.informe');
+    }
 }
