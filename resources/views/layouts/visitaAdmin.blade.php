@@ -39,13 +39,19 @@
                     <a id="flip" data="off"><i class="fa fa-chevron-up"></i></a>
                 </li>
                  <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    @if (Auth::user()->id <= 5)
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="metadata" data="admin">
+                    @else
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="metadata" data="user">
+                    @endif
                         {!!Auth::user()->name!!}
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
+                        @if (Auth::user()->id <= 5)
                         <li><a href="/menu"><i class="fa fa-th fa-fw"></i> Regresar al menú</a>
                         </li>
+                        @endif
                         <li class="divider"></li>
                         <li><a href="{!!URL::to('logout')!!}"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
                         </li>

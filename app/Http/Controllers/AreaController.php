@@ -12,7 +12,7 @@ class AreaController extends Controller
 {
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('admin');
+        $this->middleware('admin', ['only' => ['index', 'store', 'update', 'destroy']]);
     }
 
     public function index(){

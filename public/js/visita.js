@@ -13,10 +13,15 @@ function listar(){
 	$('#datos').empty();
 	$.get(route, function(res){
 		$(res).each(function(key, value){
-			tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
-				'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
-				'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-				'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+			if ($('#metadata').attr('data')=='user') {
+				tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+					'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button></td></tr>');
+			}else{
+				tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+					'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+					'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+					'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+			}
 		})
 	});
 }
@@ -40,6 +45,10 @@ function setOficial(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			select.append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
+			//
+			$('#ofcs').append('<li><a href="#" class="option-dep" data="'+value.id+'" OnClick="cambiarFiltro(this);">'+value.nombres+' '+value.apellidos+'</a></li>');
+			$('#label-ofc').html(value.nombres+' '+value.apellidos);
+			$('#label-ofc').attr('data', value.id);
 		})
 	});
 }
@@ -119,7 +128,7 @@ function setMotivos(id){
 			//select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
 			select.append('<p><input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+
 				'" /><label for="box-'+value.id+'" value="'+value.id+'" OnClick="setHora(this);">'+value.nombre+
-				'</label> <input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control" id="hora'+
+				'</label> <input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control number" id="hora'+
 				value.id+'" disabled/></p>');
 		})
 	});
@@ -134,7 +143,7 @@ function setOtrosMotivos(id){
 		$(res).each(function(key, value){
 			select.append('<p><input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+
 				'" /><label for="box-'+value.id+'" value="'+value.id+'" OnClick="setHora(this);">'+value.nombre+
-				'</label> <input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control" id="hora'+
+				'</label> <input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control number" id="hora'+
 				value.id+'" disabled/></p>');
 		})
 	});
@@ -150,6 +159,15 @@ function setOficiales(id){
 			select.append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
 		})
 	});
+}
+
+function getNumbers(){
+	var len = 0;
+	$('.number').each(function(key, value){
+		if (this.value!="") {len++}
+	});
+
+	return len;
 }
 
 $('#registro').on('click', function(){
@@ -172,6 +190,11 @@ $('#registro').on('click', function(){
 		return;
 	}else if ($('#motivosList p input:checkbox:checked').length==0 && $('#otrosMotivosList p input:checkbox:checked').length==0){
 		$('#msj').html("Se debe seleccionar al menos un motivo!");
+		$('#msj-error').fadeIn();
+		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
+		return;
+	}else if(($('#motivosList p input:checkbox:checked').length + $('#otrosMotivosList p input:checkbox:checked').length) != getNumbers() ){
+		$('#msj').html("Existen campos de horas por motivos vacíos!");
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
 		return;
@@ -205,7 +228,7 @@ $('#registro').on('click', function(){
 			$('#msj-error').fadeIn();
 			window.setTimeout(function(){$('#msj-error').fadeOut();}, 2000);
 		}
-	})
+	});
 });
 
 function addMotivos(id){
@@ -377,6 +400,19 @@ function mostrar(btn){
 		$('#fecha').val(res.fecha);
 		$('#escuelas').val(res.id_escuela);
 		$('#oficiales').val(res.id_oficial);
+		$('#aulas').val(res.aulas);
+	});
+
+	$.get('/pendiente/byVisita/'+btn.value, function(res){
+		var cant = res.length;
+		if(cant == 0){
+			$('#pendientes').val('');
+		}else{
+			$(res).each(function(key, value){
+				$('#pendientes').val(value.nombre);
+				$('#pendientes').attr('data', value.id);
+			});
+		}
 	});
 
 	var datos = $('#list-motivos2');
@@ -392,6 +428,7 @@ $('#actualizar').on('click', function(){
 	var fecha = $('#fecha').val();
 	var escuela = $('#escuelas').val();
 	var oficial = $('#oficiales').val();
+	var aulas = $('#aulas').val();
 
 	var route = '/visita/'+value+'';
 	var token = $('#token').val();
@@ -401,12 +438,100 @@ $('#actualizar').on('click', function(){
 		headers: {'X-CSRF-TOKEN': token},
 		type: 'PUT',
 		dataType: 'json',
-		data: {fecha: fecha, id_escuela: escuela, id_oficial: oficial},
+		data: {fecha: fecha, id_escuela: escuela, id_oficial: oficial, aulas: aulas},
 
 		success: function(){
-			listar();
-			$('#myModal').modal('toggle');
-			$('#msj-success').fadeIn();
+			$.ajax({
+				url: '/pendiente/'+$('#pendientes').attr('data'),
+				headers: {'X-CSRF-TOKEN': token},
+				type: 'PUT',
+				dataType: 'json',
+				data: {nombre: $('#pendientes').val()},
+				success: function(){
+					listar();
+					$('#myModal').modal('toggle');
+					$('#msj-success').fadeIn();
+					window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
+				}
+			});
 		}
 	});
-})
+});
+
+
+
+/******************************************/
+$('#select-esc').on('click', function(){
+	$('#filtrar').html('Escuela');
+	$('#search-esc').removeClass('hide');
+	$('#search-ofc').addClass('hide');
+	$('#search-fec').addClass('hide');
+});
+$('#select-ofc').on('click', function(){
+	$('#filtrar').html('Oficial');
+	$('#search-ofc').removeClass('hide');
+	$('#search-esc').addClass('hide');
+	$('#search-fec').addClass('hide');
+});
+$('#select-fec').on('click', function(){
+	$('#filtrar').html('Fecha');
+	$('#search-fec').removeClass('hide');
+	$('#search-esc').addClass('hide');
+	$('#search-ofc').addClass('hide');
+});
+function cambiarFiltro(btn){
+	$('#label-ofc').html(btn.text);
+	$('#label-ofc').attr('data', btn.getAttribute('data'));
+}
+$('#search').on('click', function(){
+	if ($('#filtrar').html() == 'Escuela') {
+		if ($('#search-esc').val()!="") {
+			$('#datos').empty();
+			$.get('visitas/listingEsc/'+$('#search-esc').val(), function(res){
+				$(res).each(function(key, value){
+					if ($('#metadata').attr('data')=='user') {
+						$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+							'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button></td></tr>');
+					}else{
+						$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+							'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+							'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+							'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+					}
+				})
+			});
+		}else{
+			listar();
+		}
+	}else if ($('#filtrar').html() == 'Oficial'){
+		$('#datos').empty();
+		$.get('visitas/listingOfi/'+$('#label-ofc').attr('data'), function(res){
+			$(res).each(function(key, value){
+				if ($('#metadata').attr('data')=='user') {
+					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button></td></tr>');
+				}else{
+					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+						'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+				}
+			})
+		});
+	}else {
+		$('#datos').empty();
+		$.get('visitas/listingDate/'+$('#search-fec').val(), function(res){
+			$(res).each(function(key, value){
+				if ($('#metadata').attr('data')=='user') {
+					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button></td></tr>');
+				}else{
+					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+						'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+				}
+			})
+		});
+	}
+});

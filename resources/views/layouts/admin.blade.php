@@ -55,7 +55,7 @@
                         </li>
                     </ul>
                 </li>
-                @if (Auth::user()->id == 1)
+                @if (Auth::user()->id <= 5)
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="fa fa-users fa-fw"></i>  <i class="fa fa-caret-down"></i>

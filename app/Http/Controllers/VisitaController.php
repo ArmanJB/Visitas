@@ -49,6 +49,46 @@ class VisitaController extends Controller
         );
     }
 
+    public function listingByEsc($idEsc){
+        $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
+            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
+            FROM visitas, escuelas, oficiales, departamentos 
+            WHERE visitas.id_escuela = escuelas.id
+            AND escuelas.id_departamento = departamentos.id
+            AND visitas.id_oficial = oficiales.id
+            AND escuelas.nombre LIKE '%".$idEsc."%'");
+        return response()->json(
+            $visitas
+        );
+    }
+    public function listingByOfi($idOfi){
+        $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
+            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
+            FROM visitas, escuelas, oficiales, departamentos 
+            WHERE visitas.id_escuela = escuelas.id
+            AND escuelas.id_departamento = departamentos.id
+            AND visitas.id_oficial = oficiales.id
+            AND visitas.id_oficial = '$idOfi'");
+        return response()->json(
+            $visitas
+        );
+    }
+    public function listingByDate($date){
+        $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
+            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
+            FROM visitas, escuelas, oficiales, departamentos 
+            WHERE visitas.id_escuela = escuelas.id
+            AND escuelas.id_departamento = departamentos.id
+            AND visitas.id_oficial = oficiales.id
+            AND visitas.fecha = '$date'");
+        return response()->json(
+            $visitas
+        );
+    }
+
     public function edit($id){
         $visita = Visitas::find($id);
 
@@ -87,7 +127,8 @@ class VisitaController extends Controller
             FROM visitas, escuelas, departamentos 
             WHERE visitas.id_escuela = escuelas.id 
             AND escuelas.id_departamento = departamentos.id 
-            AND visitas.fecha >= '$ini' AND visitas.fecha <= '$fin'");
+            AND visitas.fecha >= '$ini' AND visitas.fecha <= '$fin'
+            GROUP BY visitas.fecha, visitas.id_escuela");
 
         for($index=0; $index < count($idVisitas); $index++) { 
             $cant=0;
@@ -120,7 +161,8 @@ class VisitaController extends Controller
             AND escuelas.id_departamento = departamentos.id 
             AND visitas.fecha >= '$ini' 
             AND visitas.fecha <= '$fin'
-            AND departamentos.id = '$idDep'");
+            AND departamentos.id = '$idDep'
+            GROUP BY visitas.id_escuela, visitas.fecha");
 
         for($index=0; $index < count($idVisitas); $index++) { 
             $cant=0;

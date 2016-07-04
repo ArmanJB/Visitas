@@ -10,7 +10,7 @@ class FrontController extends Controller
 {
 	public function __construct(){
 		$this->middleware('auth', ['only' => ['admin', 'menu', 'visitaAdmin', 'charts']]);
-		//$this->middleware('auth', ['only' => 'admin']);
+		$this->middleware('admin', ['only' => ['admin', 'menu']]);
 	}
 
     public function index(){
