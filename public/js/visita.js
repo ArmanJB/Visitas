@@ -33,6 +33,10 @@ function setAreas(){
 	$.get(route, function(res){
 		$(res).each(function(key, value){
 			select.append('<option value="'+value.id+'">'+value.nombre+'</option>');
+			//
+			$('#ares').append('<li><a href="#" class="option-dep" data="'+value.id+'" OnClick="cambiarFiltroA(this);">'+value.nombre+'</a></li>');
+			$('#label-are').html(value.nombre);
+			$('#label-are').attr('data', value.id);
 		})
 	});
 }
@@ -417,11 +421,47 @@ function mostrar(btn){
 
 	var datos = $('#list-motivos2');
 	datos.empty();
+	var mot = [];
 	$.get('/detalle/sbyVisita/'+btn.value, function(res){
 		$(res).each(function(key, value){
-			datos.append('<a href="#" class="list-group-item" data="'+value.id+'">'+value.nombre+'</a>');
+			datos.append('<a href="#" onclick="delMot(this);" class="list-group-item active mot" data="'+value.id_motivo+'" dataDet="'+value.id+'">'+value.nombre+'</a>');
+			datos.append('<input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control number" id="newHora'+value.id_motivo+'" >');
+			$('#newHora'+value.id_motivo).val(value.horas);
+			mot.push(value.id_motivo);
 		})
 	});
+	//
+	$('#list-newMotivos').empty();
+	setNewMotivos(mot);
+}
+
+function setNewMotivos(mots){
+	$('#newMotivo').empty();
+	$.get('/motivos', function(res){
+		$(res).each(function(key, value){
+			var cont =0;
+			mots.forEach(function(index){
+				if (index == value.id) {
+					cont++;
+				}
+			});
+			if(cont == 0){
+				$('#newMotivo').append('<option value="'+value.id+'">'+value.nombre+'</option>');
+			}
+		})
+	});
+}
+
+$('#addMotivo').on('click', function(){
+	$('#list-newMotivos').append('<a href="#" onclick="delMot(this);" class="list-group-item active mot" data="'+$('#newMotivo').val()+'">'+$('#newMotivo option:selected').text()+'</a>');
+	$('#list-newMotivos').append('<input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control number" id="newHora'+$('#newMotivo').val()+'" >');
+	$('#newMotivo option:selected').remove();
+});
+function delMot(btn){
+	var id = btn.getAttribute('data');
+	$('#newMotivo').append('<option value="'+id+'">'+btn.text+'</option>');
+	btn.remove();
+	$('#newHora'+id).remove();
 }
 $('#actualizar').on('click', function(){
 	var value = $('#id').val();
@@ -433,6 +473,32 @@ $('#actualizar').on('click', function(){
 	var route = '/visita/'+value+'';
 	var token = $('#token').val();
 
+	if ($('.mot').length == 0) {
+		$('#msgUpdDanger').html('Se debe seleccionar al menos un motivo!')
+		$('#msj-fail').fadeIn();
+		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 2000);
+	}else if ($('.mot').length!=getNumbers()) {
+		$('#msgUpdDanger').html('Existen campos vacíos de horas!')
+		$('#msj-fail').fadeIn();
+		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 2000);
+	}else if (fecha.length==0 || escuela=="" || oficial=="" || aulas.length==0) {
+		$('#msgUpdDanger').html("Existen campos incompletos!");
+		$('#msj-fail').fadeIn();
+		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 1000);
+		return;
+	}else if ($('#pendientes').val().length < 10) {
+		$('#msgUpdDanger').html("Campo pendientes debe tener al menos 10 caracteres!");
+		$('#msj-fail').fadeIn();
+		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 1000);
+		return;
+	}else if (isNaN(aulas)){
+		$('#msgUpdDanger').html("Campo aulas tiene caracteres no válidos!");
+		$('#msj-fail').fadeIn();
+		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 1000);
+		return;
+	}
+
+	/*
 	$.ajax({
 		url: route,
 		headers: {'X-CSRF-TOKEN': token},
@@ -455,7 +521,7 @@ $('#actualizar').on('click', function(){
 				}
 			});
 		}
-	});
+	});*/
 });
 
 
@@ -466,22 +532,36 @@ $('#select-esc').on('click', function(){
 	$('#search-esc').removeClass('hide');
 	$('#search-ofc').addClass('hide');
 	$('#search-fec').addClass('hide');
+	$('#search-are').addClass('hide');
 });
 $('#select-ofc').on('click', function(){
 	$('#filtrar').html('Oficial');
 	$('#search-ofc').removeClass('hide');
 	$('#search-esc').addClass('hide');
 	$('#search-fec').addClass('hide');
+	$('#search-are').addClass('hide');
 });
 $('#select-fec').on('click', function(){
 	$('#filtrar').html('Fecha');
 	$('#search-fec').removeClass('hide');
 	$('#search-esc').addClass('hide');
 	$('#search-ofc').addClass('hide');
+	$('#search-are').addClass('hide');
+});
+$('#select-are').on('click', function(){
+	$('#filtrar').html('Area');
+	$('#search-are').removeClass('hide');
+	$('#search-fec').addClass('hide');
+	$('#search-esc').addClass('hide');
+	$('#search-ofc').addClass('hide');
 });
 function cambiarFiltro(btn){
 	$('#label-ofc').html(btn.text);
 	$('#label-ofc').attr('data', btn.getAttribute('data'));
+}
+function cambiarFiltroA(btn){
+	$('#label-are').html(btn.text);
+	$('#label-are').attr('data', btn.getAttribute('data'));
 }
 $('#search').on('click', function(){
 	if ($('#filtrar').html() == 'Escuela') {
@@ -518,9 +598,24 @@ $('#search').on('click', function(){
 				}
 			})
 		});
-	}else {
+	}else if ($('#filtrar').html() == 'Fecha'){
 		$('#datos').empty();
 		$.get('visitas/listingDate/'+$('#search-fec').val(), function(res){
+			$(res).each(function(key, value){
+				if ($('#metadata').attr('data')=='user') {
+					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button></td></tr>');
+				}else{
+					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
+						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
+						'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+				}
+			})
+		});
+	}else {
+		$('#datos').empty();
+		$.get('visitas/listingArea/'+$('#label-are').attr('data'), function(res){
 			$(res).each(function(key, value){
 				if ($('#metadata').attr('data')=='user') {
 					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+

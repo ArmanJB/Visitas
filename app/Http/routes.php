@@ -81,3 +81,4 @@ Route::get('insertar_visita/{fecha}/{id_escuela}/{id_oficial}/{pendiente}/{motiv
 Route::get('visitas/listingOfi/{idOfi}', 'VisitaController@listingByOfi');
 Route::get('visitas/listingEsc/{idEsc}', 'VisitaController@listingByEsc');
 Route::get('visitas/listingDate/{date}', 'VisitaController@listingByDate');
+Route::get('visitas/listingArea/{idAr}', 'VisitaController@listingByArea');

@@ -96,3 +96,11 @@ nav{
 	background-color: #337ab7;
 	color: #fff;
 }
+
+
+/*****************************************/
+#modal-edit-visita{
+	width: 65%;
+	margin-right: 15%;
+	margin-left: 15%;
+}

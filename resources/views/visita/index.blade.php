@@ -16,6 +16,7 @@
 						<li><a href="#" id="select-fec">Fecha</a></li>
 						<li><a href="#" id="select-ofc">Oficial</a></li>
 						<li><a href="#" id="select-esc">Escuela</a></li>
+						<li><a href="#" id="select-are">Area</a></li>
 					</ul>
 				</div>
 
@@ -25,6 +26,10 @@
 				</div>
 				<input type="text" class="form-control hide" id="search-esc" placeholder="filtrar...">
 				<input type="date" class="form-control" id="search-fec" aria-describedby="sizing-addon2">
+				<div class="input-group-btn hide" id="search-are">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i id="label-are"></i> <span class="caret"></span></button>
+					<ul class="dropdown-menu" id="ares"></ul>
+				</div>
 
 				<span class="input-group-btn">
 					<button id="search" class="btn btn-default" type="button">Buscar</button>

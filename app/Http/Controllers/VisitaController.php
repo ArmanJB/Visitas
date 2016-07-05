@@ -88,6 +88,20 @@ class VisitaController extends Controller
             $visitas
         );
     }
+    public function listingByArea($idAr){
+        $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
+            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
+            FROM visitas, escuelas, oficiales, departamentos, areas 
+            WHERE visitas.id_escuela = escuelas.id
+            AND escuelas.id_departamento = departamentos.id
+            AND visitas.id_oficial = oficiales.id
+            AND oficiales.id_area = areas.id
+            AND oficiales.id_area = '$idAr'");
+        return response()->json(
+            $visitas
+        );
+    }
 
     public function edit($id){
         $visita = Visitas::find($id);
