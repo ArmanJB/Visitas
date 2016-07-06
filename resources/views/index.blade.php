@@ -10,10 +10,8 @@
 	    {!!Html::style('css/style.css')!!}
 	    {!!Html::style('css/login.css')!!}
 	</head>
-	<body>
-		<div id="divider"></div>
-		<div id="divider"></div>
-		<div id="divider"></div>
+	<body id="bg-img">
+		
 		<div id="logbody">
 			<h1 id="logh1">Iniciar Sesión</h1>
 			{!!Form::open(['route'=>'log.store', 'method'=>'POST'])!!}

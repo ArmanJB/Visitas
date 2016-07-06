@@ -3,6 +3,7 @@
 @section('content')
 	@include('visita.modal')
 	@include('visita.modalDet')
+	@include('alerts.dangerRemove')
 	<div id="divider"></div>
 	<div class="row">
 		<div class="col-lg-8">

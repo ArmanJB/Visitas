@@ -424,7 +424,7 @@ function mostrar(btn){
 	var mot = [];
 	$.get('/detalle/sbyVisita/'+btn.value, function(res){
 		$(res).each(function(key, value){
-			datos.append('<a href="#" onclick="delMot(this);" class="list-group-item active mot" data="'+value.id_motivo+'" dataDet="'+value.id+'">'+value.nombre+'</a>');
+			datos.append('<a href="#" onclick="delMot(this);" class="list-group-item active mot motOld" data="'+value.id_motivo+'" dataDet="'+value.id+'">'+value.nombre+'</a>');
 			datos.append('<input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control number" id="newHora'+value.id_motivo+'" >');
 			$('#newHora'+value.id_motivo).val(value.horas);
 			mot.push(value.id_motivo);
@@ -453,7 +453,7 @@ function setNewMotivos(mots){
 }
 
 $('#addMotivo').on('click', function(){
-	$('#list-newMotivos').append('<a href="#" onclick="delMot(this);" class="list-group-item active mot" data="'+$('#newMotivo').val()+'">'+$('#newMotivo option:selected').text()+'</a>');
+	$('#list-newMotivos').append('<a href="#" onclick="delMot(this);" class="list-group-item active mot motNew" data="'+$('#newMotivo').val()+'">'+$('#newMotivo option:selected').text()+'</a>');
 	$('#list-newMotivos').append('<input type="number" min="1" placeholder="Horas utilizadas para la actividad.." class="form-control number" id="newHora'+$('#newMotivo').val()+'" >');
 	$('#newMotivo option:selected').remove();
 });
@@ -477,10 +477,12 @@ $('#actualizar').on('click', function(){
 		$('#msgUpdDanger').html('Se debe seleccionar al menos un motivo!')
 		$('#msj-fail').fadeIn();
 		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 2000);
+		return;
 	}else if ($('.mot').length!=getNumbers()) {
 		$('#msgUpdDanger').html('Existen campos vacíos de horas!')
 		$('#msj-fail').fadeIn();
 		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 2000);
+		return;
 	}else if (fecha.length==0 || escuela=="" || oficial=="" || aulas.length==0) {
 		$('#msgUpdDanger').html("Existen campos incompletos!");
 		$('#msj-fail').fadeIn();
@@ -498,7 +500,6 @@ $('#actualizar').on('click', function(){
 		return;
 	}
 
-	/*
 	$.ajax({
 		url: route,
 		headers: {'X-CSRF-TOKEN': token},
@@ -514,6 +515,8 @@ $('#actualizar').on('click', function(){
 				dataType: 'json',
 				data: {nombre: $('#pendientes').val()},
 				success: function(){
+					actualizarOldMotivos();
+					actualizarNewMotivos();
 					listar();
 					$('#myModal').modal('toggle');
 					$('#msj-success').fadeIn();
@@ -521,9 +524,81 @@ $('#actualizar').on('click', function(){
 				}
 			});
 		}
-	});*/
+	});
 });
 
+function actualizarOldMotivos(){
+	$.get('detalle/byVisita/'+$('#id').val(), function(res){
+		if (res.length == $('.motOld').length){
+			var oldMots = $('.motOld');
+			$(res).each(function(key, value){
+				oldMots.each(function(key2, index){
+					if (value.id == index.getAttribute('datadet')) {
+						$.ajax({
+							url: '/detalle/'+index.getAttribute('datadet')+'',
+							headers: {'X-CSRF-TOKEN': $('#token').val()},
+							type: 'PUT',
+							dataType: 'json',
+							data: {horas: $('#newHora'+index.getAttribute('data')).val()},
+							success: function(){
+								console.log(index.getAttribute('datadet')+' actualizado');
+							}
+						});
+					}
+				});
+			});		
+		}else if($('.motOld').length > 0){
+			var oldMots = $('.motOld');
+			$(res).each(function(key, value){
+				var cant = 0;
+				oldMots.each(function(key2, index){
+					if (value.id == index.getAttribute('datadet')) {
+						$.ajax({
+							url: '/detalle/'+index.getAttribute('datadet')+'',
+							headers: {'X-CSRF-TOKEN': $('#token').val()},
+							type: 'PUT',
+							dataType: 'json',
+							data: {horas: $('#newHora'+index.getAttribute('data')).val()},
+							success: function(){
+								console.log(index.getAttribute('datadet')+' actualizado');
+							}
+						});
+						cant++;
+					}
+				});
+				if (cant == 0) {
+					$.ajax({
+						url: '/detalle/'+value.id,
+						headers: {'X-CSRF-TOKEN': $('#token').val()},
+						type: 'DELETE',
+						dataType: 'json',
+						success: function(){
+							console.log(value.id+' eliminado');
+						}
+					});
+				}
+			});
+		}
+	});
+}
+function actualizarNewMotivos(){
+	if ($('.motNew').length > 0) {
+		var newMots = $('.motNew');
+		newMots.each(function(key, index){
+			$.ajax({
+				url: '/detalle',
+				headers: {'X-CSRF-TOKEN': $('#token').val()},
+				type: 'POST',
+				dataType: 'json',
+				data: {id_visita: $('#id').val(), id_motivo: index.getAttribute('data'), horas: $('#newHora'+index.getAttribute('data')).val()},
+				success: function(){
+					console.log(index.getAttribute('data')+' agregado')
+				}
+				
+			});
+		});
+	}
+}
 
 
 /******************************************/

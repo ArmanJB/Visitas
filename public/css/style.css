@@ -13,11 +13,15 @@
 	color: #18a0e3;
 }
 /********login*****************/
+#bg-img{
+	/*background-image: url('/img/bg1.jpg');
+	background-size: 100%;*/
+}
 #logbody{
 	padding: 2rem;
 	width: 30%;
-	margin-right: 35%;
-	margin-left: 35%;
+	margin: auto;
+	margin-top: 10%;
 	background-image: url('/img/rc.png');
 	border-radius: 10px;
 	border-style: solid;
@@ -103,4 +107,8 @@ nav{
 	width: 65%;
 	margin-right: 15%;
 	margin-left: 15%;
+}
+
+#dangerRemoveDialog{
+	width: 25%;
 }

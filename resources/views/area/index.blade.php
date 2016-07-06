@@ -2,6 +2,7 @@
 
 @section('content')
 	@include('area.modal')
+	@include('alerts.dangerRemove')
 	<div id="divider"></div>
 	<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">
 		<strong>Áreas Actualizadas Exitosamente!</strong>

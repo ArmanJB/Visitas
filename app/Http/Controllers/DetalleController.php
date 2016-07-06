@@ -39,6 +39,15 @@ class DetalleController extends Controller
         );
     }
 
+    public function update(Request $req, $id){
+        $detalle = Detalles::find($id);
+        $detalle->fill($req->all());
+        $detalle->save();
+
+        return response()->json([
+            'mensaje' => 'actualizado'
+        ]);
+    }
 
     public function destroy($id){
         $detalle = Detalles::find($id);

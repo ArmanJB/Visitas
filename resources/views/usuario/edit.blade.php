@@ -9,10 +9,12 @@
 			{!!Form::submit('Modificar', ['class'=>'btn btn-primary'])!!}
 		{!!Form::close()!!}
 	</div>
+	@if ($user->id > 5)
 	<div class="form-group">
 		{!!Form::open(['route'=>['usuario.destroy', $user->id], 'method'=>'DELETE'])!!}
 			{!!Form::submit('Eliminar', ['class'=>'btn btn-danger'])!!}
 		{!!Form::close()!!}
 	</div>
+	@endif
 	
 @stop
