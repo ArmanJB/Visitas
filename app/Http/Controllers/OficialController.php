@@ -72,4 +72,14 @@ class OficialController extends Controller
             $oficiales
         );
     }
+
+    public function areaByName($name){
+        $oficial = DB::select("SELECT * FROM (SELECT oficiales.id_area, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS nombre 
+            FROM oficiales) AS consulta WHERE consulta.nombre = '$name' 
+            GROUP BY consulta.id_area");
+        return response()->json(
+            $oficial
+        );
+    }
 }

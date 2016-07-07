@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Actualizar Visita</h4>
+				<h4 class="modal-title" id="myModalLabel">Actualizar Visita</h4> <button id="recargarUpd" class="btn btn-default" onclick="mostrar(this);">Recargar</button>
 			</div>
 			<div class="modal-body">
 				<div id="msj-fail" class="alert alert-danger alert-dismissible" role="alert" style="display:none">

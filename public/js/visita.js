@@ -4,7 +4,17 @@ $(document).ready(function(){
 	setEscuelas();
 	setDepartamentos();
 	listar();
+	if ($('#metadata').attr('data')=='user') {setMetaData();}
 });
+
+function setMetaData(){
+	$.get('/oficial/byName/'+$('#metadata').attr('nameU'), function(res){
+		$(res).each(function(key, value){
+			$('#areas').val(value.id_area);
+			$('#areas').change();
+		})
+	});
+}
 
 function listar(){
 	var tablaDatos = $('#datos');
@@ -397,6 +407,8 @@ function mostrarDet(btn){
 }
 
 function mostrar(btn){
+	$('#recargarUpd').val(btn.value);
+	//
 	var route = '/visita/'+btn.value+'/edit';
 
 	$.get(route, function(res){
@@ -600,7 +612,19 @@ function actualizarNewMotivos(){
 	}
 }
 
-
+$('#fecha').on('input', function(){
+	if ($('#fecha').attr('dataDate') < $('#fecha').val()) {
+		$('#fecha').val('');
+	}
+});
+$('#noPend').on('click', function(){
+	if ($('#noPend').is(':checked')) {
+		$('#pendientes').removeAttr('disabled');
+	}else{
+		$('#pendientes').attr('disabled', '');
+		$('#pendientes').val('');
+	}
+})
 /******************************************/
 $('#select-esc').on('click', function(){
 	$('#filtrar').html('Escuela');

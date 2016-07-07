@@ -40,6 +40,7 @@ Route::get('areas', 'AreaController@listing');
 Route::resource('oficial', 'OficialController');
 Route::get('oficiales', 'OficialController@listing');
 Route::get('oficial/byArea/{id}', 'OficialController@oficialByArea');
+Route::get('oficial/byName/{name}', 'OficialController@areaByName');
 
 Route::resource('motivo', 'MotivoController');
 Route::get('motivos', 'MotivoController@listing');

@@ -13,7 +13,11 @@
 		{!!Form::open()!!}
 			<div class="form-group areas">
 				{!!Form::label('Área: ')!!}
+				@if (Auth::user()->id <= 5)
 				{!!Form::select('areas', ['placeholder'=>'Selecciona'], null, ['id'=>'areas'])!!}
+				@else
+				{!!Form::select('areas', ['placeholder'=>'Selecciona'], null, ['id'=>'areas', 'disabled'=>''])!!}
+				@endif
 			</div>
 		{!!Form::close()!!}
 		<div class="row" style="display: none;">

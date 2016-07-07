@@ -1,6 +1,6 @@
 <div class="form-group">
 	{!!Form::label('Fecha: ')!!}
-	{!!Form::date('fecha', null, ['id'=>'fecha', 'class'=>'form-control ', 'placeholder'=>'2016-06-08'])!!}
+	{!!Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'fecha', 'class'=>'form-control ', 'placeholder'=>'2016-06-08', 'dataDate'=>\Carbon\Carbon::now()->toDateString()])!!}
 </div>
 <div class="form-group">
 	{!!Form::label('Departamento: ')!!}
@@ -19,7 +19,7 @@
 	{!!Form::number('aulas', null, ['id'=>'aulas', 'class'=>'form-control', 'min'=>1, 'max'=>15])!!}
 </div>
 <div class="form-group">
-	{!!Form::label('Pendientes: ')!!}
+	{!!Form::label('Pendientes: ')!!}<p><input type="checkbox" class="filled-in" id="noPend" /><label for="noPend" id="noPend">Si</label></p>
 	{!!Form::textArea('pendientes', null, 
-	['id'=>'pendientes', 'class'=>'form-control', 'placeholder'=>'Pendientes...', 'style'=>'resize: vertical'])!!}
+	['id'=>'pendientes', 'class'=>'form-control', 'placeholder'=>'Pendientes...', 'style'=>'resize: vertical', 'disabled'=>'true'])!!}
 </div>

@@ -8,6 +8,7 @@ use visitas\Http\Requests;
 use visitas\Http\Requests\VisitaRequest;
 use visitas\Visitas;
 use DB;
+use Carbon\Carbon;
 
 class VisitaController extends Controller
 {
