@@ -12,6 +12,7 @@ function setMetaData(){
 		$(res).each(function(key, value){
 			$('#areas').val(value.id_area);
 			$('#areas').change();
+			$('#metadata').attr('ofc', value.id)
 		})
 	});
 }
@@ -19,21 +20,25 @@ function setMetaData(){
 function listar(){
 	var tablaDatos = $('#datos');
 	var route = '/visitas';
-
 	$('#datos').empty();
-	$.get(route, function(res){
-		$(res).each(function(key, value){
-			if ($('#metadata').attr('data')=='user') {
+
+	if ($('#metadata').attr('data')=='user'){
+		$.get('/visitasU/'+$('#metadata').attr('nameU'), function(res){
+			$(res).each(function(key, value){
 				tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
 					'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button></td></tr>');
-			}else{
+			})
+		});
+	}else{
+		$.get(route, function(res){
+			$(res).each(function(key, value){
 				tablaDatos.append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
 					'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 					'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-					'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
-			}
-		})
-	});
+					'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+			})
+		});
+	}
 }
 
 function setAreas(){
@@ -172,6 +177,9 @@ function setOficiales(id){
 		$(res).each(function(key, value){
 			select.append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
 		})
+		if ($('#metadata').attr('data')=='user'){
+			$('#oficiales').val($('#metadata').attr('ofc'));
+		}
 	});
 }
 
@@ -197,12 +205,12 @@ $('#registro').on('click', function(){
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
 		return;
-	}else if ($('#pendientes').val().length < 10) {
+	}/*else if ($('#pendientes').val().length < 10) {
 		$('#msj').html("Campo pendientes debe tener al menos 10 caracteres!");
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
 		return;
-	}else if ($('#motivosList p input:checkbox:checked').length==0 && $('#otrosMotivosList p input:checkbox:checked').length==0){
+	}*/else if ($('#motivosList p input:checkbox:checked').length==0 && $('#otrosMotivosList p input:checkbox:checked').length==0){
 		$('#msj').html("Se debe seleccionar al menos un motivo!");
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
@@ -299,6 +307,7 @@ function eliminarV(id){
 
 		success: function(){
 			listar();
+			$('#modalRemove').modal('toggle');
 			$('#msj-success').fadeIn();
 			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}
@@ -356,6 +365,10 @@ function eliminar(btn){
 			})
 		}
 	});
+}
+
+function mostrarDanger(btn){
+	$('#confirmRemove').val(btn.value);
 }
 
 function mostrarDet(btn){
@@ -500,12 +513,12 @@ $('#actualizar').on('click', function(){
 		$('#msj-fail').fadeIn();
 		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 1000);
 		return;
-	}else if ($('#pendientes').val().length < 10) {
+	}/*else if ($('#pendientes').val().length < 10) {
 		$('#msgUpdDanger').html("Campo pendientes debe tener al menos 10 caracteres!");
 		$('#msj-fail').fadeIn();
 		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 1000);
 		return;
-	}else if (isNaN(aulas)){
+	}*/else if (isNaN(aulas)){
 		$('#msgUpdDanger').html("Campo aulas tiene caracteres no válidos!");
 		$('#msj-fail').fadeIn();
 		window.setTimeout(function(){$('#msj-fail').fadeOut();}, 1000);
@@ -675,7 +688,7 @@ $('#search').on('click', function(){
 						$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
 							'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 							'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-							'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+							'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 					}
 				})
 			});
@@ -693,7 +706,7 @@ $('#search').on('click', function(){
 					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
 						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 						'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+						'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 				}
 			})
 		});
@@ -708,7 +721,7 @@ $('#search').on('click', function(){
 					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
 						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 						'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+						'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 				}
 			})
 		});
@@ -723,7 +736,7 @@ $('#search').on('click', function(){
 					$('#datos').append('<tr><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td>'+
 						'<td><button dep="'+value.dep+'"" aulas="'+value.aulas+'" value='+value.id+' OnClick="mostrarDet(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalDet"><i class="fa fa-list-ol fa-fw"></i> Detalles</button> '+
 						'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-						'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+						'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 				}
 			})
 		});

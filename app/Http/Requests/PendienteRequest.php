@@ -24,7 +24,6 @@ class PendienteRequest extends Request
     public function rules()
     {
         return [
-            'nombre' => 'required|min:10',
             'id_visita' => 'required'
         ];
     }

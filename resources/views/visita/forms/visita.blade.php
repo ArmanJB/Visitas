@@ -12,7 +12,11 @@
 </div>
 <div class="form-group">
 	{!!Form::label('Oficial: ')!!}
+	@if (Auth::user()->id <= 5)
 	{!!Form::select('oficiales', ['placeholder'=>'Selecciona'], null, ['id'=>'oficiales'])!!}
+	@else
+	{!!Form::select('oficiales', ['placeholder'=>'Selecciona'], null, ['id'=>'oficiales', 'disabled'=>''])!!}
+	@endif
 </div>
 <div class="form-group">
 	{!!Form::label('Cantidad de aulas Visitadas: ')!!}

@@ -25,7 +25,7 @@ function listar(){
 		$(res).each(function(key, value){
 			tablaDatos.append('<tr><td>'+value.nombres+'</td><td>'+value.apellidos+'</td><td>'+value.nombre+'</td><td>'+value.meta+'</td>'+
 				'<td><button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
-				'<button value='+value.id+' OnClick="eliminar(this);" class="btn btn-danger">Eliminar</button></td></tr>');
+				'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 		})
 	});
 }
@@ -67,6 +67,10 @@ $('#registro').on('click', function(){
 	})
 });
 
+function mostrarDanger(btn){
+	$('#confirmRemove').val(btn.value);
+}
+
 function eliminar(btn){
 	var route = '/oficial/'+btn.value+'';
 	var token = $('#token').val();
@@ -79,6 +83,7 @@ function eliminar(btn){
 
 		success: function(){
 			listar();
+			$('#modalRemove').modal('toggle');
 			$('#msj-success').fadeIn();
 			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
 		}

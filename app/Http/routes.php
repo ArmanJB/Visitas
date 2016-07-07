@@ -53,6 +53,7 @@ Route::get('pendiente/sbyVisita/{id}', 'pendienteController@pendientesByVisita')
 
 Route::resource('visita', 'VisitaController');
 Route::get('visitas', 'VisitaController@listing');
+Route::get('visitasU/{name}', 'VisitaController@listingU');
 
 Route::get('visitas/byDep/{ini}/{fin}', 'VisitaController@visitasByDep');
 Route::get('visitas/byDepDet/{ini}/{fin}/{idDep}', 'VisitaController@visitasByDepDet');

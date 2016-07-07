@@ -2,8 +2,10 @@
 
 @section('content')
 	@include('visita.modal')
+	@include('alerts.dangerRemove')
 	@include('visita.modalDet')
 	@include('alerts.dangerRemove')
+	@if (Auth::user()->id <= 5)
 	<div id="divider"></div>
 	<div class="row">
 		<div class="col-lg-8">
@@ -38,6 +40,7 @@
 			</div>
 		</div>
 	</div>
+	@endif
 	<div id="divider"></div>
 	<div class="content-visita">
 		<div id="msj-success" class="alert alert-success alert-dismissible" role="alert" style="display:none">

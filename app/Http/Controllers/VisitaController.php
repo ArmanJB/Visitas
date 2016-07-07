@@ -49,6 +49,20 @@ class VisitaController extends Controller
             $visitas
         );
     }
+    public function listingU($name){
+        $visitas = DB::select("SELECT * FROM
+            (SELECT visitas.id, visitas.fecha, 
+            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
+            FROM visitas, escuelas, oficiales, departamentos 
+            WHERE visitas.id_escuela = escuelas.id
+            AND escuelas.id_departamento = departamentos.id
+            AND visitas.id_oficial = oficiales.id) AS consulta
+            WHERE consulta.oficial = '$name'");
+        return response()->json(
+            $visitas
+        );
+    }
 
     public function listingByEsc($idEsc){
         $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
