@@ -10,8 +10,10 @@
 				<a href="#" id="Dep" class="list-group-item active" onclick="active(this);">Visitas por Departamento</a>
 				<a href="#" id="Esc" class="list-group-item" onclick="active(this);">Visitas por Oficial (Escuelas)</a>
 				<a href="#" id="Ofi" class="list-group-item" onclick="active(this);">Visitas por Oficial (Motivos)</a>
+				@if (Auth::user()->id <= 5)
 				<a href="#" id="Area" class="list-group-item" onclick="active(this);">Visitas por Área (Oficiales)</a>
 				<a href="#" id="Mot" class="list-group-item" onclick="active(this);">Visitas por Área (Motivos)</a>
+				@endif
 			</div>
 		</div>
 		<div class="col-md-10 col-chart" id="chart-content">

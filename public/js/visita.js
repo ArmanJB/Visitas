@@ -210,7 +210,12 @@ $('#registro').on('click', function(){
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
 		return;
-	}*/else if ($('#motivosList p input:checkbox:checked').length==0 && $('#otrosMotivosList p input:checkbox:checked').length==0){
+	}*/else if($('#noPend').is(':checked') && $('#pendientes').val().length == 0){
+		$('#msj').html("No existen pendientes escritos!");
+		$('#msj-error').fadeIn();
+		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);
+		return;
+	}else if ($('#motivosList p input:checkbox:checked').length==0 && $('#otrosMotivosList p input:checkbox:checked').length==0){
 		$('#msj').html("Se debe seleccionar al menos un motivo!");
 		$('#msj-error').fadeIn();
 		window.setTimeout(function(){$('#msj-error').fadeOut();}, 1000);

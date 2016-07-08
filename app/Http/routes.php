@@ -84,3 +84,15 @@ Route::get('visitas/listingOfi/{idOfi}', 'VisitaController@listingByOfi');
 Route::get('visitas/listingEsc/{idEsc}', 'VisitaController@listingByEsc');
 Route::get('visitas/listingDate/{date}', 'VisitaController@listingByDate');
 Route::get('visitas/listingArea/{idAr}', 'VisitaController@listingByArea');
+
+//*******USUARIOS-CHART************
+
+Route::get('visitas/byDepU/{ini}/{fin}/{area}', 'VisitaController@visitasByDepU');
+Route::get('visitas/byDepDetU/{ini}/{fin}/{idDep}/{area}', 'VisitaController@visitasByDepDetU');
+
+Route::get('visitas/byEscU/{ini}/{fin}/{area}', 'VisitaController@visitasByEscU');
+Route::get('visitas/byEscDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@visitasByEscDetU');
+
+Route::get('visitas/byOfiU/{ini}/{fin}/{area}', 'VisitaController@visitasByOfiU');
+Route::get('visitas/byOfiDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@visitasByOfiDetU');
+

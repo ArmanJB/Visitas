@@ -38,25 +38,50 @@ var dataPadre = [];
 var data = [];
 var subdata = [];
 
-function setData($ini, $fin){
-	subtitulo = 'de '+$ini+' a '+$fin;
+function setData(ini, fin){
+	subtitulo = 'de '+ini+' a '+fin;
+	var routeU = '';
+	var area;
 
-	$.get('/visitas/'+route+'/'+$ini+'/'+$fin, function(res){
-		dataPadre = [];
-		data = [];
-		subdata = [];
+	$.get('/oficial/byName/'+$('#metadata').attr('nameU'), function(res){
 		$(res).each(function(key, value){
-			dataPadre.push({name: value[0], y: value[1], drilldown: value[0]});
-				$.get('/visitas/'+route+'Det/'+$ini+'/'+$fin+'/'+value[2], function(resp){
-					subdata = [];
-					$(resp).each(function(key, index){
-						subdata.push([index[0], index[1]]);
-						if (key == (resp.length-1)) {data.push({name: value[0], id: value[0], data: subdata});}
-					})
-				});
+			area = value.id_area;
 		})
-		chart();
+		if ($('#metadata').attr('data') == 'user') {
+			routeU = '/visitas/'+route+'U/'+ini+'/'+fin+'/'+area;
+		}else{
+			routeU = '/visitas/'+route+'/'+ini+'/'+fin;
+		}
+
+		$.get(routeU, function(res){
+			dataPadre = [];
+			data = [];
+			subdata = [];
+			$(res).each(function(key, value){
+				dataPadre.push({name: value[0], y: value[1], drilldown: value[0]});
+					if ($('#metadata').attr('data') == 'user') {
+						$.get('/visitas/'+route+'DetU/'+ini+'/'+fin+'/'+value[2]+'/'+area, function(resp){
+							subdata = [];
+							$(resp).each(function(key, index){
+								subdata.push([index[0], index[1]]);
+								if (key == (resp.length-1)) {data.push({name: value[0], id: value[0], data: subdata});}
+							})
+						});
+					}else{
+						$.get('/visitas/'+route+'Det/'+ini+'/'+fin+'/'+value[2], function(resp){
+							subdata = [];
+							$(resp).each(function(key, index){
+								subdata.push([index[0], index[1]]);
+								if (key == (resp.length-1)) {data.push({name: value[0], id: value[0], data: subdata});}
+							})
+						});
+					}
+			});
+			chart();
+		});
+
 	});
+
 }
 
 function chart(){
