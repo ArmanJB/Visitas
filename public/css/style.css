@@ -112,3 +112,26 @@ nav{
 #dangerRemoveDialog{
 	width: 25%;
 }
+/************************************/
+#toPrint{
+	margin-right: 5%;
+	margin-left: 5%;
+}
+
+.informe{
+	margin: 1%;
+	width: 100%;
+	text-align: center;
+}
+.informe th{
+	text-align: center;
+	background-color: #0277BD;
+	color: white;
+}
+.informe>tbody>tr>td{
+	padding: 3px;	
+}
+.informe>tbody>tr:hover{background-color: #EEEEEE}
+.tfoot{
+	background-color: #64B5F6;
+}

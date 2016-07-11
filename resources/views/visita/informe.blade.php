@@ -8,6 +8,15 @@
 		<div class="col-lg-4">
 			<div class="input-group">
 				<div class="input-group-btn">
+					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b id="filtrarAnio">2016</b> <span class="caret"></span></button>
+					<ul class="dropdown-menu">
+						@for($i = 2016; $i <= 2030; $i++)
+						<li><a href="#" onclick="setAnio(this);">{{$i}}</a></li>
+						@endfor
+					</ul>
+				</div>
+				
+				<div class="input-group-btn">
 					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b id="filtrar">Mes</b> <span class="caret"></span></button>
 					<ul class="dropdown-menu">
 						<li><a href="#" onclick="setMes(this);">Enero</a></li>
@@ -31,10 +40,21 @@
 			</div>
 		</div>
 	</div>
-		
+	<div id="divider"></div>
 </div>
-<div id="toPrint">
 
+
+<div id="toPrint">
+	<!--<table class="table informe">
+		<h4>Área Educativa</h4>
+		<thead>
+			<th>Mes</th>
+			<th>Meta Planeada</th>
+			<th>Meta Ejecutada</th>
+			<th>% Alcanzado</th>
+		</thead>
+		<tbody id="datos"></tbody>
+	</table>-->
 </div>
 
 @endsection

@@ -4,7 +4,7 @@ $(document).ready(function(){
 	setEscuelas();
 	setDepartamentos();
 	listar();
-	if ($('#metadata').attr('data')=='user') {setMetaData();}
+	//if ($('#metadata').attr('data')=='user') {setMetaData();}
 });
 
 function setMetaData(){
@@ -53,6 +53,7 @@ function setAreas(){
 			$('#label-are').html(value.nombre);
 			$('#label-are').attr('data', value.id);
 		})
+		if ($('#metadata').attr('data')=='user') {setMetaData();}
 	});
 }
 function setOficial(){

@@ -96,3 +96,8 @@ Route::get('visitas/byEscDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@vis
 Route::get('visitas/byOfiU/{ini}/{fin}/{area}', 'VisitaController@visitasByOfiU');
 Route::get('visitas/byOfiDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@visitasByOfiDetU');
 
+/***************Informes*********************/
+
+Route::get('visitas/cantArea/{idArea}', 'VisitaController@cantByArea');
+Route::get('visitas/cant', 'VisitaController@cant');
+
