@@ -81,7 +81,7 @@ CREATE TABLE `visitas` (
 DROP TABLE IF EXISTS `pendientes`;
 CREATE TABLE `pendientes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `nombre` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
   `finalizado` tinyint(1) NOT NULL,
   `id_visita` int(11) NOT NULL,
   PRIMARY KEY (`id`),

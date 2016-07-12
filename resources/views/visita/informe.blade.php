@@ -56,7 +56,7 @@
 		<tbody id="datos"></tbody>
 	</table>-->
 </div>
-
+<eiv id="divider"></eiv>
 @endsection
 
 @section('scripts')

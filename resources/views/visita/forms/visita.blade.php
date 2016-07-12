@@ -20,7 +20,7 @@
 </div>
 <div class="form-group">
 	{!!Form::label('Cantidad de aulas Visitadas: ')!!}
-	{!!Form::number('aulas', null, ['id'=>'aulas', 'class'=>'form-control', 'min'=>1, 'max'=>15])!!}
+	{!!Form::number('aulas', null, ['id'=>'aulas', 'class'=>'form-control', 'min'=>0, 'max'=>15])!!}
 </div>
 <div class="form-group">
 	{!!Form::label('Pendientes: ')!!}<p><input type="checkbox" class="filled-in" id="noPend" /><label for="noPend" id="noPend">Si</label></p>

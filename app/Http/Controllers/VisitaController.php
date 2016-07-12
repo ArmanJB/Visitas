@@ -708,6 +708,21 @@ class VisitaController extends Controller
 
         return response()->json($visita);
     }
+    public function cantDetByArea($idArea){
+        $visita = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_oficial, detalle_visita.id_motivo, oficiales.id_area 
+            FROM visitas, oficiales, detalle_visita 
+            WHERE visitas.id=detalle_visita.id_visita 
+            AND visitas.id_oficial=oficiales.id AND oficiales.id_area='$idArea'");
+
+        return response()->json($visita);
+    }
+    public function cantOfiByArea($idArea){
+        $visita = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_oficial, oficiales.id_area 
+            FROM visitas, oficiales WHERE visitas.id_oficial=oficiales.id 
+            AND oficiales.id_area='$idArea'");
+
+        return response()->json($visita);
+    }
 
 
 }

@@ -113,6 +113,12 @@ nav{
 	width: 25%;
 }
 /************************************/
+hr{
+	border-color: #0277BD;
+}
+.linkInfo:hover, .linkInfo:link{
+	text-decoration: none;
+}
 #toPrint{
 	margin-right: 5%;
 	margin-left: 5%;
@@ -120,7 +126,7 @@ nav{
 
 .informe{
 	margin: 1%;
-	width: 100%;
+	width: 50%;
 	text-align: center;
 }
 .informe th{
@@ -134,4 +140,8 @@ nav{
 .informe>tbody>tr:hover{background-color: #EEEEEE}
 .tfoot{
 	background-color: #64B5F6;
+}
+.informeM{
+	text-align: left;
+	padding-left: 1rem;	
 }

@@ -18,6 +18,39 @@ $(function(){
 	ar = $('#mes').val().split(',');
 	getData(ar);
 	getDataArea(ar);
+
+	getDataMotivos(ar);
+	getDataOficial(ar);
+
+	$('#metaMensual').on('click', function(){
+		if ($('#metaMensual').html()=='- Meta mensual de visitas por área') {
+			$('#metaMensualSection').fadeOut();
+			$('#metaMensual').html('+ Meta mensual de visitas por área')
+		}else{
+			$('#metaMensualSection').fadeIn();
+			$('#metaMensual').html('- Meta mensual de visitas por área')
+		}
+	});
+
+	$('#motivos').on('click', function(){
+		if ($('#motivos').html()=='- Motivos de visita') {
+			$('#motivosSection').fadeOut();
+			$('#motivos').html('+ Motivos de visita')
+		}else{
+			$('#motivosSection').fadeIn();
+			$('#motivos').html('- Motivos de visita')
+		}
+	});
+
+	$('#oficial').on('click', function(){
+		if ($('#oficial').html()=='- Cumplimiento de metas por oficial') {
+			$('#oficialSection').fadeOut();
+			$('#oficial').html('+ Cumplimiento de metas por oficial')
+		}else{
+			$('#oficialSection').fadeIn();
+			$('#oficial').html('- Cumplimiento de metas por oficial')
+		}
+	});
 });
 
 function setMes(btn){
@@ -25,6 +58,8 @@ function setMes(btn){
 	//
 	getData($('#mes').val().split(','));
 	getDataArea($('#mes').val().split(','));
+	getDataMotivos($('#mes').val().split(','));
+	getDataOficial($('#mes').val().split(','));
 }
 function setAnio(btn){
 	$('#filtrarAnio').html(btn.text);
@@ -32,6 +67,8 @@ function setAnio(btn){
 	//
 	getData($('#mes').val().split(','));
 	getDataArea($('#mes').val().split(','));
+	getDataMotivos($('#mes').val().split(','));
+	getDataOficial($('#mes').val().split(','));
 }
 
 $('#print').on('click', function(){
@@ -53,12 +90,18 @@ $('#print').on('click', function(){
 });
 
 function setTables(){
-	$('#toPrint').append('<table class="table informe"><h4>Meta Mensual General</h4><thead><th>Mes</th><th>Meta Planeada</th><th>Meta Ejecutada</th><th>% Alcanzado</th></thead><tbody id="datos"></tbody></table>');
+	$('#toPrint').append('<table class="table informe"><h3>Meta Mensual General</h3><thead><th>Mes</th><th>Meta Planeada</th><th>Meta Ejecutada</th><th>% Alcanzado</th></thead><tbody id="datos"></tbody></table>');
+	$('#toPrint').append('<h3><a class="linkInfo" id="metaMensual">- Meta mensual de visitas por área</a></h3><hr><div id="metaMensualSection"></div>');
+	$('#toPrint').append('<h3><a class="linkInfo" id="motivos">- Motivos de visita</a></h3><hr><div id="motivosSection"></div>');
+	$('#toPrint').append('<h3><a class="linkInfo" id="oficial">- Cumplimiento de metas por oficial</a></h3><hr><div id="oficialSection"></div>');
 	$.get('/areas', function(res){
 		$(res).each(function(key, value){
-			$('#toPrint').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Mes</th><th>Meta Planeada</th><th>Meta Ejecutada</th><th>% Alcanzado</th></thead><tbody id="datos'+value.id+'"></tbody></table>');
+			$('#metaMensualSection').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Mes</th><th>Meta Planeada</th><th>Meta Ejecutada</th><th>% Alcanzado</th></thead><tbody id="datos'+value.id+'"></tbody></table>');
+			$('#motivosSection').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Motivos</th><th>Cantidad</th></thead><tbody id="datosM'+value.id+'"></tbody></table>');
+			$('#oficialSection').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Oficial a cargo</th><th id="meta'+value.id+'">Meta mensual</th><th id="acum'+value.id+'">Acumulado</th><th>% de Cumplimiento</th></thead><tbody id="datosO'+value.id+'"></tbody></table>');
 		});
 	});
+	
 }
 
 function getData(ar){
@@ -173,4 +216,84 @@ function getDataArea(ar){
 
 		});
 	}
+}
+
+function getDataMotivos(ar){
+	$.get('/areas', function(res){
+		$(res).each(function(key, value){
+			$('#datosM'+value.id).empty();
+			$.get('/visitas/cantDet/'+value.id, function(res2){
+				$.get('/motivos', function(res3){
+					$(res3).each(function(key3, value3){
+						var cant = 0;
+						res2.forEach(function(index){
+							if (ar.length > 1) {
+								var i = returnMes(ar[1]);
+								if (i<10) {
+									if (index.fecha >= ar[0]+'-0'+i+'-01' && index.fecha <= ar[0]+'-0'+i+'-31') {if (value3.id==index.id_motivo) {cant++;}}
+								}else{
+									if (index.fecha >= ar[0]+'-'+i+'-01' && index.fecha <= ar[0]+'-'+i+'-31') {if (value3.id==index.id_motivo) {cant++;}}
+								}
+							}else{
+								if (index.fecha >= ar[0]+'-01-01' && index.fecha <= ar[0]+'-12-31') {
+									if (value3.id==index.id_motivo) {cant++;}
+								}
+							}
+						});
+						if (cant > 0) {
+							$('#datosM'+value.id).append('<tr><td class="informeM">'+value3.nombre+'</td><td>'+cant+'</td></tr>');
+						}
+					});
+				});
+
+			});
+		});
+	});
+}
+
+function getDataOficial(ar){
+	$.get('/areas', function(res){
+		$(res).each(function(key, value){
+			$('#datosO'+value.id).empty();
+
+
+			$.get('/visitas/cantOfi/'+value.id, function(res2){
+				$.get('/oficial/byArea/'+value.id, function(res3){
+					$(res3).each(function(key3, value3){
+						var cant = 0;
+						res2.forEach(function(index){
+							if (ar.length > 1) {
+								var i = returnMes(ar[1]);
+								if (i<10) {
+									if (index.fecha >= ar[0]+'-0'+i+'-01' && index.fecha <= ar[0]+'-0'+i+'-31') {if (value3.id==index.id_oficial) {cant++;}}
+								}else{
+									if (index.fecha >= ar[0]+'-'+i+'-01' && index.fecha <= ar[0]+'-'+i+'-31') {if (value3.id==index.id_oficial) {cant++;}}
+								}
+							}else{
+								if (index.fecha >= ar[0]+'-01-01' && index.fecha <= ar[0]+'-12-31') {
+									if (value3.id==index.id_oficial) {cant++;}
+								}
+							}
+						});
+						if (cant > 0) {
+							if (ar.length > 1){
+								$('#meta'+value.id).html('Meta mensual');
+								$('#acum'+value.id).html(ar[1]);
+								$('#datosO'+value.id).append('<tr><td class="informeM">'+value3.nombres+' '+value3.apellidos+'</td><td>'+value3.meta+'</td><td>'+cant+'</td><td>'+Math.round((cant*100)/value3.meta)+'%</td></tr>');
+							}else{
+								$('#meta'+value.id).html('Meta anual');
+								$('#acum'+value.id).html('Acumulado');
+								$('#datosO'+value.id).append('<tr><td class="informeM">'+value3.nombres+' '+value3.apellidos+'</td><td>'+(value3.meta*meses.length)+'</td><td>'+cant+'</td><td>'+Math.round((cant*100)/(value3.meta*meses.length))+'%</td></tr>');
+							}
+							
+						}
+					});
+				});
+
+			});
+
+
+
+		});
+	});
 }

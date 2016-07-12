@@ -100,4 +100,6 @@ Route::get('visitas/byOfiDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@vis
 
 Route::get('visitas/cantArea/{idArea}', 'VisitaController@cantByArea');
 Route::get('visitas/cant', 'VisitaController@cant');
+Route::get('visitas/cantDet/{idArea}', 'VisitaController@cantDetByArea');
+Route::get('visitas/cantOfi/{idArea}', 'VisitaController@cantOfiByArea');
 
