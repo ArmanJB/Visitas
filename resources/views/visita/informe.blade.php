@@ -19,7 +19,6 @@
 				<div class="input-group-btn">
 					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><b id="filtrar">Mes</b> <span class="caret"></span></button>
 					<ul class="dropdown-menu">
-						<li><a href="#" onclick="setMes(this);">Enero</a></li>
 						<li><a href="#" onclick="setMes(this);">Febrero</a></li>
 						<li><a href="#" onclick="setMes(this);">Marzo</a></li>
 						<li><a href="#" onclick="setMes(this);">Abril</a></li>

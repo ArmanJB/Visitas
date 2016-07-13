@@ -1,4 +1,4 @@
-var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre'];
+var meses = ['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre'];
 
 function returnMes(mes){
 	var rMes = null;
@@ -116,7 +116,7 @@ function getData(ar){
 
 			$.get('/visitas/cant', function(res){
 				var cant = 0;
-				var i = returnMes(ar[1]);
+				var i = returnMes(ar[1])+1;
 				$(res).each(function(key2, value2){
 						if (i<10) {
 							if (value2.fecha >= ar[0]+'-0'+i+'-01' && value2.fecha <= ar[0]+'-0'+i+'-31') {
@@ -141,15 +141,15 @@ function getData(ar){
 
 			$.get('/visitas/cant', function(res){
 				var ej = 0;
-				for (var i = 1; i < 12; i++) {
+				for (var i = 1; i <= meses.length; i++) {
 					var cant = 0;
 					$(res).each(function(key2, value2){
 						if (i<10) {
-							if (value2.fecha >= ar[0]+'-0'+i+'-01' && value2.fecha <= ar[0]+'-0'+i+'-31') {
+							if (value2.fecha >= ar[0]+'-0'+(i+1)+'-01' && value2.fecha <= ar[0]+'-0'+(i+1)+'-31') {
 								cant++;
 							}
 						}else{
-							if (value2.fecha >= ar[0]+'-'+i+'-01' && value2.fecha <= ar[0]+'-'+i+'-31') {
+							if (value2.fecha >= ar[0]+'-'+(i+1)+'-01' && value2.fecha <= ar[0]+'-'+(i+1)+'-31') {
 								cant++;
 							}
 						}
@@ -170,7 +170,7 @@ function getDataArea(ar){
 					$('#datos'+value.id).empty();
 					$.get('/visitas/cantArea/'+value.id, function(res){
 						var cant = 0;
-						var i = returnMes(ar[1]);
+						var i = returnMes(ar[1])+1;
 						$(res).each(function(key2, value2){
 								if (i<10) {
 									if (value2.fecha >= ar[0]+'-0'+i+'-01' && value2.fecha <= ar[0]+'-0'+i+'-31') {
@@ -194,15 +194,15 @@ function getDataArea(ar){
 					$('#datos'+value.id).empty();
 					$.get('/visitas/cantArea/'+value.id, function(res){
 						var ej = 0;
-						for (var i = 1; i < 12; i++) {
+						for (var i = 1; i <= meses.length; i++) {
 							var cant = 0;
 							$(res).each(function(key2, value2){
 								if (i<10) {
-									if (value2.fecha >= ar[0]+'-0'+i+'-01' && value2.fecha <= ar[0]+'-0'+i+'-31') {
+									if (value2.fecha >= ar[0]+'-0'+(i+1)+'-01' && value2.fecha <= ar[0]+'-0'+(i+1)+'-31') {
 										cant++;
 									}
 								}else{
-									if (value2.fecha >= ar[0]+'-'+i+'-01' && value2.fecha <= ar[0]+'-'+i+'-31') {
+									if (value2.fecha >= ar[0]+'-'+(i+1)+'-01' && value2.fecha <= ar[0]+'-'+(i+1)+'-31') {
 										cant++;
 									}
 								}
@@ -228,7 +228,7 @@ function getDataMotivos(ar){
 						var cant = 0;
 						res2.forEach(function(index){
 							if (ar.length > 1) {
-								var i = returnMes(ar[1]);
+								var i = returnMes(ar[1])+1;
 								if (i<10) {
 									if (index.fecha >= ar[0]+'-0'+i+'-01' && index.fecha <= ar[0]+'-0'+i+'-31') {if (value3.id==index.id_motivo) {cant++;}}
 								}else{
@@ -263,7 +263,7 @@ function getDataOficial(ar){
 						var cant = 0;
 						res2.forEach(function(index){
 							if (ar.length > 1) {
-								var i = returnMes(ar[1]);
+								var i = returnMes(ar[1])+1;
 								if (i<10) {
 									if (index.fecha >= ar[0]+'-0'+i+'-01' && index.fecha <= ar[0]+'-0'+i+'-31') {if (value3.id==index.id_oficial) {cant++;}}
 								}else{
