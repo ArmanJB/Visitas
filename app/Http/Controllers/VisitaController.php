@@ -723,6 +723,14 @@ class VisitaController extends Controller
 
         return response()->json($visita);
     }
+    public function cantEscByArea($idArea){
+        $visita = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_escuela, escuelas.nombre, oficiales.id_area 
+            FROM visitas, escuelas, oficiales WHERE visitas.id_escuela = escuelas.id 
+            AND visitas.id_oficial = oficiales.id AND oficiales.id_area = '$idArea' 
+            GROUP BY visitas.fecha, visitas.id_escuela");
+
+        return response()->json($visita);
+    }
 
 
 }

@@ -21,6 +21,7 @@ $(function(){
 
 	getDataMotivos(ar);
 	getDataOficial(ar);
+	getDataEscuela(ar);
 
 	$('#metaMensual').on('click', function(){
 		if ($('#metaMensual').html()=='- Meta mensual de visitas por área') {
@@ -51,6 +52,17 @@ $(function(){
 			$('#oficial').html('- Cumplimiento de metas por oficial')
 		}
 	});
+
+	$('#escuela').on('click', function(){
+		if ($('#escuela').html()=='- Escuelas pendientes de visitar') {
+			$('#escuelaSection').fadeOut();
+			$('#escuela').html('+ Escuelas pendientes de visitar')
+		}else{
+			$('#escuelaSection').fadeIn();
+			$('#escuela').html('- Escuelas pendientes de visitar')
+		}
+	});
+
 });
 
 function setMes(btn){
@@ -60,6 +72,7 @@ function setMes(btn){
 	getDataArea($('#mes').val().split(','));
 	getDataMotivos($('#mes').val().split(','));
 	getDataOficial($('#mes').val().split(','));
+	getDataEscuela($('#mes').val().split(','));
 }
 function setAnio(btn){
 	$('#filtrarAnio').html(btn.text);
@@ -69,6 +82,7 @@ function setAnio(btn){
 	getDataArea($('#mes').val().split(','));
 	getDataMotivos($('#mes').val().split(','));
 	getDataOficial($('#mes').val().split(','));
+	getDataEscuela($('#mes').val().split(','));
 }
 
 $('#print').on('click', function(){
@@ -94,14 +108,26 @@ function setTables(){
 	$('#toPrint').append('<h3><a class="linkInfo" id="metaMensual">- Meta mensual de visitas por área</a></h3><hr><div id="metaMensualSection"></div>');
 	$('#toPrint').append('<h3><a class="linkInfo" id="motivos">- Motivos de visita</a></h3><hr><div id="motivosSection"></div>');
 	$('#toPrint').append('<h3><a class="linkInfo" id="oficial">- Cumplimiento de metas por oficial</a></h3><hr><div id="oficialSection"></div>');
+	$('#toPrint').append('<h3><a class="linkInfo" id="escuela">- Escuelas pendientes de visitar</a></h3><hr><div id="escuelaSection"></div>');
 	$.get('/areas', function(res){
 		$(res).each(function(key, value){
-			$('#metaMensualSection').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Mes</th><th>Meta Planeada</th><th>Meta Ejecutada</th><th>% Alcanzado</th></thead><tbody id="datos'+value.id+'"></tbody></table>');
-			$('#motivosSection').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Motivos</th><th>Cantidad</th></thead><tbody id="datosM'+value.id+'"></tbody></table>');
-			$('#oficialSection').append('<table class="table informe"><h4>'+value.nombre+'</h4><thead><th>Oficial a cargo</th><th id="meta'+value.id+'">Meta mensual</th><th id="acum'+value.id+'">Acumulado</th><th>% de Cumplimiento</th></thead><tbody id="datosO'+value.id+'"></tbody></table>');
+			$('#areasPanel').append('<input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+'" checked/><label for="box-'+value.id+'" value="'+value.id+'" class="labelInforme" onclick="areas(this);">'+value.nombre+'</label>');
+
+			$('#metaMensualSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Mes</th><th>Meta Planeada</th><th>Meta Ejecutada</th><th>% Alcanzado</th></thead><tbody id="datos'+value.id+'"></tbody></table>');
+			$('#motivosSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Motivos</th><th>Cantidad</th></thead><tbody id="datosM'+value.id+'"></tbody></table>');
+			$('#oficialSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Oficial a cargo</th><th id="meta'+value.id+'">Meta mensual</th><th id="acum'+value.id+'">Acumulado</th><th>% de Cumplimiento</th></thead><tbody id="datosO'+value.id+'"></tbody></table>');
+			$('#escuelaSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Departamento</th><th>Escuela</th></thead><tbody id="datosE'+value.id+'"></tbody></table>');
 		});
 	});
 	
+}
+
+function areas(label){
+	if ( $('#'+$(label).attr('for')).is(':checked') ) {
+		$('.val'+$(label).attr('value')).fadeOut();
+	}else{
+		$('.val'+$(label).attr('value')).fadeIn();
+	}
 }
 
 function getData(ar){
@@ -294,6 +320,40 @@ function getDataOficial(ar){
 
 
 
+		});
+	});
+}
+
+function getDataEscuela(ar){
+	$.get('/areas', function(res){
+		$(res).each(function(key, value){
+			$('#datosE'+value.id).empty();
+			if (ar.length > 1) {
+				$.get('/visitas/cantEsc/'+value.id, function(res2){
+					$.get('/escuelas', function(res3){
+						$(res3).each(function(key3, value3){
+							var cant = 0;
+							res2.forEach(function(index){
+									var i = returnMes(ar[1])+1;
+									if (i<10) {
+										if (index.fecha >= ar[0]+'-0'+i+'-01' && index.fecha <= ar[0]+'-0'+i+'-31') {if (value3.id==index.id_escuela) {cant++;}}
+									}else{
+										if (index.fecha >= ar[0]+'-'+i+'-01' && index.fecha <= ar[0]+'-'+i+'-31') {if (value3.id==index.id_escuela) {cant++;}}
+									}
+								/*else{
+									if (index.fecha >= ar[0]+'-01-01' && index.fecha <= ar[0]+'-12-31') {
+										if (value3.id==index.id_motivo) {cant++;}
+									}
+								}*/
+							});
+							if (cant == 0) {
+								$('#datosE'+value.id).append('<tr><td class="informeM">'+value3.nombreDep+'</td><td class="informeM">'+value3.nombre+'</td></tr>');
+							}
+						});
+					});
+
+				});
+			}
 		});
 	});
 }

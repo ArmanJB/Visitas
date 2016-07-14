@@ -145,3 +145,10 @@ hr{
 	text-align: left;
 	padding-left: 1rem;	
 }
+.labelInforme{
+	margin-right: 4rem;
+}
+#panelContainer{
+	width: 50%;
+	margin: auto;
+}

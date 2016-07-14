@@ -1,6 +1,7 @@
 @extends('layouts.visitaAdmin')
 
 @section('content')
+{!!Html::style('css/checkbox.css')!!}
 <div id="group-informe">
 	<div id="divider"></div>
 	<div class="row">
@@ -36,6 +37,17 @@
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-primary" id="print">Imprimir</button>
 				</span>
+			</div>
+		</div>
+		<div class="col-lg-12" style="text-align: center;"">
+			<div id="divider"></div>
+			<div class="panel panel-default" id="panelContainer">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Áreas</h3>
+			  </div>
+			  <div class="panel-body" id="areasPanel">
+			    
+			  </div>
 			</div>
 		</div>
 	</div>
