@@ -85,6 +85,9 @@ Route::get('visitas/listingEsc/{idEsc}', 'VisitaController@listingByEsc');
 Route::get('visitas/listingDate/{date}', 'VisitaController@listingByDate');
 Route::get('visitas/listingArea/{idAr}', 'VisitaController@listingByArea');
 
+Route::get('usuario/upd/{id}/{name}/{email}/{pass}', 'UsuarioController@updateU');
+Route::get('usuario/correct/{id}', 'UsuarioController@correct');
+
 //*******USUARIOS-CHART************
 
 Route::get('visitas/byDepU/{ini}/{fin}/{area}', 'VisitaController@visitasByDepU');

@@ -49,8 +49,9 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         @if (Auth::user()->id <= 5)
-                        <li><a href="/menu"><i class="fa fa-th fa-fw"></i> Regresar al menú</a>
-                        </li>
+                        <li><a href="/menu"><i class="fa fa-th fa-fw"></i> Regresar al menú</a></li>
+                        @else
+                        <li><a href="#" OnClick="mostrarUser({!!Auth::user()->id!!});" data-toggle="modal" data-target="#modalUser"><i class="fa fa-unlock-alt fa-fw"></i> Cambiar contraseña</a></li>
                         @endif
                         <li class="divider"></li>
                         <li><a href="{!!URL::to('logout')!!}"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a>
@@ -64,6 +65,7 @@
         <div id="page">
             @include('visita.nav')
             @include('alerts.errors')
+            @include('usuario.modal')
 
             @yield('content')
         </div>
@@ -74,6 +76,7 @@
     {!!Html::script('js/bootstrap.min.js')!!}
     {!!Html::script('js/metisMenu.min.js')!!}
     {!!Html::script('js/sb-admin-2.js')!!}
+    {!!Html::script('js/usuario.js')!!}
 
     @section('scripts')
     @show

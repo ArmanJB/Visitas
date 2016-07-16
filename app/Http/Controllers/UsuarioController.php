@@ -16,8 +16,7 @@ class UsuarioController extends Controller
 {
 	public function __construct(){
 		$this->middleware('auth');
-		$this->middleware('admin');
-		//$this->middleware('admin', ['only' => ['create', 'edit']]);
+		$this->middleware('admin', ['only' => ['index', 'create', 'store', 'destroy', 'edit']]);
 	}
 
 	public function index(){
@@ -50,13 +49,28 @@ class UsuarioController extends Controller
 		$user->fill($req->all());
 		$user->save();
 
-		Session::flash('message', 'Usuario Editado Existosamete!');
+		Session::flash('message', 'Usuario Editado Exitosamente!');
 		return Redirect('/usuario');
 	}
 
 	public function destroy($id){
 		User::destroy($id);
-		Session::flash('message', 'Usuario Eliminado Existosamete!');
+		Session::flash('message', 'Usuario Eliminado Exitosamente!');
 		return Redirect('/usuario');
+	}
+
+	public function correct($id){
+		$user = User::find($id);
+		return $user;
+	}
+
+	public function updateU($id, $name, $email, $pass){
+		$user = User::find($id);
+		$user->fill(['name'=>$name, 'email'=>$email, 'password'=>$pass]);
+		$user->save();
+
+		return response()->json([
+            'mensaje' => 'actualizado'
+        ]); 
 	}
 }
