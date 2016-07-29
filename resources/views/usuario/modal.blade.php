@@ -16,7 +16,7 @@
 					{!!Form::text('email', null, ['id'=>'email', 'class'=>'form-control', 'placeholder'=>'Ingresa el correo del usuario', 'disabled'=>''])!!}
 				</div>
 				<div class="form-group">
-					{!!Form::label('Password:')!!}
+					{!!Form::label('Nueva cotraseña:')!!}
 					{!!Form::password('password', ['id'=>'password', 'class'=>'form-control', 'placeholder'=>'Ingresa la contraseña del usuario'])!!}
 				</div>
 			</div>

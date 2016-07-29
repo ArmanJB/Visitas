@@ -22,6 +22,7 @@ $(function(){
 	getDataMotivos(ar);
 	getDataOficial(ar);
 	getDataEscuela(ar);
+	getDataEscuelaV(ar);
 
 	$('#metaMensual').on('click', function(){
 		if ($('#metaMensual').html()=='- Meta mensual de visitas por área') {
@@ -63,6 +64,16 @@ $(function(){
 		}
 	});
 
+	$('#escuelaV').on('click', function(){
+		if ($('#escuelaV').html()=='- Escuelas Visitadas') {
+			$('#escuelaVSection').fadeOut();
+			$('#escuelaV').html('+ Escuelas Visitadas')
+		}else{
+			$('#escuelaVSection').fadeIn();
+			$('#escuelaV').html('- Escuelas Visitadas')
+		}
+	});
+
 });
 
 function setMes(btn){
@@ -73,6 +84,7 @@ function setMes(btn){
 	getDataMotivos($('#mes').val().split(','));
 	getDataOficial($('#mes').val().split(','));
 	getDataEscuela($('#mes').val().split(','));
+	getDataEscuelaV($('#mes').val().split(','));
 }
 function setAnio(btn){
 	$('#filtrarAnio').html(btn.text);
@@ -83,6 +95,7 @@ function setAnio(btn){
 	getDataMotivos($('#mes').val().split(','));
 	getDataOficial($('#mes').val().split(','));
 	getDataEscuela($('#mes').val().split(','));
+	getDataEscuelaV($('#mes').val().split(','));
 }
 
 $('#print').on('click', function(){
@@ -109,6 +122,7 @@ function setTables(){
 	$('#toPrint').append('<h3><a class="linkInfo" id="motivos">- Motivos de visita</a></h3><hr><div id="motivosSection"></div>');
 	$('#toPrint').append('<h3><a class="linkInfo" id="oficial">- Cumplimiento de metas por oficial</a></h3><hr><div id="oficialSection"></div>');
 	$('#toPrint').append('<h3><a class="linkInfo" id="escuela">- Escuelas pendientes de visitar</a></h3><hr><div id="escuelaSection"></div>');
+	$('#toPrint').append('<h3><a class="linkInfo" id="escuelaV">- Escuelas Visitadas</a></h3><hr><div id="escuelaVSection"></div>');
 	$.get('/areas', function(res){
 		$(res).each(function(key, value){
 			$('#areasPanel').append('<input type="checkbox" class="filled-in" id="box-'+value.id+'" value="'+value.id+'" checked/><label for="box-'+value.id+'" value="'+value.id+'" class="labelInforme" onclick="areas(this);">'+value.nombre+'</label>');
@@ -117,6 +131,7 @@ function setTables(){
 			$('#motivosSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Motivos</th><th>Cantidad</th></thead><tbody id="datosM'+value.id+'"></tbody></table>');
 			$('#oficialSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Oficial a cargo</th><th id="meta'+value.id+'">Meta mensual</th><th id="acum'+value.id+'">Acumulado</th><th>% de Cumplimiento</th></thead><tbody id="datosO'+value.id+'"></tbody></table>');
 			$('#escuelaSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Departamento</th><th>Escuela</th></thead><tbody id="datosE'+value.id+'"></tbody></table>');
+			$('#escuelaVSection').append('<table class="table informe val'+value.id+'"><h4 class="val'+value.id+'">'+value.nombre+'</h4><thead><th>Departamento</th><th>Escuela</th></thead><tbody id="datosEV'+value.id+'"></tbody></table>');
 		});
 	});
 	
@@ -348,6 +363,40 @@ function getDataEscuela(ar){
 							});
 							if (cant == 0) {
 								$('#datosE'+value.id).append('<tr><td class="informeM">'+value3.nombreDep+'</td><td class="informeM">'+value3.nombre+'</td></tr>');
+							}
+						});
+					});
+
+				});
+			}
+		});
+	});
+}
+
+function getDataEscuelaV(ar){
+	$.get('/areas', function(res){
+		$(res).each(function(key, value){
+			$('#datosEV'+value.id).empty();
+			if (ar.length > 1) {
+				$.get('/visitas/cantEsc/'+value.id, function(res2){
+					$.get('/escuelas', function(res3){
+						$(res3).each(function(key3, value3){
+							var cant = 0;
+							res2.forEach(function(index){
+									var i = returnMes(ar[1])+1;
+									if (i<10) {
+										if (index.fecha >= ar[0]+'-0'+i+'-01' && index.fecha <= ar[0]+'-0'+i+'-31') {if (value3.id==index.id_escuela) {cant++;}}
+									}else{
+										if (index.fecha >= ar[0]+'-'+i+'-01' && index.fecha <= ar[0]+'-'+i+'-31') {if (value3.id==index.id_escuela) {cant++;}}
+									}
+								/*else{
+									if (index.fecha >= ar[0]+'-01-01' && index.fecha <= ar[0]+'-12-31') {
+										if (value3.id==index.id_motivo) {cant++;}
+									}
+								}*/
+							});
+							if (cant > 0) {
+								$('#datosEV'+value.id).append('<tr><td class="informeM">'+value3.nombreDep+'</td><td class="informeM">'+value3.nombre+'</td></tr>');
 							}
 						});
 					});
