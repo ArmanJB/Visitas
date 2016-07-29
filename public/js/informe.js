@@ -380,6 +380,7 @@ function getDataEscuelaV(ar){
 			if (ar.length > 1) {
 				$.get('/visitas/cantEsc/'+value.id, function(res2){
 					$.get('/escuelas', function(res3){
+						var tot=0;
 						$(res3).each(function(key3, value3){
 							var cant = 0;
 							res2.forEach(function(index){
@@ -396,11 +397,12 @@ function getDataEscuelaV(ar){
 								}*/
 							});
 							if (cant > 0) {
+								tot++;
 								$('#datosEV'+value.id).append('<tr><td class="informeM">'+value3.nombreDep+'</td><td class="informeM">'+value3.nombre+'</td></tr>');
 							}
 						});
+						$('#datosEV'+value.id).append('<tr class="tfoot"><td class="informeM">Total</td><td>'+tot+'</td></tr>');
 					});
-
 				});
 			}
 		});
