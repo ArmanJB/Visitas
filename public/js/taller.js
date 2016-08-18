@@ -141,7 +141,6 @@ $('#sig1').on('click', function(){
 	$('#header1').slideDown();
 	$('#section2').slideDown();
 	$('#footer2').slideDown();
-	window.alert($('#duracion').val())
 });
 $('#sig2').on('click', function(){
 	$('#section2').slideUp();
@@ -177,6 +176,16 @@ $('#ant3').on('click', function(){
 $('#remove-detalles').on('click', function(){
 	$('#detalles').empty();
 });
+$('#cant_mujeres, #cant_hombres').on('input', function(){
+	if ( !(isNaN($('#cant_mujeres').val())) && !(isNaN($('#cant_hombres').val())) ) {
+		var tot = parseInt($('#cant_mujeres').val()) + parseInt($('#cant_hombres').val());
+		if (isNaN(tot)) {
+			$('#total').val('');
+		}else{
+			$('#total').val(tot);
+		}
+	}
+});
 $('#addEscuela').on('click', function(){
 	if ($('#escuela').val()!='placeholder') {
 		$('#detalles').append('<li class="list-group-item" data="id_escuela" value="'+
@@ -197,3 +206,66 @@ $('#addZona').on('click', function(){
 			$('#zona').val()+'">'+$("#zona option:selected").text()+'</li>');
 	}
 });
+
+$('#registrar').on('click', function(){
+	$('#viewAll').prop('checked', true);
+	$('#viewAll').trigger('change');
+
+	$('#box-parent').find('.has-error').each(function(){
+		$(this).removeClass('has-error');
+	});
+
+	if (validar() > 0) {
+		$('#msjcreate').removeClass('alert-success');
+		$('#msjcreate').addClass('alert-danger');
+		$('#msjcreate'+'-text').html('Faltan campos obligatorios por completar!');
+		$('#msjcreate').fadeIn();
+		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		return;
+	}
+	window.alert('todo bien')
+
+});
+
+function validar(){
+	var cantE = 0;
+	if ($('#fecha').attr('dataDate') < $('#fecha').val()) {
+		$('#fecha').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#lugares').val() == 'placeholder') {
+		$('#lugares').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#actividades').val() == 'placeholder') {
+		$('#actividades').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if (isNaN($('#cant_mujeres').val()) || $('#cant_mujeres').val()=='') {
+		$('#cant_mujeres').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if (isNaN($('#cant_hombres').val()) || $('#cant_hombres').val()=='') {
+		$('#cant_hombres').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#group-oficial-1 div input:checkbox:checked').length==0 && $('#group-oficial-2 div input:checkbox:checked').length==0) {
+		$('#group-oficial-1').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#group-contenido div input:checkbox:checked').length==0 ) {
+		$('#group-contenido').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#group-audiencia div input:checkbox:checked').length==0 ) {
+		$('#group-audiencia').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#detalles').find('li').length == 0 ) {
+		$('#detalles').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	
+
+	return cantE;
+}

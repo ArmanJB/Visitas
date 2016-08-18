@@ -25,8 +25,8 @@
 					</div>
 				</section>
 				<section class="col-lg-12">
-					{!!Form::label('Oficiales a cargo:  ')!!}
 					<div class="form-group">
+						<section class="col-lg-12">{!!Form::label('Oficiales a cargo:  ')!!}<span class="help-block" style="display:inline; margin-left:1rem;">(Selecciona al menos uno)</span></section>
 						<section class="col-lg-6">
 							<div class="input-group">
 								<span class="input-group-addon" style="text-align: left;" id="group-oficial-1"></span>
@@ -59,7 +59,8 @@
 			</div>
 			<div class="box-body">
 				<section class="col-lg-12">
-					<section class="col-lg-12">{!!Form::label('Zona de atención del taller:  ')!!}</section>
+					<div class="form-group">
+					<section class="col-lg-12">{!!Form::label('Zona de atención del taller:  ')!!}<span class="help-block" style="display:inline; margin-left:1rem;">(Selecciona al menos uno)</span></section>
 					<section class="col-lg-12">
 						<div class="panel panel-primary">
 							<div class="panel-body">
@@ -117,6 +118,7 @@
 					</section>
 					<section class="col-lg-12">
 						<div class="panel panel-primary">
+							
 							<div class="panel-heading">
 								<h3 class="panel-title">{!!Form::label('Agregados:')!!}
 								<div class="pull-right">
@@ -124,10 +126,12 @@
 								</div>
 								</h3>
 							</div>
+							
 							<div class="panel-body" id="detalles">
 							</div>
 						</div>
 					</section>
+					</div>
 				</section>
 			</div>
 			<div class="box-footer" id="footer2">
@@ -163,19 +167,23 @@
 				</section>
 				<section class="col-lg-6">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h3 class="panel-title">{!!Form::label('Contenidos:')!!}</h3>
-						</div>
-						<div class="panel-body" id="group-contenido">
+						<div class="form-group">
+							<div class="panel-heading">
+								<h3 class="panel-title">{!!Form::label('Contenidos:')!!}<span class="help-block" style="display:inline; margin-left:1rem;">(Selecciona al menos uno)</span></h3>
+							</div>
+							<div class="panel-body" id="group-contenido">
+							</div>
 						</div>
 					</div>
 				</section>
 				<section class="col-lg-6">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<h3 class="panel-title">{!!Form::label('Audiencia:')!!}</h3>
-						</div>
-						<div class="panel-body" id="group-audiencia">
+						<div class="form-group">
+							<div class="panel-heading">
+								<h3 class="panel-title">{!!Form::label('Audiencia:')!!}<span class="help-block" style="display:inline; margin-left:1rem;">(Selecciona al menos uno)</span></h3>
+							</div>
+							<div class="panel-body" id="group-audiencia">
+							</div>
 						</div>
 					</div>
 				</section>
@@ -196,7 +204,7 @@
 				</span>
 			</div>
 			<div class="box-body">
-				<section class="col-lg-6">
+				<section class="col-lg-5">
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-female" style="color:black;width:15px;"></i></span>
@@ -204,11 +212,19 @@
 						</div>
 					</div>
 				</section>
-				<section class="col-lg-6">
+				<section class="col-lg-5">
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-male" style="color:black;width:15px;"></i></span>
 							{!!Form::number('cant_hombres', null, ["class"=>"form-control", "id"=>"cant_hombres", "placeholder"=>"Cantidad de hombres", "min"=>"0"]);!!}
+						</div>
+					</div>
+				</section>
+				<section class="col-lg-2">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-calculator" style="color:black;width:15px;"></i></span>
+							{!!Form::text('total', null, ["class"=>"form-control", "id"=>"total", "disabled"]);!!}
 						</div>
 					</div>
 				</section>

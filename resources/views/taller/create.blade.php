@@ -12,10 +12,14 @@
 					<div class="box-header with-border">
 						<h2 class="box-title"><i class="fa fa-pencil-square-o"></i> Agregar Taller</h2>
 						<div class="pull-right">
-							<input type="checkbox" class="filled-in" id="viewAll" value=""/><label for="viewAll" style="color:black;">Ver todo</label>
+							<input type="checkbox" class="filled-in" id="viewAll" value=""/><label for="viewAll" style="color:black;"id="labelView">Ver todo</label>
 						</div>
 					</div>
-					<div class="box-body">
+					<div class="box-body" id="box-parent">
+						<div id="msjcreate" class="alert alert-error alert-dismissible" role="alert" style="display:none">
+							<strong id="msjcreate-text"></strong>
+						</div>
+						<br>
 						@include('taller.forms.taller')
 					</div>
 				</div>
