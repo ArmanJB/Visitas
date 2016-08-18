@@ -12,37 +12,6 @@
 .navbar-default .navbar-brand{
 	color: #18a0e3;
 }
-/********login*****************/
-#bg-img{
-	/*background-image: url('/img/bg1.jpg');
-	background-size: 100%;*/
-}
-#logbody{
-	padding: 2rem;
-	width: 30%;
-	margin: auto;
-	margin-top: 10%;
-	background-image: url('/img/rc.png');
-	border-radius: 10px;
-	border-style: solid;
-	border-color: #008dd3;
-}
-#logh1{
-	text-align: center;
-	color: #FFF;
-	text-shadow: 0.5px 0.5px #000;
-	margin: 1rem;
-}
-#logbutton{
-	background-color: #18a0e3;
-}
-#logbutton:hover{
-	background-color: #008dd3;
-}
-.loglabel{
-	color: #FFF;
-	text-shadow: 0.5px 0.5px #000;
-}
 
 
 /*****************************/
@@ -151,4 +120,16 @@ hr{
 #panelContainer{
 	width: 50%;
 	margin: auto;
+}
+
+/*****************************************/
+/*****************************************/
+/*****************************************/
+.form-inline{
+	text-align: center;
+	
+}
+.form-personas{
+	padding-left: 2rem;
+	padding-right: 2rem;
 }

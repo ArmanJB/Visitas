@@ -10,5 +10,5 @@ class Oficiales extends Model
 
     protected $table = 'oficiales';
 
-    protected $fillable = ['nombres', 'apellidos', 'id_area', 'meta'];
+    protected $fillable = ['nombres', 'apellidos', 'fecha_nac', 'id_area'];
 }

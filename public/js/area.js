@@ -9,7 +9,7 @@ function listar(){
 	$('#datos').empty();
 	$.get(route, function(res){
 		$(res).each(function(key, value){
-			tablaDatos.append('<tr><td>'+value.nombre+'</td><td>'+value.meta+'</td><td><button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Editar</button> '+
+			tablaDatos.append('<tr><td>'+value.nombre+'</td><td><button value='+value.id+' OnClick="mostrar(this);" class="btn btn-default" data-toggle="modal" data-target="#myModal">Editar</button> '+
 				'<button value='+value.id+' OnClick="mostrarDanger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 		})
 	});

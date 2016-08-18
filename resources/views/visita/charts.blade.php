@@ -1,4 +1,4 @@
-@extends('layouts.visitaAdmin')
+@extends('layouts.admin')
 
 @section('content')
 	<div class="row row-chart">

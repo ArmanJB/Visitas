@@ -24,9 +24,8 @@ class DetalleRequest extends Request
     public function rules()
     {
         return [
-            'id_visita' => 'required',
-            'id_motivo' => 'required',
-            'horas' => 'required'
+            'nombre' => 'required|min:5',
+            'id_motivo' => 'required'
         ];
     }
 }

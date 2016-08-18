@@ -18,11 +18,21 @@ Route::get('admin', 'FrontController@admin');
 Route::get('visitaAdmin', 'FrontController@visitaAdmin');
 Route::get('visita/charts', 'FrontController@charts');
 Route::get('visita/informe', 'FrontController@informe');
+Route::get('catalogos', 'FrontController@catalogos');
+Route::get('personas', 'FrontController@personas');
+Route::get('escuelasF', 'FrontController@escuelas');
+Route::get('metasF', 'FrontController@metas');
+Route::get('motivosF', 'FrontController@motivos');
 
 
-Route::resource('usuario', 'UsuarioController');
 Route::resource('log', 'LogController');
 Route::get('logout', 'LogController@logout');
+
+Route::resource('usuario', 'UsuarioController');
+Route::get('usuarios', 'UsuarioController@listing');
+Route::get('usuarios/bySearch/{search}', 'UsuarioController@usersBySearch');
+Route::get('types', 'UsuarioController@types');
+Route::get('usuarios/detalle/{id}', 'UsuarioController@detalle');
 
 Route::resource('departamento', 'DepartamentoController');
 Route::get('departamentos', 'DepartamentoController@listing');
@@ -38,12 +48,13 @@ Route::resource('area', 'AreaController');
 Route::get('areas', 'AreaController@listing');
 
 Route::resource('oficial', 'OficialController');
-Route::get('oficiales', 'OficialController@listing');
+Route::get('oficials', 'OficialController@listing');
 Route::get('oficial/byArea/{id}', 'OficialController@oficialByArea');
 Route::get('oficial/byName/{name}', 'OficialController@areaByName');
 
 Route::resource('motivo', 'MotivoController');
 Route::get('motivos', 'MotivoController@listing');
+Route::get('motivos/bySearch/{search}', 'MotivoController@motivosBySearch');
 Route::get('motivo/byArea/{id}', 'MotivoController@motivoByArea');
 
 Route::resource('pendiente', 'pendienteController');
@@ -107,3 +118,33 @@ Route::get('visitas/cantDet/{idArea}', 'VisitaController@cantDetByArea');
 Route::get('visitas/cantOfi/{idArea}', 'VisitaController@cantOfiByArea');
 Route::get('visitas/cantEsc/{idArea}', 'VisitaController@cantEscByArea');
 
+/***************Nuevos*********************/
+Route::resource('contenido', 'ContenidoController');
+Route::get('contenidos', 'ContenidoController@listing');
+
+Route::resource('audiencia', 'AudienciaController');
+Route::get('audiencias', 'AudienciaController@listing');
+
+Route::resource('lugar', 'LugarController');
+Route::get('lugars', 'LugarController@listing');
+
+Route::resource('actividad', 'ActividadController');
+Route::get('actividads', 'ActividadController@listing');
+
+Route::resource('internacional', 'InternacionalController');
+Route::get('internacionals', 'InternacionalController@listing');
+
+Route::resource('zonareceptora', 'ZonareceptoraController');
+Route::get('zonareceptoras', 'ZonareceptoraController@listing');
+
+Route::resource('voluntario', 'VoluntarioController');
+Route::get('voluntarios', 'VoluntarioController@listing');
+
+Route::resource('periodo', 'PeriodoController');
+Route::get('periodos', 'PeriodoController@listing');
+
+Route::resource('meta', 'MetaController');
+Route::get('metas', 'MetaController@listing');
+
+Route::resource('taller', 'TallerController');
+Route::get('talleres', 'TallerController@listing');

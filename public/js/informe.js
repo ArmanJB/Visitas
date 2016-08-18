@@ -300,6 +300,7 @@ function getDataOficial(ar){
 
 			$.get('/visitas/cantOfi/'+value.id, function(res2){
 				$.get('/oficial/byArea/'+value.id, function(res3){
+					var tot = 0;
 					$(res3).each(function(key3, value3){
 						var cant = 0;
 						res2.forEach(function(index){
@@ -326,9 +327,10 @@ function getDataOficial(ar){
 								$('#acum'+value.id).html('Acumulado');
 								$('#datosO'+value.id).append('<tr><td class="informeM">'+value3.nombres+' '+value3.apellidos+'</td><td>'+(value3.meta*meses.length)+'</td><td>'+cant+'</td><td>'+Math.round((cant*100)/(value3.meta*meses.length))+'%</td></tr>');
 							}
-							
 						}
+						tot+=cant;
 					});
+					$('#datosO'+value.id).append('<tr class="tfoot"><td class="informeM">Total</td><td>-</td><td>'+tot+'</td><td>-</td></tr>');
 				});
 
 			});

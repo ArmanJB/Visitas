@@ -34,7 +34,7 @@ class OficialController extends Controller
     }
 
     public function listing(){
-        $oficiales = DB::select('SELECT oficiales.id, oficiales.nombres, oficiales.apellidos, areas.nombre, oficiales.meta, oficiales.id_area FROM oficiales, areas WHERE oficiales.id_area = areas.id');
+        $oficiales = DB::select('SELECT oficiales.id, oficiales.nombres, oficiales.apellidos, areas.nombre, oficiales.id_area FROM oficiales, areas WHERE oficiales.id_area = areas.id');
         //$oficiales = Escuelas::all();
         return response()->json(
             $oficiales

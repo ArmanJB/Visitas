@@ -25,10 +25,10 @@ class DetalleController extends Controller
     }
 
     public function listing(){
-        /*$escuelas = DB::select('SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS nombreDep FROM escuelas, departamentos WHERE escuelas.id_departamento = departamentos.id');
+        $detalles = Detalles::all();
         return response()->json(
-            $escuelas
-        );*/
+            $detalles->toArray()
+        );
     }
 
     public function edit($id){
@@ -55,7 +55,7 @@ class DetalleController extends Controller
         return response()->json(['mensaje'=>'borrado']);
     }
 
-    public function detalleByVisita($id){
+    /*public function detalleByVisita($id){
         $detalles = DB::select('SELECT * FROM detalle_visita WHERE id_visita = '.$id);
         return response()->json(
             $detalles
@@ -70,5 +70,5 @@ class DetalleController extends Controller
         return response()->json(
             $detalles
         );
-    }
+    }*/
 }

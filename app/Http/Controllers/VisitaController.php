@@ -697,14 +697,12 @@ class VisitaController extends Controller
 
     public function cantByArea($idArea){
         $visita = DB::select("SELECT visitas.id, visitas.fecha FROM visitas, oficiales 
-            WHERE visitas.id_oficial = oficiales.id AND oficiales.id_area = '$idArea' 
-            GROUP BY visitas.fecha, visitas.id_escuela");
+            WHERE visitas.id_oficial = oficiales.id AND oficiales.id_area = '$idArea' ");
 
         return response()->json($visita);
     }
     public function cant(){
-        $visita = DB::select("SELECT visitas.id, visitas.fecha FROM visitas 
-            GROUP BY visitas.fecha, visitas.id_escuela");
+        $visita = DB::select("SELECT visitas.id, visitas.fecha FROM visitas ");
 
         return response()->json($visita);
     }

@@ -34,7 +34,8 @@ class MotivoController extends Controller
     }
 
     public function listing(){
-        $motivos = DB::select('SELECT motivos.id, motivos.nombre, areas.nombre AS nombreAr FROM motivos, areas WHERE motivos.id_area = areas.id');
+        $motivos = DB::select('SELECT motivos.id, motivos.nombre, areas.nombre AS nombreAr FROM motivos, areas 
+            WHERE motivos.id_area = areas.id');
         //$motivos = Escuelas::all();
         return response()->json(
             $motivos
@@ -71,5 +72,13 @@ class MotivoController extends Controller
         return response()->json(
             $motivos
         );
+    }
+
+    public function motivosBySearch($search){
+        $escuelas = DB::select('SELECT motivos.id, motivos.nombre, areas.nombre AS nombreAr FROM motivos, areas 
+            WHERE motivos.id_area = areas.id AND motivos.nombre LIKE "%'.$search.'%"');
+        return response()->json(
+            $escuelas
+        ); 
     }
 }

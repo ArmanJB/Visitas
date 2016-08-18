@@ -36,4 +36,26 @@ class FrontController extends Controller
     public function informe(){
         return view('visita.informe');
     }
+
+    /***************Nuevos*********************/
+
+    public function catalogos(){
+        return view('catalogos.catalogos1');
+    }
+
+    public function personas(){
+        return view('planificacion.personas.personas');
+    }
+
+    public function escuelas(){
+        return view('planificacion.escuelas.escuelas');
+    }
+
+    public function metas(){
+        return view('planificacion.metas.metas');
+    }
+
+    public function motivos(){
+        return view('planificacion.motivos.motivos');
+    }
 }

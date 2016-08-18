@@ -11,6 +11,7 @@ use Session;
 use Redirect;
 use Auth;
 use visitas\User;
+use DB;
 
 class UsuarioController extends Controller
 {
@@ -20,8 +21,37 @@ class UsuarioController extends Controller
 	}
 
 	public function index(){
-		$users = User::paginate(8);
-		return view('usuario.index', compact('users'));
+		return view('usuario.index');
+	}
+
+	public function listing(){
+		$users = DB::select("SELECT users.id, users.name, users.email, user_types.name AS 'type', 
+			CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS 'oficial' FROM users
+			LEFT JOIN user_types ON users.id_type = user_types.id
+			LEFT JOIN oficiales ON users.id_oficial = oficiales.id");
+		return response()->json(
+            $users
+        );
+	}
+
+	public function usersBySearch($search){
+		$users = DB::select("SELECT users.id, users.name, users.email, user_types.name AS 'type', 
+			CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS 'oficial' FROM users
+			LEFT JOIN user_types ON users.id_type = user_types.id
+			LEFT JOIN oficiales ON users.id_oficial = oficiales.id
+            WHERE users.name LIKE '%".$search."%'");
+		return response()->json(
+            $users
+        );
+	}
+
+	public function detalle($id){
+		$user = DB::select("SELECT users.id, user_types.name AS 'tipo', areas.nombre AS 'area' 
+			FROM users LEFT JOIN user_types ON users.id_type=user_types.id 
+			LEFT JOIN oficiales ON users.id_oficial=oficiales.id 
+			LEFT JOIN areas ON oficiales.id_area=areas.id 
+			WHERE users.id = $id");
+		return response()->json($user);
 	}
 
 	public function create(){
@@ -29,34 +59,38 @@ class UsuarioController extends Controller
 	}
 
 	public function store(UserCreateRequest $req){
-		User::create($req->all());
-		/*User::create([
-			'name' => $req['name'],
-			'email' => $req['email'],
-			'password' => $req['password'],
-			]);*/
-		Session::flash('message', 'Usuario Agregado Existosamete!');
-		return Redirect::to('/usuario');
+		if($req->ajax() ){
+    		User::create($req->all());
+    		return response()->json([
+    			'mensaje' => "creado"
+    		]);
+    	}
 	}
 
 	public function edit($id){
 		$user = User::find($id);
-		return view('usuario.edit', ['user'=>$user]);
+
+        return response()->json(
+            $user->toArray()
+        );
 	}
 
-	public function update($id, UserUpdateRequest $req){
+	public function update(UserUpdateRequest $req, $id){
+		if($req->id_type == 1){
+			$req->merge(['id_oficial'=>null]);
+		}
+
 		$user = User::find($id);
 		$user->fill($req->all());
 		$user->save();
-
-		Session::flash('message', 'Usuario Editado Exitosamente!');
-		return Redirect('/usuario');
+		return response()->json(['mensaje' => 'actualizado']);
 	}
 
 	public function destroy($id){
-		User::destroy($id);
-		Session::flash('message', 'Usuario Eliminado Exitosamente!');
-		return Redirect('/usuario');
+		$user = User::find($id);
+        $user->delete();
+
+        return response()->json(['mensaje'=>'eliminado']);
 	}
 
 	public function correct($id){
@@ -72,5 +106,12 @@ class UsuarioController extends Controller
 		return response()->json([
             'mensaje' => 'actualizado'
         ]); 
+	}
+
+	public function types(){
+		$types = DB::select('SELECT * FROM user_types');
+		return response()->json(
+            $types
+        );
 	}
 }

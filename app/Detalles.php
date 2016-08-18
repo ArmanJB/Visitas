@@ -8,8 +8,8 @@ class Detalles extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'detalle_visita';
+    protected $table = 'detalles';
 
-    protected $fillable = ['id_visita', 'id_motivo', 'horas'];
+    protected $fillable = ['nombre', 'id_motivo'];
 
 }

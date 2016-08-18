@@ -1,4 +1,4 @@
-@extends('layouts.visitaAdmin')
+@extends('layouts.admin')
 
 @section('content')
 	{!!Html::style('css/checkbox.css')!!}

@@ -10,5 +10,5 @@ class Areas extends Model
 
     protected $table = 'areas';
 
-    protected $fillable = ['nombre', 'meta'];
+    protected $fillable = ['nombre'];
 }
