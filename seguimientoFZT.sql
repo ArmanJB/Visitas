@@ -209,6 +209,10 @@ CREATE TABLE `user_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `user_types` (`id`, `name`, `access_level`) VALUES
+(1, 'Administrador', 100),
+(2, 'Coordinador', 50),
+(3, 'Oficial', 25);
 
 CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
@@ -227,9 +231,8 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Administador', 'admin@admin.com', '$2y$10$0iVCZ/o1TWbQlhGsfy/OROYu8UzDzD9dGbiujFTORbCYetobsmj/i', '6M89cw5DMRROviuVV64EvRFuPZ6e4vYCt1vnZCci7WHDwKfWnM1vaHYe6Xqv', '2016-06-01 04:35:06', '2016-06-20 14:56:03'),
-(2, 'FZTMobile', 'fztmobile@admin.com', '$2y$10$YKPJOauMci4/PwWITARbXezDNhNWtLmbN5/Tsi2cjZEa8Xw.SMjIW', 'lTlQtkURI6BmxXKSfk4vqxVapZAWlLYUFDCwfOgAG3nvlspFZ3pV8llzKUzn', '2016-06-03 03:38:29', '2016-06-20 14:28:12'),
-(3, 'Armando Bustos', 'armanjbustos596@gmail.com', '$2y$10$cdEgezrFB/URjYn2M1OGROM0VHZjOv/lF6403KQKtCr8kP3qnmkou', 'LUSLZSVNZ8M4BX1G4yAjkRNCKGSBnNOnyw73OUCsuLz7100ChI67f50S0xwv', '2016-06-20 14:27:40', '2016-06-20 14:27:57');
+(1, 'Administrador', 'admin@admin.com', '$2y$10$0iVCZ/o1TWbQlhGsfy/OROYu8UzDzD9dGbiujFTORbCYetobsmj/i', '6M89cw5DMRROviuVV64EvRFuPZ6e4vYCt1vnZCci7WHDwKfWnM1vaHYe6Xqv', '2016-06-01 04:35:06', '2016-06-20 14:56:03'),
+(2, 'FZTMobile', 'fztmobile@admin.com', '$2y$10$YKPJOauMci4/PwWITARbXezDNhNWtLmbN5/Tsi2cjZEa8Xw.SMjIW', 'lTlQtkURI6BmxXKSfk4vqxVapZAWlLYUFDCwfOgAG3nvlspFZ3pV8llzKUzn', '2016-06-03 03:38:29', '2016-06-20 14:28:12');
 
 ALTER TABLE `users` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `users_email_unique` (`email`);
 

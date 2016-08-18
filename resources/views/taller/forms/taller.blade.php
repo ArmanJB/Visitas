@@ -60,7 +60,7 @@
 			<div class="box-body">
 				<section class="col-lg-12">
 					<div class="form-group">
-					<section class="col-lg-12">{!!Form::label('Zona de atención del taller:  ')!!}<span class="help-block" style="display:inline; margin-left:1rem;">(Selecciona al menos uno)</span></section>
+					<section class="col-lg-12">{!!Form::label('Zona de atención del taller:  ')!!}<span class="help-block" style="display:inline; margin-left:1rem;">(Selecciona al menos uno)</span><br><br></section>
 					<section class="col-lg-12">
 						<div class="panel panel-primary">
 							<div class="panel-body">
@@ -91,10 +91,10 @@
 							<div class="panel-body">
 								<div class="form-group">
 									<div class="input-group">
-										<span class="input-group-addon" style="color:black;"><i class="fa fa-globe"></i></span>
-										{!!Form::select('internacional', ['placeholder'=>'Selecciona'], null, ['id'=>'internacional', 'class'=>'form-control select2', 'style'=>'width:100%;'])!!}
+										<span class="input-group-addon" style="color:black;"><i class="fa fa-users"></i></span>
+										{!!Form::select('zona', ['placeholder'=>'Selecciona'], null, ['id'=>'zona', 'class'=>'form-control select2', 'style'=>'width:100%;'])!!}
 										<span class="input-group-btn">
-					                      <button type="button" class="btn btn-default btn-flat" id="addInternacional"><i class="fa fa-plus"></i></button>
+					                      <button type="button" class="btn btn-default btn-flat" id="addZona"><i class="fa fa-plus"></i></button>
 					                    </span>
 									</div>
 								</div>
@@ -106,10 +106,10 @@
 							<div class="panel-body">
 								<div class="form-group">
 									<div class="input-group">
-										<span class="input-group-addon" style="color:black;"><i class="fa fa-users"></i></span>
-										{!!Form::select('zona', ['placeholder'=>'Selecciona'], null, ['id'=>'zona', 'class'=>'form-control select2', 'style'=>'width:100%;'])!!}
+										<span class="input-group-addon" style="color:black;"><i class="fa fa-globe"></i></span>
+										{!!Form::select('internacional', ['placeholder'=>'Selecciona'], null, ['id'=>'internacional', 'class'=>'form-control select2', 'style'=>'width:100%;'])!!}
 										<span class="input-group-btn">
-					                      <button type="button" class="btn btn-default btn-flat" id="addZona"><i class="fa fa-plus"></i></button>
+					                      <button type="button" class="btn btn-default btn-flat" id="addInternacional"><i class="fa fa-plus"></i></button>
 					                    </span>
 									</div>
 								</div>
@@ -120,7 +120,7 @@
 						<div class="panel panel-primary">
 							
 							<div class="panel-heading">
-								<h3 class="panel-title">{!!Form::label('Agregados:')!!}
+								<h3 class="panel-title">{!!Form::label('Detalles de zonas agregadas:')!!}
 								<div class="pull-right">
 									<a href="#" style="color:white;" id="remove-detalles"><i class="fa fa-remove"></i> Remover</a>
 								</div>
