@@ -102,7 +102,7 @@ function setInternacional(){
 function setZona(){
 	$.get('/zonareceptoras', function(res){
 		$('#zona').empty();
-		$('#zona').append('<option value="placeholder">Selecciona un zona de atención</option>');
+		$('#zona').append('<option value="placeholder">Selecciona una zona de atención</option>');
 		$(res).each(function(key, value){
 			$('#zona').append('<option value="'+value.id+'">'+value.nombre+'</option>');
 		});
