@@ -1,3 +1,7 @@
+var oficiales = null;
+var contenidos = null;
+var audiencias = null;
+
 $(function(){
 	$(".select2").select2();
 	$(".timepicker").timepicker({showMeridian: false, showInputs: false, defaultTime: '01:00'});
@@ -9,9 +13,9 @@ $(function(){
 	setZona();
 	setLugar();
 	setActividad();
-	setOficial();
-	setContenido();
-	setAudiencia();
+	getOficial();
+	getContenido();
+	getAudiencia();
 });
 
 function setLugar(){
@@ -32,11 +36,17 @@ function setActividad(){
 		});
 	});
 }
+function getOficial(){
+	$.get('/oficials', function(res){
+		oficiales = res;
+		setOficial();
+	});
+}
 function setOficial(){
 	$('#group-oficial-1').empty();
 	$('#group-oficial-2').empty();
-	$.get('/oficials', function(res){
-		$(res).each(function(key, value){
+	//$.get('/oficials', function(res){
+		$(oficiales).each(function(key, value){
 			if ((key%2)==0) {
 				$('#group-oficial-1').append('<div><input type="checkbox" class="filled-in" id="ofc'+value.id+'" value="'+value.id+
 					'"/><label for="ofc'+value.id+'" style="color:black;">'+value.nombres+' '+value.apellidos+'</label></div>');
@@ -45,25 +55,37 @@ function setOficial(){
 					'"/><label for="ofc'+value.id+'" style="color:black;">'+value.nombres+' '+value.apellidos+'</label></div>');
 			}
 		});
+	//});
+}
+function getContenido(){
+	$.get('/contenidos', function(res){
+		contenidos = res;
+		setContenido();
 	});
 }
 function setContenido(){
 	$('#group-contenido').empty();
-	$.get('/contenidos', function(res){
-		$(res).each(function(key, value){
+	//$.get('/contenidos', function(res){
+		$(contenidos).each(function(key, value){
 			$('#group-contenido').append('<div><input type="checkbox" class="filled-in" id="cnt'+value.id+'" value="'+value.id+
 					'"/><label for="cnt'+value.id+'" style="color:black;">'+value.nombre+'</label></div>');
 		});
+	//});
+}
+function getAudiencia(){
+	$.get('/audiencias',function(res){
+		audiencias = res;
+		setAudiencia();
 	});
 }
 function setAudiencia(){
 	$('#group-audiencia').empty();
-	$.get('/audiencias', function(res){
-		$(res).each(function(key, value){
+	//$.get('/audiencias', function(res){
+		$(audiencias).each(function(key, value){
 			$('#group-audiencia').append('<div><input type="checkbox" class="filled-in" id="adc'+value.id+'" value="'+value.id+
 					'"/><label for="adc'+value.id+'" style="color:black;">'+value.nombre+'</label></div>');
 		});
-	});
+	//});
 }
 function setDepartamento(){
 	$.get('/departamentos', function(res){
@@ -208,9 +230,6 @@ $('#addZona').on('click', function(){
 });
 
 $('#registrar').on('click', function(){
-	$('#viewAll').prop('checked', true);
-	$('#viewAll').trigger('change');
-
 	$('#box-parent').find('.has-error').each(function(){
 		$(this).removeClass('has-error');
 	});
@@ -219,6 +238,8 @@ $('#registrar').on('click', function(){
 		$('#msjcreate').removeClass('alert-success');
 		$('#msjcreate').addClass('alert-danger');
 		$('#msjcreate'+'-text').html('Faltan campos obligatorios por completar!');
+		$('#viewAll').prop('checked', true);
+		$('#viewAll').trigger('change');
 		$('#msjcreate').fadeIn();
 		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
 		return;
@@ -234,7 +255,22 @@ $('#registrar').on('click', function(){
 				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), id_actividad: $('#actividades').val()},
 
 		success: function(resp){
-			//poner en blanco todo
+			$('#fecha').val('')
+			$('#duracion').val('00:00');
+			setOficial();
+			setContenido();
+			setAudiencia();
+			$('#departamento').val('placeholder').trigger('change');
+			$('#zona').val('placeholder').trigger('change');
+			$('#internacional').val('placeholder').trigger('change');
+			$('#detalles').empty();
+			$('#lugares').val('placeholder').trigger('change');
+			$('#actividades').val('placeholder').trigger('change');
+			$('#cant_mujeres').val('');
+			$('#cant_hombres').val('');
+			$('#total').val('');
+			$('#observaciones').val('');
+			//
 			$('#msjcreate').removeClass('alert-danger');
 			$('#msjcreate').addClass('alert-success');
 			$('#msjcreate'+'-text').html('Registro agregado exitosamente!');
@@ -242,9 +278,11 @@ $('#registrar').on('click', function(){
 			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
 		},
 		error:function(msj){
-			$('#msj').html(msj.responseJSON.fecha);
-			$('#msj-error').fadeIn();
-			window.setTimeout(function(){$('#msj-error').fadeOut();}, 2000);
+			$('#msjcreate').removeClass('alert-success');
+			$('#msjcreate').addClass('alert-danger');
+			$('#msjcreate'+'-text').html(msj.responseJSON.observaciones);
+			$('#msjcreate').fadeIn();
+			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
 		}
 	});
 
