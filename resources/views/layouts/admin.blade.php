@@ -123,38 +123,32 @@
     <div class="content-wrapper">
         @include('alerts.errors')
         @yield('content')
-      <section class="content-header">
+      <!--<section class="content-header">
         <h1>Panel de Control<small>Tablero</small></h1>
         <ol class="breadcrumb"><li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li><li class="active">Dashboard</li></ol>
       </section>
 
       <section class="content">
         <div class="row">
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-aqua">
               <div class="inner"><h3>150</h3><p>Nuevas metas</p></div>
               <div class="icon"><i class="ion ion-arrow-graph-up-right"></i></div>
             </div>
           </div>
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-green">
-              <div class="inner"><h3>53<sup style="font-size: 20px">%</sup></h3><p>Visitas planificadas</p></div>
+              <div class="inner"><h3>53<sup style="font-size: 20px">%</sup></h3><p>Visitas actuales</p></div>
               <div class="icon"><i class="ion ion-calendar"></i></div>
             </div>
           </div>
-          <div class="col-lg-3 col-xs-6">
-            <div class="small-box bg-yellow">
-              <div class="inner"><h3>44</h3><p>Registros nuevos de usuarios/oficiales</p></div>
-              <div class="icon"><i class="ion ion-person-stalker"></i></div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-red">
-              <div class="inner"><h3>65</h3><p>Talleres planificados</p></div>
+              <div class="inner"><h3>65</h3><p>Talleres actuales</p></div>
               <div class="icon"><i class="ion ion-briefcase"></i></div>
             </div>
           </div>
-        </div>
+        </div>-->
     </div>
 
     <footer class="main-footer">

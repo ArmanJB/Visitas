@@ -1,6 +1,6 @@
 <input type="hidden" name="_token" value="{{csrf_token()}}" id="token">
 <div class="row">
-
+	<input type="hidden" name="_token" value="{{csrf_token()}}" id="token">
 	<div class="col-md-12" id="section1">
 		<div class="box box-primary">
 			<div class="box-body">

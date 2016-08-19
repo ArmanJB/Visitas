@@ -28,7 +28,7 @@ class TallerRequest extends Request
             'duracion' => 'required',
             'cant_mujeres' => 'required',
             'cant_hombres' => 'required',
-            'observaciones' => 'required|min:5',
+            'observaciones' => 'min:5',
             'id_lugar' => 'required',
             'id_actividad' => 'required'
         ];

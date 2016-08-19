@@ -16,7 +16,7 @@
 						</div>
 					</div>
 					<div class="box-body" id="box-parent">
-						<div id="msjcreate" class="alert alert-error alert-dismissible" role="alert" style="display:none">
+						<div id="msjcreate" class="alert alert-danger alert-dismissible" role="alert" style="display:none">
 							<strong id="msjcreate-text"></strong>
 						</div>
 						<br>

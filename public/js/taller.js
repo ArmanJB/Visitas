@@ -222,8 +222,31 @@ $('#registrar').on('click', function(){
 		$('#msjcreate').fadeIn();
 		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
 		return;
-	}
-	window.alert('todo bien')
+	} 
+
+	$.ajax({
+		url: '/taller',
+		headers: {'X-CSRF-TOKEN': $('#token').val()},
+		type: 'POST',
+		dataType: 'json',
+		data: {fecha: $('#fecha').val(), duracion: $('#duracion').val(), 
+				cant_mujeres: $('#cant_mujeres').val(), cant_hombres: $('#cant_hombres').val(), 
+				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), id_actividad: $('#actividades').val()},
+
+		success: function(resp){
+			//poner en blanco todo
+			$('#msjcreate').removeClass('alert-danger');
+			$('#msjcreate').addClass('alert-success');
+			$('#msjcreate'+'-text').html('Registro agregado exitosamente!');
+			$('#msjcreate').fadeIn();
+			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		},
+		error:function(msj){
+			$('#msj').html(msj.responseJSON.fecha);
+			$('#msj-error').fadeIn();
+			window.setTimeout(function(){$('#msj-error').fadeOut();}, 2000);
+		}
+	});
 
 });
 
