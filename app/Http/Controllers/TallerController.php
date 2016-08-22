@@ -61,10 +61,23 @@ class TallerController extends Controller
     }
 
     public function listing(){
-        $talleres = DB::select('SELECT * FROM talleres');
-        return response()->json(
-            $talleres
-        );
+        $talleresGroup = DB::select('SELECT talleres.id, talleres.fecha, actividades.nombre, oficiales.nombres, oficiales.apellidos
+                                FROM talleres 
+                                RIGHT JOIN actividades ON talleres.id_actividad=actividades.id
+                                RIGHT JOIN taller_oficial ON talleres.id=taller_oficial.id_taller
+                                LEFT JOIN oficiales ON taller_oficial.id_oficial=oficiales.id
+                                GROUP BY talleres.id');
+
+
+        $talleres = DB::select('SELECT talleres.id, talleres.fecha, actividades.nombre, oficiales.nombres, oficiales.apellidos
+                                FROM talleres 
+                                RIGHT JOIN actividades ON talleres.id_actividad=actividades.id
+                                RIGHT JOIN taller_oficial ON talleres.id=taller_oficial.id_taller
+                                LEFT JOIN oficiales ON taller_oficial.id_oficial=oficiales.id');
+
+        return response()->json([
+            'group'=>$talleresGroup, 'taller'=>$talleres
+        ]);
     }
 
     public function edit($id){
