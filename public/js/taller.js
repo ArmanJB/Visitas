@@ -37,7 +37,7 @@ function setActividad(){
 	});
 }
 function getOficial(){
-	$.get('/oficials', function(res){
+	$.get('/oficial/byArea/3', function(res){
 		oficiales = res;
 		setOficial();
 	});
@@ -229,65 +229,6 @@ $('#addZona').on('click', function(){
 	}
 });
 
-$('#registrar').on('click', function(){
-	$('#box-parent').find('.has-error').each(function(){
-		$(this).removeClass('has-error');
-	});
-
-	if (validar() > 0) {
-		$('#msjcreate').removeClass('alert-success');
-		$('#msjcreate').addClass('alert-danger');
-		$('#msjcreate'+'-text').html('Faltan campos obligatorios por completar!');
-		$('#viewAll').prop('checked', true);
-		$('#viewAll').trigger('change');
-		$('#msjcreate').fadeIn();
-		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
-		return;
-	} 
-
-	$.ajax({
-		url: '/taller',
-		headers: {'X-CSRF-TOKEN': $('#token').val()},
-		type: 'POST',
-		dataType: 'json',
-		data: {fecha: $('#fecha').val(), duracion: $('#duracion').val(), 
-				cant_mujeres: $('#cant_mujeres').val(), cant_hombres: $('#cant_hombres').val(), 
-				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), id_actividad: $('#actividades').val()},
-
-		success: function(resp){
-			$('#fecha').val('')
-			$('#duracion').val('00:00');
-			setOficial();
-			setContenido();
-			setAudiencia();
-			$('#departamento').val('placeholder').trigger('change');
-			$('#zona').val('placeholder').trigger('change');
-			$('#internacional').val('placeholder').trigger('change');
-			$('#detalles').empty();
-			$('#lugares').val('placeholder').trigger('change');
-			$('#actividades').val('placeholder').trigger('change');
-			$('#cant_mujeres').val('');
-			$('#cant_hombres').val('');
-			$('#total').val('');
-			$('#observaciones').val('');
-			//
-			$('#msjcreate').removeClass('alert-danger');
-			$('#msjcreate').addClass('alert-success');
-			$('#msjcreate'+'-text').html('Registro agregado exitosamente!');
-			$('#msjcreate').fadeIn();
-			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
-		},
-		error:function(msj){
-			$('#msjcreate').removeClass('alert-success');
-			$('#msjcreate').addClass('alert-danger');
-			$('#msjcreate'+'-text').html(msj.responseJSON.observaciones);
-			$('#msjcreate').fadeIn();
-			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
-		}
-	});
-
-});
-
 function validar(){
 	var cantE = 0;
 	if ($('#fecha').attr('dataDate') < $('#fecha').val()) {
@@ -329,4 +270,94 @@ function validar(){
 	
 
 	return cantE;
+}
+$('#registrar').on('click', function(){
+	$('#box-parent').find('.has-error').each(function(){
+		$(this).removeClass('has-error');
+	});
+
+	if (validar() > 0) {
+		$('#msjcreate').removeClass('alert-success');
+		$('#msjcreate').addClass('alert-danger');
+		$('#msjcreate'+'-text').html('Faltan campos obligatorios por completar!');
+		$('#viewAll').prop('checked', true);
+		$('#viewAll').trigger('change');
+		$('#msjcreate').fadeIn();
+		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		return;
+	}
+
+	var ofcs = [];
+	$('#group-oficial-1 div input:checkbox:checked').each(function(index){
+		ofcs.push(this.value);
+	});
+	$('#group-oficial-2 div input:checkbox:checked').each(function(index){
+		ofcs.push(this.value);
+	});
+	var cnts = [];
+	$('#group-contenido div input:checkbox:checked').each(function(index){
+		cnts.push(this.value);
+	});
+	var adcs = [];
+	$('#group-audiencia div input:checkbox:checked').each(function(index){
+		adcs.push(this.value);
+	});
+
+	$.ajax({
+		url: '/taller',
+		headers: {'X-CSRF-TOKEN': $('#token').val()},
+		type: 'POST',
+		dataType: 'json',
+		data: {fecha: $('#fecha').val(), duracion: $('#duracion').val(), 
+				cant_mujeres: $('#cant_mujeres').val(), cant_hombres: $('#cant_hombres').val(), 
+				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), id_actividad: $('#actividades').val(),
+				oficiales: ofcs, contenidos: cnts, audiencias: adcs},
+
+		success: function(resp){
+			registrarDetalles(resp.resp);
+			$('#fecha').val('')
+			$('#duracion').val('00:00');
+			setOficial();
+			setContenido();
+			setAudiencia();
+			$('#departamento').val('placeholder').trigger('change');
+			$('#zona').val('placeholder').trigger('change');
+			$('#internacional').val('placeholder').trigger('change');
+			$('#detalles').empty();
+			$('#lugares').val('placeholder').trigger('change');
+			$('#actividades').val('placeholder').trigger('change');
+			$('#cant_mujeres').val('');
+			$('#cant_hombres').val('');
+			$('#total').val('');
+			$('#observaciones').val('');
+			//
+			$('#msjcreate').removeClass('alert-danger');
+			$('#msjcreate').addClass('alert-success');
+			$('#msjcreate'+'-text').html('Registro agregado exitosamente!');
+			$('#msjcreate').fadeIn();
+			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		},
+		error:function(msj){
+			$('#msjcreate').removeClass('alert-success');
+			$('#msjcreate').addClass('alert-danger');
+			$('#msjcreate'+'-text').html(msj.responseJSON.observaciones);
+			$('#msjcreate').fadeIn();
+			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		}
+	});
+});
+function registrarDetalles(idt){
+	$('#detalles li').each(function(index){
+		var data = $(this).attr('data');
+		var id = this.value;
+
+		$.ajax({
+			url: '/detalleTaller',
+			headers: {'X-CSRF-TOKEN': $('#token').val()},
+			type: 'POST',
+			dataType: 'json',
+			data: {id_taller: idt, data: data, id: id}
+			//data: {id_taller: id, id_escuela: null, id_internacional: null, id_zona: null}
+		});
+	});
 }

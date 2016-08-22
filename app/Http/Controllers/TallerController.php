@@ -9,6 +9,10 @@ use visitas\Http\Requests\TallerRequest;
 use visitas\Talleres;
 use DB;
 
+use visitas\TallerAudiencia;
+use visitas\TallerContenido;
+use visitas\TallerOficial;
+
 class TallerController extends Controller
 {
     public function __construct(){
@@ -26,8 +30,32 @@ class TallerController extends Controller
     public function store(TallerRequest $req){
     	if($req->ajax() ){
     		Talleres::create($req->all());
+            $aux = Talleres::all();
+            $taller = $aux->last();
+
+            foreach ($req->oficiales as $key => $value) {
+                $tOficial = new TallerOficial;
+                $tOficial->id_taller = $taller->id;
+                $tOficial->id_oficial = $value;
+                $tOficial->save();
+            }
+
+            foreach ($req->contenidos as $key => $value) {
+                $tContenidos = new TallerContenido;
+                $tContenidos->id_taller = $taller->id;
+                $tContenidos->id_contenido = $value;
+                $tContenidos->save();
+            }
+
+            foreach ($req->audiencias as $key => $value) {
+                $tAudiencia = new TallerAudiencia;
+                $tAudiencia->id_taller = $taller->id;
+                $tAudiencia->id_audiencia = $value;
+                $tAudiencia->save();
+            }
+
     		return response()->json([
-    			'mensaje' => "creado"
+    			'resp' => $taller->id
     		]);
     	}
     }

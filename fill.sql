@@ -226,3 +226,60 @@ INSERT INTO `motivos` (`id`, `nombre`, `id_area`) VALUES
 (25, 'Información para donantes.', 1),
 (26, 'Charlas a estudiantes', 1),
 (27, 'Programas con voluntarios', 1);
+
+INSERT INTO `actividades` VALUES 
+(1,'Taller de Información'),
+(2,'Presentación del Programa Educativo'),
+(3,'Reunión de Coordinación o Informativa');
+
+INSERT INTO `audiencia` VALUES 
+(1,'Público'),
+(2,'Facilitadores EpC'),
+(3,'Visitantes Nacionales'),
+(4,'Visitantes Extranjeros'),
+(5,'Docentes'),
+(6,'Directores'),
+(7,'Padres de Familia'),
+(8,'Estudiantes'),
+(9,'Voluntarios'),
+(10,'Personal LAFISE'),
+(11,'Personal MINED');
+
+INSERT INTO `contenidos` VALUES 
+(1,'Generalidades del Programa Educativo UCPN y FZT'),
+(2,'Contenidos del Módulo 1: Innovación Educativa'),
+(3,'Contenidos del Módulo 2: Uso XO'),
+(4,'Contenidos del Módulo 3: Entorno Gnome'),
+(5,'Contenidos del Módulo 4: Estrategia de Integración con XO'),
+(6,'Contenidos del Módulo 5: Lectoescritura o Método FAS '),
+(7,'Contenidos del Módulo 6: Matemáticas'),
+(8,'Contenidos del Módulo  7: Gestión Directiva'),
+(9,'Contenidos de la Cartilla Escuela para Padres y Madres'),
+(10,'Contenidos del Cuardeno de Niños Monitores'),
+(11,'Contenido sobre Salud y Nutrición'),
+(12,'Presentación del Modelo Educativo de Fundación Zamora Terán'),
+(13,'Uso de Formatos para Control de Inventario, Recolecta y Entrega de XO en Plan EA'),
+(14,'Aplicacion de Prueba Simplificada de Lectura Mini EGRA');
+
+INSERT INTO `internacionales` VALUES 
+(1,'Guatemala'),
+(2,'Honduras'),
+(3,'República Dominicana'),
+(4,'México'),
+(5,'Ecuador'),
+(6,'Uruguay'),
+(7,'España'),
+(8,'Argentina'),
+(9,'Costa Rica'),
+(10,'El Salvador'),
+(11,'Ruanda');
+
+INSERT INTO `lugares` VALUES 
+(1,'Escuela'),
+(2,'Oficinas FZT'),
+(3,'Instalaciones de LAFISE'),
+(4,'Instalación de la Institución externa');
+
+INSERT INTO `zonas_receptoras` VALUES 
+(1,'Personal LAFISE'),
+(2,'Visitantes Nacionales');

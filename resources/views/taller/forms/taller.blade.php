@@ -224,7 +224,7 @@
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-calculator" style="color:black;width:15px;"></i></span>
-							{!!Form::text('total', null, ["class"=>"form-control", "id"=>"total", "disabled"]);!!}
+							{!!Form::text('total', null, ["placeholder"=>"Total", "class"=>"form-control", "id"=>"total", "disabled"]);!!}
 						</div>
 					</div>
 				</section>
