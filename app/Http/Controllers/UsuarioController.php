@@ -46,7 +46,8 @@ class UsuarioController extends Controller
 	}
 
 	public function detalle($id){
-		$user = DB::select("SELECT users.id, user_types.name AS 'tipo', areas.nombre AS 'area' 
+		$user = DB::select("SELECT user_types.id, user_types.name AS 'tipo', 
+			oficiales.id AS 'oficial', areas.id AS 'id_area', areas.nombre AS 'area' 
 			FROM users LEFT JOIN user_types ON users.id_type=user_types.id 
 			LEFT JOIN oficiales ON users.id_oficial=oficiales.id 
 			LEFT JOIN areas ON oficiales.id_area=areas.id 

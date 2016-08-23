@@ -10,5 +10,5 @@ class Talleres extends Model
 
     protected $table = 'talleres';
 
-    protected $fillable = ['fecha', 'duracion', 'cant_mujeres', 'cant_hombres', 'observaciones', 'id_lugar', 'id_actividad'];
+    protected $fillable = ['fecha', 'duracion', 'cant_mujeres', 'cant_hombres', 'observaciones', 'id_lugar', 'id_actividad', 'viaticos'];
 }

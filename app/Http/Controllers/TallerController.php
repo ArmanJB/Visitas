@@ -82,7 +82,8 @@ class TallerController extends Controller
 
     public function detail($id){
         $taller = DB::select("SELECT talleres.fecha, talleres.duracion, talleres.cant_mujeres, talleres.cant_hombres, 
-                                lugares.nombre AS 'lugar', actividades.nombre AS 'actividad', talleres.observaciones
+                                lugares.nombre AS 'lugar', actividades.nombre AS 'actividad', 
+                                talleres.viaticos, talleres.observaciones
                                 FROM talleres 
                                 INNER JOIN lugares ON talleres.id_lugar = lugares.id 
                                 INNER JOIN actividades ON talleres.id_actividad = actividades.id

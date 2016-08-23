@@ -196,7 +196,9 @@
       $(function(){
         $.get('/usuarios/detalle/'+{!!Auth::user()->id!!}, function(res){
           $('#user_type').html(res[0].tipo);
+          $('#user_type').attr('value', res[0].id);
           $('#user_area').html(res[0].area);
+          $('#user_area').attr('value', res[0].id_area);
         });
       });
     </script>

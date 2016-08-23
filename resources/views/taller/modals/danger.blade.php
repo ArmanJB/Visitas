@@ -7,8 +7,8 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button value='' class="btn btn-default" OnClick="$('#modalRemove').modal('toggle');">No</button>
-				<button value='' id="confirmRemove" class="btn btn-danger" OnClick="eliminar(this);">Si, Eliminar</button>
+				<button value='' class="btn btn-warning btn-flat" OnClick="$('#modalRemove').modal('toggle');">No</button>
+				<button value='' id="confirmRemove" class="btn btn-default btn-flat" OnClick="eliminar(this);">Si, Eliminar</button>
 			</div>
 		</div>
 	</div>
