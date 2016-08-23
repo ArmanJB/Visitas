@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
-	
+	@include('taller.modals.danger')
+	@include('taller.modals.detail')
 	<section class="content">
 		<div class="row">
 		<div class="col-md-1"></div>
@@ -16,11 +17,11 @@
 								<div class="input-group-btn">
 									<span class="input-group-addon" style="border:none;color:black;">Desde</span>
 								</div>
-								<input type="date" name="table_search" id="toSearch" class="form-control pull-right" placeholder="Search">
+								{!!Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'desde', 'class'=>'form-control ', 'dataDate'=>\Carbon\Carbon::now()->toDateString()])!!}
 								<div class="input-group-btn">
 									<span class="input-group-addon" style="border:none;color:black;">hasta</span>
 								</div>
-								<input type="date" name="table_search" id="toSearch" class="form-control pull-right" placeholder="Search">
+								{!!Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'hasta', 'class'=>'form-control ', 'dataDate'=>\Carbon\Carbon::now()->toDateString()])!!}
 								<div class="input-group-btn">
 									<button type="submit" id="search" class="btn btn-success"><i class="fa fa-search"></i></button>
 								</div>
@@ -30,8 +31,9 @@
 					</div>
 					<div class="box-body table-responsive no-padding">
 						<br>
-						<div id="msjescuela" class="alert alert-success alert-dismissible" role="alert" style="display:none">
-							<strong id="msjescuela-text"></strong>
+						<input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
+						<div id="msjindex" class="alert alert-success alert-dismissible" role="alert" style="display:none">
+							<strong id="msjindex-text"></strong>
 						</div>
 						<table class="table table-hover">
 							<thead><th>#</th><th>Fecha</th><th>Actividad</th><th>Oficiales a cargo</th><th>Opciones</th></thead>

@@ -233,17 +233,16 @@ INSERT INTO `actividades` VALUES
 (3,'Reunión de Coordinación o Informativa');
 
 INSERT INTO `audiencia` VALUES 
-(1,'Público'),
-(2,'Facilitadores EpC'),
-(3,'Visitantes Nacionales'),
-(4,'Visitantes Extranjeros'),
-(5,'Docentes'),
-(6,'Directores'),
-(7,'Padres de Familia'),
-(8,'Estudiantes'),
-(9,'Voluntarios'),
-(10,'Personal LAFISE'),
-(11,'Personal MINED');
+(1,'Facilitadores EpC'),
+(2,'Visitantes Nacionales'),
+(3,'Visitantes Extranjeros'),
+(4,'Docentes'),
+(5,'Directores'),
+(6,'Padres de Familia'),
+(7,'Estudiantes'),
+(8,'Voluntarios'),
+(9,'Personal LAFISE'),
+(10,'Personal MINED');
 
 INSERT INTO `contenidos` VALUES 
 (1,'Generalidades del Programa Educativo UCPN y FZT'),

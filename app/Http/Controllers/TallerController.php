@@ -80,6 +80,44 @@ class TallerController extends Controller
         ]);
     }
 
+    public function detail($id){
+        $taller = DB::select("SELECT talleres.fecha, talleres.duracion, talleres.cant_mujeres, talleres.cant_hombres, 
+                                lugares.nombre AS 'lugar', actividades.nombre AS 'actividad', talleres.observaciones
+                                FROM talleres 
+                                INNER JOIN lugares ON talleres.id_lugar = lugares.id 
+                                INNER JOIN actividades ON talleres.id_actividad = actividades.id
+                                WHERE talleres.id = $id");
+
+        $oficiales = DB::select("SELECT taller_oficial.id_oficial, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS 'oficial'
+                                FROM taller_oficial INNER JOIN oficiales ON taller_oficial.id_oficial=oficiales.id
+                                WHERE taller_oficial.id_taller = $id");
+
+        $contenidos = DB::select("SELECT taller_contenido.id_contenido, contenidos.nombre as 'contenido'
+                                FROM taller_contenido INNER JOIN contenidos ON taller_contenido.id_contenido=contenidos.id
+                                WHERE taller_contenido.id_taller = $id");
+
+        $audiencias = DB::select("SELECT taller_audiencia.id_audiencia, audiencia.nombre AS 'audiencia'
+                                FROM taller_audiencia INNER JOIN audiencia ON taller_audiencia.id_audiencia=audiencia.id
+                                WHERE taller_audiencia.id_taller = $id");
+
+        $detalles = DB::select("SELECT detalle_taller.id, escuelas.nombre AS 'escuela', 
+                                internacionales.nombre AS 'pais', zonas_receptoras.nombre AS 'zona'
+                                FROM detalle_taller LEFT JOIN escuelas ON detalle_taller.id_escuela=escuelas.id
+                                LEFT JOIN internacionales ON detalle_taller.id_internacional=internacionales.id
+                                LEFT JOIN zonas_receptoras ON detalle_taller.id_zona=zonas_receptoras.id
+                                WHERE detalle_taller.id_taller = $id");
+
+        return response()->json([
+            'taller'=>$taller, 
+            'oficiales'=>$oficiales, 
+            'contenidos'=>$contenidos, 
+            'audiencias'=>$audiencias,
+            'detalles'=>$detalles
+            ]);
+    }
+
+
+
     public function edit($id){
         $taller = Talleres::find($id);
 
@@ -99,9 +137,14 @@ class TallerController extends Controller
     }
 
     public function destroy($id){
+        DB::table('detalle_taller')->where('id_taller','=',$id)->delete();
+        DB::table('taller_audiencia')->where('id_taller','=',$id)->delete();
+        DB::table('taller_contenido')->where('id_taller','=',$id)->delete();
+        DB::table('taller_oficial')->where('id_taller','=',$id)->delete();
+
         $taller = Talleres::find($id);
         $taller->delete();
 
-        return response()->json(['mensaje'=>'borrado']);
+        return response()->json(['mensaje'=>'registros eliminados']);
     }
 }
