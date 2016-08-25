@@ -34,7 +34,7 @@ class MotivoController extends Controller
     }
 
     public function listing(){
-        $motivos = DB::select('SELECT motivos.id, motivos.nombre, areas.nombre AS nombreAr FROM motivos, areas 
+        $motivos = DB::select('SELECT motivos.id, motivos.nombre, motivos.id_area, areas.nombre AS nombreAr FROM motivos, areas 
             WHERE motivos.id_area = areas.id');
         //$motivos = Escuelas::all();
         return response()->json(

@@ -32,6 +32,7 @@
 				<section class="col-lg-12">
 					<div class="panel panel-primary">
 						<div class="panel-body">
+							<section class="col-lg-12">{!!Form::label('Escuela visitada: ')!!}</section>
 							<section class="col-lg-6">
 								<div class="form-group">
 									<div class="input-group">
@@ -75,13 +76,13 @@
 						<section class="col-lg-12">{!!Form::label('Voluntarios participantes:  ')!!}</section>
 						<section class="col-lg-6">
 							<div class="input-group">
-								<span class="input-group-addon" style="text-align: left;" id="group-voluntario-1"></span>
+								<span class="input-group-addon" style="text-align: left;color:black;" id="group-voluntario-1"></span>
 							</div>
 							<br>	
 						</section>
 						<section class="col-lg-6">
 							<div class="input-group">
-								<span class="input-group-addon" style="text-align: left;" id="group-voluntario-2"></span>
+								<span class="input-group-addon" style="text-align: left;color:black;" id="group-voluntario-2"></span>
 							</div>
 							<br>
 						</section>
@@ -98,13 +99,13 @@
 						<section class="col-lg-12">{!!Form::label('Motivos de la visita:  ')!!}</section>
 						<section class="col-lg-6">
 							<div class="input-group">
-								<span class="input-group-addon" style="text-align: left;" id="group-motivos-1"></span>
+								<span class="input-group-addon" style="text-align: left;color:black;" id="group-motivos-1"></span>
 							</div>
 							<br>	
 						</section>
 						<section class="col-lg-6">
 							<div class="input-group">
-								<span class="input-group-addon" style="text-align: left;" id="group-motivos-2"></span>
+								<span class="input-group-addon" style="text-align: left;color:black;" id="group-motivos-2"></span>
 							</div>
 							<br>
 						</section>

@@ -34,7 +34,8 @@ class EscuelaController extends Controller
     }
 
     public function listing(){
-        $escuelas = DB::select('SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS nombreDep FROM escuelas, departamentos WHERE escuelas.id_departamento = departamentos.id');
+        $escuelas = DB::select('SELECT escuelas.id, escuelas.nombre, escuelas.id_departamento AS idDep, departamentos.nombre AS nombreDep 
+            FROM escuelas, departamentos WHERE escuelas.id_departamento = departamentos.id');
         //$escuelas = Escuelas::all();
         return response()->json(
             $escuelas
