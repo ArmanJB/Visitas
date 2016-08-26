@@ -104,17 +104,17 @@ function setVoluntario(){
 	$('#group-voluntario-2').empty();
 	$(voluntarios).each(function(key, value){
 		if ((key%2)==0) {
-			$('#group-voluntario-1').append('<div class="bootstrap-timepicker"><div class="input-group">'+
+			$('#group-voluntario-1').append('<div class="input-group">'+
 													'<input type="checkbox" class="filled-in" id="vln'+value.id+'" value="'+value.id+'"/>'+
 													'<label for="vln'+value.id+'" value="'+value.id+'" OnClick="setHoraVln(this);">'+value.nombres+' '+value.apellidos+'</label>'+
-													'<input type="text" class="form-control timepicker" id="time'+value.id+'" disabled>'+
-											'</div></div');
+													'<div class="bootstrap-timepicker"><input type="text" class="form-control timepicker" id="time'+value.id+'" disabled style="width:70px;">'+
+											'</div></div>');
 		}else{
-			$('#group-voluntario-2').append('<div class="bootstrap-timepicker"><div class="input-group">'+
+			$('#group-voluntario-2').append('<div class="input-group">'+
 													'<input type="checkbox" class="filled-in" id="vln'+value.id+'" value="'+value.id+'"/>'+
 													'<label for="vln'+value.id+'" value="'+value.id+'" OnClick="setHoraVln(this);">'+value.nombres+' '+value.apellidos+'</label>'+
-													'<input type="text" class="form-control timepicker" id="time'+value.id+'" disabled>'+
-											'</div></div');
+													'<div class="bootstrap-timepicker"><input type="text" class="form-control timepicker" id="time'+value.id+'" disabled style="width:70px;">'+
+											'</div></div>');
 		}
 	});
 	$(".timepicker").timepicker({showMeridian: false, showInputs: false, defaultTime: '00:00'});
@@ -140,16 +140,16 @@ function setMotivo(id){
 	if (id != 'placeholder') {
 		$(motivos).each(function(key, value){
 			if ((value.id_area)==id) {
-				$('#group-motivos-1').append('<div class="bootstrap-timepicker"><div class="input-group">'+
-														'<input type="checkbox" class="filled-in" id="mtv'+value.id+'" value="'+value.id+'"/>'+
-														'<label for="mtv'+value.id+'" value="'+value.id+'" OnClick="setHoraMtv(this);">'+value.nombre+'</label>'+
-														'<input type="text" class="form-control timepicker" id="timeM'+value.id+'" disabled>'+
+				$('#group-motivos-1').append('<div class="input-group">'+
+													'<input type="checkbox" class="filled-in" id="mtv'+value.id+'" value="'+value.id+'"/>'+
+													'<label for="mtv'+value.id+'" value="'+value.id+'" OnClick="setHoraMtv(this);">'+value.nombre+'</label>'+
+													'<div class="bootstrap-timepicker"><input type="text" class="form-control timepicker" id="timeM'+value.id+'" disabled style="width:70px;">'+
 												'</div></div');
 			}else if ((value.id_area)==1){
-				$('#group-motivos-2').append('<div class="bootstrap-timepicker"><div class="input-group">'+
-														'<input type="checkbox" class="filled-in" id="mtv'+value.id+'" value="'+value.id+'"/>'+
-														'<label for="mtv'+value.id+'" value="'+value.id+'" OnClick="setHoraMtv(this);">'+value.nombre+'</label>'+
-														'<input type="text" class="form-control timepicker" id="timeM'+value.id+'" disabled>'+
+				$('#group-motivos-2').append('<div class="input-group">'+
+													'<input type="checkbox" class="filled-in" id="mtv'+value.id+'" value="'+value.id+'"/>'+
+													'<label for="mtv'+value.id+'" value="'+value.id+'" OnClick="setHoraMtv(this);">'+value.nombre+'</label>'+
+													'<div class="bootstrap-timepicker"><input type="text" class="form-control timepicker" id="timeM'+value.id+'" disabled style="width:70px;">'+
 												'</div></div');
 			}
 		});

@@ -164,7 +164,7 @@
 							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-usd" style="color:black;width:15px;"></i></span>
-									{!!Form::number('viaticos', null, ["class"=>"form-control", "id"=>"viaticos", "placeholder"=>"Viáticos usados en el taller", "min"=>"0"]);!!}
+									{!!Form::number('viaticos', null, ["class"=>"form-control", "id"=>"viaticos", "placeholder"=>"Viáticos usados en la visita", "min"=>"0"]);!!}
 								</div>
 							</div>
 						</div>
