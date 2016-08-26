@@ -231,9 +231,9 @@ CREATE TABLE `users` (
   CONSTRAINT `users_id_oficial_fk` FOREIGN KEY (`id_oficial`) REFERENCES `oficiales` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Administrador', 'admin@admin.com', '$2y$10$0iVCZ/o1TWbQlhGsfy/OROYu8UzDzD9dGbiujFTORbCYetobsmj/i', '6M89cw5DMRROviuVV64EvRFuPZ6e4vYCt1vnZCci7WHDwKfWnM1vaHYe6Xqv', '2016-06-01 04:35:06', '2016-06-20 14:56:03'),
-(2, 'FZTMobile', 'fztmobile@admin.com', '$2y$10$YKPJOauMci4/PwWITARbXezDNhNWtLmbN5/Tsi2cjZEa8Xw.SMjIW', 'lTlQtkURI6BmxXKSfk4vqxVapZAWlLYUFDCwfOgAG3nvlspFZ3pV8llzKUzn', '2016-06-03 03:38:29', '2016-06-20 14:28:12');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `id_type`) VALUES
+(1, 'Administrador', 'admin@admin.com', '$2y$10$0iVCZ/o1TWbQlhGsfy/OROYu8UzDzD9dGbiujFTORbCYetobsmj/i', '6M89cw5DMRROviuVV64EvRFuPZ6e4vYCt1vnZCci7WHDwKfWnM1vaHYe6Xqv', '2016-06-01 04:35:06', '2016-06-20 14:56:03', 1),
+(2, 'FZTMobile', 'fztmobile@admin.com', '$2y$10$YKPJOauMci4/PwWITARbXezDNhNWtLmbN5/Tsi2cjZEa8Xw.SMjIW', 'lTlQtkURI6BmxXKSfk4vqxVapZAWlLYUFDCwfOgAG3nvlspFZ3pV8llzKUzn', '2016-06-03 03:38:29', '2016-06-20 14:28:12', 1);
 
 ALTER TABLE `users` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `users_email_unique` (`email`);
 

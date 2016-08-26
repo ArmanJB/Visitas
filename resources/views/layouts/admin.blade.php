@@ -74,7 +74,7 @@
             <img src="/img/logo-user.jpg" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
-            <p>{!!Auth::user()->name!!}</p>
+            <p id="user_oficial">{!!Auth::user()->name!!}</p>
             <a id="user_area"> </a>
           </div>
         </div>
@@ -199,6 +199,7 @@
           $('#user_type').attr('value', res[0].id);
           $('#user_area').html(res[0].area);
           $('#user_area').attr('value', res[0].id_area);
+          $('#user_oficial').attr('value', res[0].oficial);
         });
       });
     </script>

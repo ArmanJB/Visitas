@@ -11,7 +11,7 @@
 				<div class="box box-success">
 					<div class="box-header with-border">
 						<h2 class="box-title"><i class="fa fa-pencil-square-o"></i> Agregar Visita</h2>
-						<div class="pull-right" id="view_group">
+						<div class="pull-right" id="view_group" style="display:none;">
 							<input type="checkbox" class="filled-in" id="viewAll" value=""/><label for="viewAll" style="color:black;"id="labelView">Ver todo</label>
 						</div>
 					</div>

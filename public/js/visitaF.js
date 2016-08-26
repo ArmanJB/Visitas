@@ -21,6 +21,15 @@ function setAreas(){
 		$(res).each(function(key, value){
 			$('#area').append('<option value="'+value.id+'">'+value.nombre+'</option>');
 		});
+		//Admin
+		setTimeout(function(){
+			if ($('#user_type').attr('value') != 1) {
+				$('#area').val($('#user_area').attr('value')).trigger('change');
+				$('#area').attr('disabled', true);
+				$('#oficial').val($('#user_oficial').attr('value')).trigger('change');
+				$('#oficial').attr('disabled', true);
+			}
+		}, 3000);
 	});
 }
 function setDepartamentos(){
@@ -66,6 +75,9 @@ $('#area').on('change', function(){
 	if ($('#area').val()=='placeholder') {
 		$('#oficial').empty();
 		$('#oficial').append('<option value="placeholder">Selecciona un área antes..</option>');
+	}else if($('#viewAll').is(':not(:checked)')){
+		$('#view_group').fadeIn();
+		$('#footer1').fadeIn();
 	}
 	setOficial($('#area').val());
 	setMotivo($('#area').val());
@@ -152,3 +164,174 @@ function setHoraMtv(btn){
 		$('#timeM'+btn.getAttribute('value')).removeAttr('disabled');
 	}
 }
+
+$('#registrar').on('click', function(){
+	$('#box-parent').find('.has-error').each(function(){
+		$(this).removeClass('has-error');
+	});
+
+	if (validar() > 0) {
+		$('#msjcreate').removeClass('alert-success');
+		$('#msjcreate').addClass('alert-danger');
+		$('#msjcreate'+'-text').html('Faltan campos obligatorios por completar!');
+		$('#viewAll').prop('checked', true);
+		$('#viewAll').trigger('change');
+		$('#msjcreate').fadeIn();
+		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		return;
+	}
+	window.alert('todo bien!')
+});
+
+function validar(){
+	var cantE = 0;
+
+	if ($('#fecha').attr('dataDate') < $('#fecha').val() || $('#fecha').val() == '') {
+		$('#fecha').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#area').val() == 'placeholder') {
+		$('#area').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#escuela').val() == 'placeholder') {
+		$('#escuela').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if ($('#oficial').val() == 'placeholder') {
+		$('#oficial').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if (isNaN($('#aulas').val()) || $('#aulas').val()=='') {
+		$('#aulas').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if (isNaN($('#viaticos').val()) || $('#viaticos').val()=='') {
+		$('#viaticos').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	var volCont = 0;
+	$('#group-voluntario-1').find('.timepicker').each(function(){
+		if ($(this).val()=='' || $(this).val()=='00:00') {
+			volCont++;
+		}
+	});
+	$('#group-voluntario-2').find('.timepicker').each(function(){
+		if ($(this).val()=='' || $(this).val()=='00:00') {
+			volCont++;
+		}
+	});
+	var check = $('#group-voluntario-1 div input:checkbox:not(:checked)').length + $('#group-voluntario-2 div input:checkbox:not(:checked)').length;
+	if (check != 0 && volCont != check) {
+		$('#group-voluntario-1').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	//
+	volCont = 0;
+	$('#group-motivos-1').find('.timepicker').each(function(){
+		if ($(this).val()=='' || $(this).val()=='00:00') {
+			volCont++;
+		}
+	});
+	$('#group-motivos-2').find('.timepicker').each(function(){
+		if ($(this).val()=='' || $(this).val()=='00:00') {
+			volCont++;
+		}
+	});
+	check = $('#group-motivos-1 div input:checkbox:not(:checked)').length + $('#group-motivos-2 div input:checkbox:not(:checked)').length;
+	if ($('#group-motivos-1 div input:checkbox:checked').length == 0 && $('#group-motivos-2 div input:checkbox:checked').length == 0) {
+		$('#group-motivos-1').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	if (check != 0 && volCont != check) {
+		$('#group-motivos-1').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
+	
+
+	return cantE;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/********************Slides**********************/
+$('#viewAll').on('change', function(){
+	if ($('#viewAll').is(':checked')) {
+		$('#header1').fadeOut();
+		$('#header2').fadeOut();
+		$('#header3').fadeOut();
+		$('#footer1').fadeOut();
+		$('#footer2').fadeOut();
+		$('#footer3').fadeOut();
+		$('#section1').slideDown();
+		$('#section2').slideDown();
+		$('#section3').slideDown();
+		$('#section4').slideDown();
+	}else{
+		$('#header1').fadeOut();
+		$('#header2').fadeOut();
+		$('#header3').fadeOut();
+		$('#footer1').fadeIn();
+		$('#footer2').fadeIn();
+		$('#footer3').fadeIn();
+		//$('#section1').fadeOut();
+		$('#section2').slideUp();
+		$('#section3').slideUp();
+		$('#section4').slideUp();
+	}
+});
+
+$('#sig1').on('click', function(){
+	$('#section1').slideUp();
+	$('#header1').slideDown();
+	$('#section2').slideDown();
+	$('#footer2').slideDown();
+});
+$('#sig2').on('click', function(){
+	$('#section2').slideUp();
+	$('#header2').slideDown();
+	$('#section3').slideDown();
+	$('#footer3').slideDown();
+});
+$('#sig3').on('click', function(){
+	$('#section3').slideUp();
+	$('#header3').slideDown();
+	$('#section4').slideDown();
+});
+
+$('#ant1').on('click', function(){
+	$('#section2').slideUp();
+	$('#section1').slideDown();
+	$('#footer1').slideDown();
+});
+$('#ant2').on('click', function(){
+	$('#section3').slideUp();
+	$('#header1').slideDown();
+	$('#section2').slideDown();
+	$('#footer2').slideDown();
+});
+$('#ant3').on('click', function(){
+	$('#section4').slideUp();
+	$('#header2').slideDown();
+	$('#section3').slideDown();
+	$('#footer3').slideDown();
+});
+/**************************************************/
