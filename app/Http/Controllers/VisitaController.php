@@ -111,6 +111,30 @@ class VisitaController extends Controller
         ]);
     }
 
+    public function infoVisita($id){
+        $visita = DB::select("SELECT visitas.fecha, escuelas.nombre AS escuela, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, 
+                            visita_oficial.aulas, visita_oficial.viaticos, visita_oficial.pendientes, visita_oficial.observaciones
+                            FROM visitas RIGHT JOIN visita_oficial ON visita_oficial.id_visita = visitas.id
+                            INNER JOIN escuelas ON visitas.id_escuela = escuelas.id
+                            INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id
+                            WHERE visita_oficial.id = '$id'");
+
+        $motivos = DB::select("SELECT motivos.nombre as motivo, visita_motivo.tiempo FROM visita_motivo
+                                INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id
+                                WHERE visita_motivo.id_visitaO = '$id'");
+
+        $voluntarios = DB::select("SELECT CONCAT(voluntarios.nombres, ' ', voluntarios.apellidos) AS voluntario, visita_voluntario.tiempo 
+                                FROM visita_voluntario INNER JOIN voluntarios ON visita_voluntario.id_voluntario = voluntarios.id
+                                WHERE visita_voluntario.id_visitaO = '$id'");
+
+        return response()->json([
+            'visita'=>$visita, 
+            'motivos'=>$motivos, 
+            'voluntarios'=>$voluntarios
+        ]);
+    }
+
+
 
 
     public function listingU($name){
