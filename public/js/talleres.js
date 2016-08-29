@@ -26,6 +26,7 @@ function detalle(btn){
 		$('#actividad').html(res.taller[0].actividad);
 		$('#observaciones').html('');
 		$('#observaciones').html(res.taller[0].observaciones);
+		$('#viaticos').html(res.taller[0].viaticos);
 		$('#cant_mujeres').html(res.taller[0].cant_mujeres);
 		$('#cant_hombres').html(res.taller[0].cant_hombres);
 		$('#total').html(res.taller[0].cant_mujeres+res.taller[0].cant_hombres);

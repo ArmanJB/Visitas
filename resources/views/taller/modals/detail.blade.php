@@ -17,7 +17,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading"><b>Zonas de atención:</b></div>
 					<div class="panel-body" id="zonas">
-						<li style="list-style-type: circle;">hola</li>
+						<li style="list-style-type: circle;">H</li>
 					</div>
 				</div>
 				<div class="panel panel-default">
@@ -40,7 +40,11 @@
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading"><b>Observaciones:</b></div>
-					<div class="panel-body" id="observaciones">
+					<div class="panel-body">
+						<div class="row">
+							<section class="col-md-12">Viáticos: <b id="viaticos"></b></section>
+							<section class="col-md-12">Observaciones: <b id="observaciones"></b></section>
+						</div>
 					</div>
 				</div>
 			</div>

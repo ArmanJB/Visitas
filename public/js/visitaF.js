@@ -180,7 +180,73 @@ $('#registrar').on('click', function(){
 		window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
 		return;
 	}
-	window.alert('todo bien!')
+	
+	var vlts = []; 
+	var vltsTime = [];
+	$('#group-voluntario-1 div input:checkbox:checked').each(function(index){
+		vlts.push(this.value);
+		vltsTime.push($('#time'+this.value).val());
+	});
+	$('#group-voluntario-2 div input:checkbox:checked').each(function(index){
+		vlts.push(this.value);
+		vltsTime.push($('#time'+this.value).val());
+	});
+
+	var mtvs = []; 
+	var mtvsTime = [];
+	$('#group-motivos-1 div input:checkbox:checked').each(function(index){
+		mtvs.push(this.value);
+		mtvsTime.push($('#timeM'+this.value).val());
+	});
+	$('#group-motivos-2 div input:checkbox:checked').each(function(index){
+		mtvs.push(this.value);
+		mtvsTime.push($('#timeM'+this.value).val());
+	});
+
+	$.ajax({
+		url: '/visita',
+		headers: {'X-CSRF-TOKEN': $('#token').val()},
+		type: 'POST',
+		dataType: 'json',
+		data: {fecha: $('#fecha').val(), id_escuela: $('#escuela').val(), id_oficial: $('#oficial').val(),
+				aulas: $('#aulas').val(), viaticos: $('#viaticos').val(), 
+				pendientes: $('#pendientes').val(), observaciones: $('#observaciones').val(),
+				voluntarios: vlts, voluntariosTime: vltsTime, motivos: mtvs, motivosTime: mtvsTime},
+
+		success: function(resp){
+			$('#fecha').val('');
+			$('#area').val('placeholder').trigger('change');
+			$('#departamento').val('placeholder').trigger('change');
+			$('#oficial').val('placeholder').trigger('change');
+			$('#aulas').val('');
+			$('#viaticos').val('');
+			$('#pendientes').val('');
+			$('#observaciones').val('');
+			setVoluntario();
+			//
+			setTimeout(function(){
+				if ($('#user_type').attr('value') != 1) {
+					$('#area').val($('#user_area').attr('value')).trigger('change');
+					$('#area').attr('disabled', true);
+					$('#oficial').val($('#user_oficial').attr('value')).trigger('change');
+					$('#oficial').attr('disabled', true);
+				}
+			}, 1000);
+			//
+			$('#msjcreate').removeClass('alert-danger');
+			$('#msjcreate').addClass('alert-success');
+			$('#msjcreate'+'-text').html('Registro agregado exitosamente!');
+			$('#msjcreate').fadeIn();
+			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		},
+		error:function(msj){
+			$('#msjcreate').removeClass('alert-success');
+			$('#msjcreate').addClass('alert-danger');
+			$('#msjcreate'+'-text').html(msj.responseJSON.observaciones);
+			$('#msjcreate').fadeIn();
+			window.setTimeout(function(){$('#msjcreate').fadeOut();}, 2000);
+		}
+	});
 });
 
 function validar(){

@@ -10,6 +10,10 @@ use visitas\Visitas;
 use DB;
 use Carbon\Carbon;
 
+use visitas\VisitaOficial;
+use visitas\VisitaMotivo;
+use visitas\VisitaVoluntario;
+
 class VisitaController extends Controller
 {
     public function __construct(){
@@ -26,29 +30,89 @@ class VisitaController extends Controller
     }
 
     public function store(VisitaRequest $req){
-    	if($req->ajax() ){
-    		Visitas::create($req->all());
-            $user = Visitas::all();
-            $visita = $user->last();
-    		return response()->json([
-    			'resp' => $visita->id
-    		]);
-    	}
+        if($req->ajax() ){
+            $visita = DB::select("SELECT * FROM visitas WHERE visitas.fecha = '$req->fecha' AND visitas.id_escuela = '$req->id_escuela'");
+
+            if (count($visita) == 0) {
+                $visita = new Visitas;
+                $visita->fecha = $req->fecha;
+                $visita->id_escuela = $req->id_escuela;
+                $visita->save();
+                //
+                $aux = Visitas::all();
+                $visita = $aux->last();
+            }else{
+                $aux = $visita;
+                $visita = Visitas::find($aux[0]->id);
+            }
+
+            $vOficial = new VisitaOficial;
+            $vOficial->id_visita = $visita->id;
+            $vOficial->id_oficial = $req->id_oficial;
+            $vOficial->aulas = $req->aulas;
+            $vOficial->viaticos = $req->viaticos;
+            $vOficial->pendientes = $req->pendientes;
+            $vOficial->observaciones = $req->observaciones;
+            $vOficial->save();
+
+            foreach ($req->voluntarios as $key => $value) {
+                $vVoluntario = new VisitaVoluntario;
+                $vVoluntario->id_visitaO = $vOficial->id;
+                $vVoluntario->id_voluntario = $value;
+                $vVoluntario->tiempo = $req->voluntariosTime[$key];
+                $vVoluntario->save();
+            }
+
+            foreach ($req->motivos as $key => $value) {
+                $vMotivo = new VisitaMotivo;
+                $vMotivo->id_visitaO = $vOficial->id;
+                $vMotivo->id_motivo = $value;
+                $vMotivo->tiempo = $req->motivosTime[$key];
+                $vMotivo->save();
+            }
+
+            return response()->json([
+                'resp' => $vOficial->id
+            ]);
+        }
     }
 
     public function listing(){
-        $visitas = DB::select("SELECT visitas.id, visitas.fecha, 
-            escuelas.nombre AS escuela, departamentos.nombre AS dep, 
-            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, visitas.aulas 
-            FROM visitas, escuelas, oficiales, departamentos 
-            WHERE visitas.id_escuela = escuelas.id
-            AND escuelas.id_departamento = departamentos.id
-            AND visitas.id_oficial = oficiales.id");
-        //$visitas = Escuelas::all();
+        $visitas = DB::select("SELECT visitas.fecha, escuelas.nombre AS escuela, visita_oficial.id, 
+                                CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS oficial
+                                FROM visitas RIGHT JOIN visita_oficial ON visita_oficial.id_visita = visitas.id
+                                INNER JOIN escuelas ON visitas.id_escuela = escuelas.id
+                                INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id");
         return response()->json(
             $visitas
         );
     }
+
+    public function detail($id){
+        $visita = DB::select("SELECT visitas.fecha, escuelas.nombre AS escuela, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, 
+                            visita_oficial.aulas, visita_oficial.viaticos, visita_oficial.pendientes, visita_oficial.observaciones
+                            FROM visitas RIGHT JOIN visita_oficial ON visita_oficial.id_visita = visitas.id
+                            INNER JOIN escuelas ON visitas.id_escuela = escuelas.id
+                            INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id
+                            WHERE visita_oficial.id = '$id'");
+
+        $motivos = DB::select("SELECT motivos.nombre as motivo, visita_motivo.tiempo FROM visita_motivo
+                                INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id
+                                WHERE visita_motivo.id_visitaO = '$id'");
+
+        $voluntarios = DB::select("SELECT CONCAT(voluntarios.nombres, ' ', voluntarios.apellidos) AS voluntario, visita_voluntario.tiempo 
+                                FROM visita_voluntario INNER JOIN voluntarios ON visita_voluntario.id_voluntario = voluntarios.id
+                                WHERE visita_voluntario.id_visitaO = '$id'");
+
+        return response()->json([
+            'visita'=>$visita, 
+            'motivos'=>$motivos, 
+            'voluntarios'=>$voluntarios
+        ]);
+    }
+
+
+
     public function listingU($name){
         $visitas = DB::select("SELECT * FROM
             (SELECT visitas.id, visitas.fecha, 
@@ -119,11 +183,8 @@ class VisitaController extends Controller
     }
 
     public function edit($id){
-        $visita = Visitas::find($id);
-
-        return response()->json(
-            $visita->toArray()
-        );
+        $visita = VisitaOficial::find($id);
+        return view('visita.edit', ['visita'=>$visita]);
     }
 
     public function update(Request $req, $id){
@@ -137,10 +198,13 @@ class VisitaController extends Controller
     }
 
     public function destroy($id){
-        $visita = Visitas::find($id);
+        DB::table('visita_voluntario')->where('id_visitaO','=',$id)->delete();
+        DB::table('visita_motivo')->where('id_visitaO','=',$id)->delete();
+
+        $visita = VisitaOficial::find($id);
         $visita->delete();
 
-        return response()->json(['mensaje'=>'borrado']);
+        return response()->json(['mensaje'=>'registros eliminados']);
     }
 
     public function visitasByDep($ini, $fin){

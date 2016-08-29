@@ -10,5 +10,5 @@ class Visitas extends Model
 
     protected $table = 'visitas';
 
-    protected $fillable = ['fecha', 'id_escuela', 'id_oficial', 'aulas'];
+    protected $fillable = ['fecha', 'id_escuela'];
 }

@@ -251,6 +251,10 @@ function validar(){
 		$('#cant_hombres').parents('.form-group').addClass('has-error');
 		cantE++;
 	}
+	if (isNaN($('#viaticos').val()) || $('#viaticos').val()=='') {
+		$('#viaticos').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
 	if ($('#group-oficial-1 div input:checkbox:checked').length==0 && $('#group-oficial-2 div input:checkbox:checked').length==0) {
 		$('#group-oficial-1').parents('.form-group').addClass('has-error');
 		cantE++;
@@ -310,7 +314,8 @@ $('#registrar').on('click', function(){
 		dataType: 'json',
 		data: {fecha: $('#fecha').val(), duracion: $('#duracion').val(), 
 				cant_mujeres: $('#cant_mujeres').val(), cant_hombres: $('#cant_hombres').val(), 
-				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), id_actividad: $('#actividades').val(),
+				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), 
+				id_actividad: $('#actividades').val(), viaticos: $('#viaticos').val(),
 				oficiales: ofcs, contenidos: cnts, audiencias: adcs},
 
 		success: function(resp){
@@ -329,6 +334,7 @@ $('#registrar').on('click', function(){
 			$('#cant_mujeres').val('');
 			$('#cant_hombres').val('');
 			$('#total').val('');
+			$('#viaticos').val('');
 			$('#observaciones').val('');
 			//
 			$('#msjcreate').removeClass('alert-danger');

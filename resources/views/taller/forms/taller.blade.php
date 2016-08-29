@@ -227,6 +227,14 @@
 						</div>
 					</div>
 				</section>
+				<section class="col-lg-5">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-usd" style="color:black;width:15px;"></i></span>
+							{!!Form::number('viaticos', null, ["class"=>"form-control", "id"=>"viaticos", "placeholder"=>"Viáticos usados en la visita", "min"=>"0"]);!!}
+						</div>
+					</div>
+				</section>
 				<section class="col-lg-12">
 					<div class="form-group">
 						<div class="input-group">
