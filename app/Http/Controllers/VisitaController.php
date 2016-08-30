@@ -112,19 +112,25 @@ class VisitaController extends Controller
     }
 
     public function infoVisita($id){
-        $visita = DB::select("SELECT visitas.fecha, escuelas.nombre AS escuela, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, 
-                            visita_oficial.aulas, visita_oficial.viaticos, visita_oficial.pendientes, visita_oficial.observaciones
+        $visita = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_escuela, escuelas.id_departamento, 
+                            visita_oficial.id_oficial, oficiales.id_area, visita_oficial.aulas, 
+                            visita_oficial.viaticos, visita_oficial.pendientes, visita_oficial.observaciones
                             FROM visitas RIGHT JOIN visita_oficial ON visita_oficial.id_visita = visitas.id
                             INNER JOIN escuelas ON visitas.id_escuela = escuelas.id
+                            INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id
                             INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id
+                            INNER JOIN areas ON oficiales.id_area = areas.id
                             WHERE visita_oficial.id = '$id'");
 
-        $motivos = DB::select("SELECT motivos.nombre as motivo, visita_motivo.tiempo FROM visita_motivo
+        $motivos = DB::select("SELECT visita_motivo.id, visita_motivo.id_motivo, motivos.nombre as motivo, visita_motivo.tiempo 
+                                FROM visita_motivo
                                 INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id
                                 WHERE visita_motivo.id_visitaO = '$id'");
 
-        $voluntarios = DB::select("SELECT CONCAT(voluntarios.nombres, ' ', voluntarios.apellidos) AS voluntario, visita_voluntario.tiempo 
-                                FROM visita_voluntario INNER JOIN voluntarios ON visita_voluntario.id_voluntario = voluntarios.id
+        $voluntarios = DB::select("SELECT visita_voluntario.id, visita_voluntario.id_voluntario, 
+                                CONCAT(voluntarios.nombres, ' ', voluntarios.apellidos) AS voluntario, 
+                                visita_voluntario.tiempo FROM visita_voluntario 
+                                INNER JOIN voluntarios ON visita_voluntario.id_voluntario = voluntarios.id
                                 WHERE visita_voluntario.id_visitaO = '$id'");
 
         return response()->json([
@@ -134,7 +140,95 @@ class VisitaController extends Controller
         ]);
     }
 
+    public function edit($id){
+        $visita = VisitaOficial::find($id);
+        return view('visita.edit', ['visita'=>$visita]);
+    }
 
+    public function update(Request $req, $id){
+        $visita = DB::select("SELECT * FROM visitas 
+            WHERE visitas.fecha = '$req->fecha' AND visitas.id_escuela = '$req->id_escuela'");
+
+        if (count($visita) == 0) {
+            $visita = new Visitas;
+            $visita->fecha = $req->fecha;
+            $visita->id_escuela = $req->id_escuela;
+            $visita->save();
+            //
+            $aux = Visitas::all();
+            $visita = $aux->last();
+        }else{
+            $aux = $visita;
+            $visita = Visitas::find($aux[0]->id);
+        }
+
+        $vOficial = VisitaOficial::find($id);
+        $vOficial->fill([
+            'id_visita' => $visita->id, 
+            'id_oficial' => $req->id_oficial, 
+            'aulas' => $req->aulas, 
+            'viaticos' => $req->viaticos, 
+            'pendientes' => $req->pendientes, 
+            'observaciones' => $req->observaciones
+        ]);
+        $vOficial->save();
+
+        foreach ($req->voluntariosStatus as $key => $value) {
+            if ($value == 'm') {
+                $vVoluntario = VisitaVoluntario::find($req->voluntariosReg[$key]);
+                $vVoluntario->fill([
+                    'id_visitaO' => $id, 
+                    'id_voluntario' => $req->voluntarios[$key], 
+                    'tiempo' => $req->voluntariosTime[$key]
+                ]);
+                $vVoluntario->save();
+            }elseif ($value == 'n') {
+                $vVoluntario = new VisitaVoluntario;
+                $vVoluntario->id_visitaO = $id;
+                $vVoluntario->id_voluntario = $req->voluntarios[$key];
+                $vVoluntario->tiempo = $req->voluntariosTime[$key];
+                $vVoluntario->save();
+            }elseif ($value == 'd') {
+                $vVoluntario = VisitaVoluntario::find($req->voluntariosReg[$key]);
+                $vVoluntario->delete();
+            }
+        }
+
+        foreach ($req->motivosStatus as $key => $value) {
+            if ($value == 'm') {
+                $vMotivo = VisitaMotivo::find($req->motivosReg[$key]);
+                $vMotivo->fill([
+                    'id_visitaO' => $id, 
+                    'id_motivo' => $req->motivos[$key], 
+                    'tiempo' => $req->motivosTime[$key]
+                ]);
+                $vMotivo->save();
+            }elseif ($value == 'n') {
+                $vMotivo = new VisitaMotivo;
+                $vMotivo->id_visitaO = $id;
+                $vMotivo->id_motivo = $req->motivos[$key];
+                $vMotivo->tiempo = $req->motivosTime[$key];
+                $vMotivo->save();
+            }elseif ($value == 'd') {
+                $vMotivo = VisitaMotivo::find($req->motivosReg[$key]);
+                $vMotivo->delete();
+            }
+        }
+
+        return response()->json([
+            'mensaje' => 'Registros actualizados'
+        ]);
+    }
+
+    public function destroy($id){
+        DB::table('visita_voluntario')->where('id_visitaO','=',$id)->delete();
+        DB::table('visita_motivo')->where('id_visitaO','=',$id)->delete();
+
+        $visita = VisitaOficial::find($id);
+        $visita->delete();
+
+        return response()->json(['mensaje'=>'registros eliminados']);
+    }
 
 
     public function listingU($name){
@@ -204,31 +298,6 @@ class VisitaController extends Controller
         return response()->json(
             $visitas
         );
-    }
-
-    public function edit($id){
-        $visita = VisitaOficial::find($id);
-        return view('visita.edit', ['visita'=>$visita]);
-    }
-
-    public function update(Request $req, $id){
-        $visita = Visitas::find($id);
-        $visita->fill($req->all());
-        $visita->save();
-
-        return response()->json([
-            'mensaje' => 'actualizado'
-        ]);
-    }
-
-    public function destroy($id){
-        DB::table('visita_voluntario')->where('id_visitaO','=',$id)->delete();
-        DB::table('visita_motivo')->where('id_visitaO','=',$id)->delete();
-
-        $visita = VisitaOficial::find($id);
-        $visita->delete();
-
-        return response()->json(['mensaje'=>'registros eliminados']);
     }
 
     public function visitasByDep($ini, $fin){

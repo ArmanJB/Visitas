@@ -11,8 +11,8 @@
 				<div class="box box-info">
 					<div class="box-header with-border">
 						<h2 class="box-title"><i class="fa fa-pencil-square-o"></i> Editar Visita</h2>
-						<div class="pull-right" id="view_group" style="display:none;">
-							<input type="checkbox" class="filled-in" id="viewAll" value=""/><label for="viewAll" style="color:black;"id="labelView">Ver todo</label>
+						<div class="pull-right" id="view_group" >
+							<a href="/visita" class="btn btn-primary btn-flat">Cancelar</a>
 						</div>
 					</div>
 					<div class="box-body" id="box-parent">
