@@ -12,7 +12,7 @@ function listar(){
 			});
 			$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.nombre+'</td><td>'+ofcs+'</td><td>'+
 				'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
-				'<button value='+value.id+' OnClick="mostrar(this);" class="btn btn-primary" data-toggle="modal" data-target="#modalEdit">Editar</button> '+
+				'<a value='+value.id+' href="/taller/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
 				'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
 		})
 	});

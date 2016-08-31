@@ -12,6 +12,7 @@ use DB;
 use visitas\TallerAudiencia;
 use visitas\TallerContenido;
 use visitas\TallerOficial;
+use visitas\DetalleTaller;
 
 class TallerController extends Controller
 {
@@ -117,23 +118,143 @@ class TallerController extends Controller
             ]);
     }
 
+    public function infoTaller($id){
+        $taller = DB::select("SELECT * FROM talleres WHERE talleres.id = $id");
 
+        $oficiales = DB::select("SELECT taller_oficial.id, taller_oficial.id_oficial
+                                FROM taller_oficial WHERE taller_oficial.id_taller = $id");
+
+        $contenidos = DB::select("SELECT taller_contenido.id, taller_contenido.id_contenido
+                                FROM taller_contenido  WHERE taller_contenido.id_taller = $id");
+
+        $audiencias = DB::select("SELECT taller_audiencia.id, taller_audiencia.id_audiencia
+                                FROM taller_audiencia WHERE taller_audiencia.id_taller = $id");
+
+        $detalles = DB::select("SELECT detalle_taller.id, detalle_taller.id_escuela, escuelas.nombre AS 'escuela', 
+                                detalle_taller.id_internacional, internacionales.nombre AS 'internacional', 
+                                detalle_taller.id_zona, zonas_receptoras.nombre AS 'zona'
+                                FROM detalle_taller LEFT JOIN escuelas ON detalle_taller.id_escuela=escuelas.id
+                                LEFT JOIN internacionales ON detalle_taller.id_internacional=internacionales.id
+                                LEFT JOIN zonas_receptoras ON detalle_taller.id_zona=zonas_receptoras.id
+                                WHERE detalle_taller.id_taller = $id");
+
+        return response()->json([
+            'taller'=>$taller, 
+            'oficiales'=>$oficiales, 
+            'contenidos'=>$contenidos, 
+            'audiencias'=>$audiencias,
+            'detalles'=>$detalles
+        ]);
+    }
 
     public function edit($id){
         $taller = Talleres::find($id);
-
-        return response()->json(
-            $taller->toArray()
-        );
+        return view('taller.edit', ['taller'=>$taller]);;
     }
 
     public function update(Request $req, $id){
         $taller = Talleres::find($id);
-        $taller->fill($req->all());
+        $taller->fill([
+            'fecha' => $req->fecha, 
+            'duracion' => $req->duracion, 
+            'cant_mujeres' => $req->cant_mujeres, 
+            'cant_hombres' => $req->cant_hombres, 
+            'observaciones' => $req->observaciones, 
+            'id_lugar' => $req->id_lugar, 
+            'id_actividad' => $req->id_actividad, 
+            'viaticos' => $req->viaticos
+        ]);
         $taller->save();
 
+        foreach ($req->oficialesStatus as $key => $value) {
+            if ($value == 'm') {
+                $tOficial = TallerOficial::find($req->oficialesReg[$key]);
+                $tOficial->fill([
+                    'id_taller' => $id, 
+                    'id_oficial' => $req->oficiales[$key]
+                ]);
+                $tOficial->save();
+            }elseif ($value == 'n') {
+                $tOficial = new TallerOficial;
+                $tOficial->id_taller = $id;
+                $tOficial->id_oficial = $req->oficiales[$key];
+                $tOficial->save();
+            }elseif ($value == 'd') {
+                $tOficial = TallerOficial::find($req->oficialesReg[$key]);
+                $tOficial->delete();
+            }
+        }
+
+        foreach ($req->contenidosStatus as $key => $value) {
+            if ($value == 'm') {
+                $tContenido = TallerContenido::find($req->contenidosReg[$key]);
+                $tContenido->fill([
+                    'id_taller' => $id, 
+                    'id_contenido' => $req->contenidos[$key]
+                ]);
+                $tContenido->save();
+            }elseif ($value == 'n') {
+                $tContenido = new TallerContenido;
+                $tContenido->id_taller = $id;
+                $tContenido->id_contenido = $req->contenidos[$key];
+                $tContenido->save();
+            }elseif ($value == 'd') {
+                $tContenido = TallerContenido::find($req->contenidosReg[$key]);
+                $tContenido->delete();
+            }
+        }
+
+        foreach ($req->audienciasStatus as $key => $value) {
+            if ($value == 'm') {
+                $tAudiencia = TallerAudiencia::find($req->audienciasReg[$key]);
+                $tAudiencia->fill([
+                    'id_taller' => $id, 
+                    'id_audiencia' => $req->audiencias[$key]
+                ]);
+                $tAudiencia->save();
+            }elseif ($value == 'n') {
+                $tAudiencia = new TallerAudiencia;
+                $tAudiencia->id_taller = $id;
+                $tAudiencia->id_audiencia = $req->audiencias[$key];
+                $tAudiencia->save();
+            }elseif ($value == 'd') {
+                $tAudiencia = TallerAudiencia::find($req->audienciasReg[$key]);
+                $tAudiencia->delete();
+            }
+        }
+        //DETALLE_TALLER
+        foreach ($req->detallesStatus as $key => $value) {
+            if ($value == 'm') {
+                $dTaller = DetalleTaller::find($req->detallesReg[$key]);
+                if ($req->detallesData[$key] == 'id_escuela') {
+                    $dTaller->fill(['id_taller' => $id, 'id_escuela' => $req->detalles[$key] ]);
+                }elseif ($req->detallesData[$key] == 'id_internacional') {
+                    $dTaller->fill(['id_taller' => $id, 'id_internacional' => $req->detalles[$key] ]);
+                }elseif ($req->detallesData[$key] == 'id_zona') {
+                    $dTaller->fill(['id_taller' => $id, 'id_zona' => $req->detalles[$key] ]);
+                }
+                $dTaller->save();
+            }elseif ($value == 'n') {
+                $dTaller = new DetalleTaller;
+                if ($req->detallesData[$key] == 'id_escuela') {
+                    $dTaller->id_taller = $id; 
+                    $dTaller->id_escuela = $req->detalles[$key];
+                }elseif ($req->detallesData[$key] == 'id_internacional') {
+                    $dTaller->id_taller = $id; 
+                    $dTaller->id_internacional = $req->detalles[$key];
+                }elseif ($req->detallesData[$key] == 'id_zona') {
+                    $dTaller->id_taller = $id;
+                    $dTaller->id_zona = $req->detalles[$key];
+                }
+                $dTaller->save();
+            }elseif ($value == 'd') {
+                 $dTaller = DetalleTaller::find($req->detallesReg[$key]) ;
+                 $dTaller->delete();
+            }
+        }
+
         return response()->json([
-            'mensaje' => 'actualizado'
+            'mensaje' => 'Registros actualizados'
         ]);
     }
 

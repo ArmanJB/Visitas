@@ -151,6 +151,7 @@ Route::get('metas', 'MetaController@listing');
 Route::resource('taller', 'TallerController');
 Route::get('talleres', 'TallerController@listing');
 Route::get('taller/detail/{id}', 'TallerController@detail');
+Route::get('taller/infoTaller/{id}', 'TallerController@infoTaller');
 
 Route::resource('detalleTaller', 'DetalleTallerController');
 Route::get('detallesTaller', 'DetalleTallerController@listing');
