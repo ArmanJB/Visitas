@@ -1,17 +1,35 @@
 $(function(){
-	listar();
+	setTimeout(function(){ listar(); }, 1500);
 });
 
 function listar(){
-	$.get('/visitas', function(res){
-		$('#datos').empty();
-		$(res).each(function(key, value){
-			$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
-				'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
-				'<a value='+value.id+' href="/visita/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
-				'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
-		})
-	});
+	if ($('#user_type').attr('value')=='1') {
+		$.get('/visitas', function(res){
+			$('#datos').empty();
+			$(res).each(function(key, value){
+				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
+					'<a value='+value.id+' href="/visita/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
+					'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+			})
+		});
+	}else if($('#user_type').attr('value')=='2'){
+		$.get('/visitas/c/'+$('#user_area').attr('value'), function(res){
+			$('#datos').empty();
+			$(res).each(function(key, value){
+				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></tr>');
+			})
+		});
+	}else if($('#user_type').attr('value')=='3'){
+		$.get('/visitas/o/'+$('#user_oficial').attr('value'), function(res){
+			$('#datos').empty();
+			$(res).each(function(key, value){
+				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></tr>');
+			})
+		});
+	}
 }
 
 function detalle(btn){

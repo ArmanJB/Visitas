@@ -6,7 +6,7 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-lg-12">
-				<h3><a class="linkInfo"><i class="fa fa-circle-o"></i> <b>Catalogos para Visitas</b></a></h3><hr>
+				<h3><a class="linkInfo"><i class="fa fa-circle-o"></i> <b>Catálogos para Visitas</b></a></h3><hr>
 				<section class="col-lg-6 connectedSortable">
 					<div class="box box-solid bg-light-blue-gradient collapsed-box">
 						<div class="box-header">
@@ -63,7 +63,7 @@
 				</section>
 			</div>
 			<div class="col-lg-12">
-				<h3><a class="linkInfo"><i class="fa fa-circle-o"></i> <b>Catalogos para Talleres</b></a></h3><hr>
+				<h3><a class="linkInfo"><i class="fa fa-circle-o"></i> <b>Catálogos para Talleres</b></a></h3><hr>
 				<section class="col-lg-6 connectedSortable">
 					<div class="box box-solid bg-light-blue-gradient collapsed-box">
 						<div class="box-header">

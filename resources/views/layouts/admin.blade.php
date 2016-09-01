@@ -91,8 +91,8 @@
             <ul class="treeview-menu">
               <li><a href="{!!URL::to('/visita/create')!!}"><i class="fa fa-plus"></i> Agregar visitas</a></li>
               <li><a href="{!!URL::to('/visita')!!}"><i class="fa fa-list"></i> Listar visitas</a></li>
-              <li><a href="{!!URL::to('/visita/charts')!!}"><i class="fa fa-pie-chart"></i> Resumen de visitas</a></li>
-              <li><a href="{!!URL::to('/visita/informe')!!}"><i class="fa fa-line-chart"></i> Informes de visitas</a></li>
+              <li><a href="#"><i class="fa fa-pie-chart"></i> Resumen de visitas</a></li>
+              <li><a href="#"><i class="fa fa-line-chart"></i> Informes de visitas</a></li>
             </ul>
           </li>
           @if (Auth::user()->id_type != 1)
@@ -110,7 +110,7 @@
           </li>
           @if (Auth::user()->id_type == 1)
           <li class="header">Navegación secundaria</li>
-          <li><a href="/catalogos"><i class="fa fa-edit"></i> <span>Catalogos</span></a></li>
+          <li><a href="/catalogos"><i class="fa fa-edit"></i> <span>Catálogos</span></a></li>
 
           <li><a href="{!!URL::to('/personas')!!}"><i class="fa fa-male" ></i> <span>Oficiales / Voluntarios</span></a></li>
 

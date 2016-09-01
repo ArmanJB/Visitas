@@ -7,7 +7,7 @@ function setDetails(id){
 		$('#user_oficial').attr('value', res[0].oficial);
 
 		if(res[0].id_area != null && res[0].id_area != '3'){
-		$('#tallerEdu').fadeOut();
+			$('#tallerEdu').fadeOut();
 		}
 	});
 }

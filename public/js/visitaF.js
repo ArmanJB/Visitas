@@ -202,7 +202,10 @@ $('#registrar').on('click', function(){
 		mtvs.push(this.value);
 		mtvsTime.push($('#timeM'+this.value).val());
 	});
-
+	console.log({fecha: $('#fecha').val(), id_escuela: $('#escuela').val(), id_oficial: $('#oficial').val(),
+				aulas: $('#aulas').val(), viaticos: $('#viaticos').val(), 
+				pendientes: $('#pendientes').val(), observaciones: $('#observaciones').val(),
+				voluntarios: vlts, voluntariosTime: vltsTime, motivos: mtvs, motivosTime: mtvsTime})
 	$.ajax({
 		url: '/visita',
 		headers: {'X-CSRF-TOKEN': $('#token').val()},

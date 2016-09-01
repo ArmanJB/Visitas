@@ -150,6 +150,7 @@
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<div class="form-group">
+								{!!Form::label('Cantidad de aulas visitadas: ')!!}
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-flag" style="color:black;width:15px;"></i></span>
 									{!!Form::number('aulas', null, ["class"=>"form-control", "id"=>"aulas", "placeholder"=>"Cantidad de aulas visitadas", "min"=>"0"]);!!}
@@ -162,8 +163,9 @@
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<div class="form-group">
+								{!!Form::label('Viáticos usados: ')!!}
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-usd" style="color:black;width:15px;"></i></span>
+									<span class="input-group-addon" style="color:black;">{!!Form::label('C$ ', null, ['style'=>'width:15px;'])!!}</span>
 									{!!Form::number('viaticos', null, ["class"=>"form-control", "id"=>"viaticos", "placeholder"=>"Viáticos usados en la visita", "min"=>"0"]);!!}
 								</div>
 							</div>
@@ -174,6 +176,7 @@
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<div class="form-group">
+								{!!Form::label('Pendientes: ')!!}
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-asterisk" style="color:black;width:15px;"></i></span>
 									{!!Form::textArea('pendientes', null, ['id'=>'pendientes', 'class'=>'form-control', 'placeholder'=>' Pendientes de la visita', 'style'=>'resize: vertical'])!!}
@@ -186,6 +189,7 @@
 					<div class="panel panel-primary">
 						<div class="panel-body">
 							<div class="form-group">
+								{!!Form::label('Observaciones: ')!!}
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-pencil" style="color:black;width:15px;"></i></span>
 									{!!Form::textArea('observaciones', null, ['id'=>'observaciones', 'class'=>'form-control', 'placeholder'=>'Observaciones de la visita', 'style'=>'resize: vertical'])!!}

@@ -111,6 +111,14 @@ $('#registrarM').on('click', function(){
 		window.setTimeout(function(){$('#msjnewM').fadeOut();}, 2000);
 		return;
 	}
+	if($('#meta').val() == '0'){
+		$('#msjnewM').removeClass('alert-success');
+		$('#msjnewM').addClass('alert-danger');
+		$('#msjnewM'+'-text').html('Meta no puede ser igual a cero!');
+		$('#msjnewM').fadeIn();
+		window.setTimeout(function(){$('#msjnewM').fadeOut();}, 2000);
+		return;
+	}
 	$.get('/metas', function(res){
 		var cont = 0;
 		$(res).each(function(key, value){
