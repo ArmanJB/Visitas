@@ -17,7 +17,7 @@ function listar(){
 function detalle(btn){
 	$.get('visita/detail/'+btn.value, function(res){
 		$('#fecha').html(res.visita[0].fecha);
-		$('#escuela').html(res.visita[0].escuela);
+		$('#escuela').html(res.visita[0].escuela+' ('+res.visita[0].dep+')');
 		$('#oficial').html(res.visita[0].oficial);
 		$('#aulas').html(res.visita[0].aulas);
 		$('#viaticos').html(res.visita[0].viaticos);

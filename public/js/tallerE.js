@@ -409,6 +409,16 @@ $('#registrar').on('click', function(){
 		}
 	});
 
+	console.log({fecha: $('#fecha').val(), duracion: $('#duracion').val(), 
+				cant_mujeres: $('#cant_mujeres').val(), cant_hombres: $('#cant_hombres').val(), 
+				observaciones: $('#observaciones').val(), id_lugar: $('#lugares').val(), 
+				id_actividad: $('#actividades').val(), viaticos: $('#viaticos').val(),
+				oficialesReg: ofcsReg, oficiales: ofcs, oficialesStatus: ofcsStatus, 
+				contenidosReg: cntsReg, contenidos: cnts, contenidosStatus: cntsStatus, 
+				audienciasReg: adcsReg, audiencias: adcs, audienciasStatus: adcsStatus,
+				detallesReg: detsReg, detalles: dets, detallesData: detsData, detallesStatus: detsStatus
+				});
+
 	$.ajax({
 		url: '/taller/'+$('#idv').val(),
 		headers: {'X-CSRF-TOKEN': $('#token').val()},
@@ -429,7 +439,7 @@ $('#registrar').on('click', function(){
 			$('#msjcreate').addClass('alert-success');
 			$('#msjcreate'+'-text').html('Registro actualizado exitosamente!');
 			$('#msjcreate').fadeIn();
-			window.setTimeout(function(){$('#msjcreate').fadeOut();location.href='/taller'}, 2000);
+			window.setTimeout(function(){$('#msjcreate').fadeOut();location.href='/taller';}, 2000);
 		},
 		error:function(msj){
 			$('#msjcreate').removeClass('alert-success');

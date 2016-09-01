@@ -52,6 +52,7 @@
                 </li>
               </ul>
             </li>
+            @if (Auth::user()->id_type == 1)
             <li class="dropdown tasks-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-gears"></i>
@@ -61,6 +62,7 @@
                 <li><a href="{!!URL::to('/usuario')!!}"><h4>Usuarios<strong class="pull-right"><i class="fa fa-users"></i></strong></h4></a></li>
               </ul>
             </li>
+            @endif
             <!--<li><a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a></li>-->
           </ul>
         </div>
@@ -80,7 +82,11 @@
         </div>
         <ul class="sidebar-menu">
           <li class="header">Navegación principal</li>
+          @if (Auth::user()->id_type != 1)
+          <li class="treeview active">
+          @else
           <li class="treeview">
+          @endif
             <a href="#"><i class="fa fa-briefcase"></i><span>Visitas</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
             <ul class="treeview-menu">
               <li><a href="{!!URL::to('/visita/create')!!}"><i class="fa fa-plus"></i> Agregar visitas</a></li>
@@ -89,7 +95,11 @@
               <li><a href="{!!URL::to('/visita/informe')!!}"><i class="fa fa-line-chart"></i> Informes de visitas</a></li>
             </ul>
           </li>
-          <li class="treeview">
+          @if (Auth::user()->id_type != 1)
+          <li class="treeview active" id="tallerEdu">
+          @else
+          <li class="treeview" id="tallerEdu">
+          @endif
             <a href="#"><i class="fa fa-suitcase"></i><span>Talleres</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
             <ul class="treeview-menu">
               <li><a href="{!!URL::to('/taller/create')!!}"><i class="fa fa-plus"></i> Agregar talleres</a></li>
@@ -98,7 +108,7 @@
               <li><a href="#"><i class="fa fa-line-chart"></i> Informes de talleres</a></li>
             </ul>
           </li>
-          @if (Auth::user()->id != 5)
+          @if (Auth::user()->id_type == 1)
           <li class="header">Navegación secundaria</li>
           <li><a href="/catalogos"><i class="fa fa-edit"></i> <span>Catalogos</span></a></li>
 
@@ -121,35 +131,36 @@
     </aside>
 
     <div class="content-wrapper">
-        @include('alerts.errors')
-        @yield('content')
-      <!--<section class="content-header">
-        <h1>Panel de Control<small>Tablero</small></h1>
-        <ol class="breadcrumb"><li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li><li class="active">Dashboard</li></ol>
-      </section>
+      @include('alerts.errors')
+      @yield('content')
+      <div id="dashboard" style="display:none;">
+        <section class="content-header">
+          <h1>Control de Visitas<small> Inicio</small></h1>
+        </section>
 
-      <section class="content">
-        <div class="row">
-          <div class="col-lg-4 col-xs-6">
-            <div class="small-box bg-aqua">
-              <div class="inner"><h3>150</h3><p>Nuevas metas</p></div>
-              <div class="icon"><i class="ion ion-arrow-graph-up-right"></i></div>
+        <section class="content">
+          <div class="row">
+            <div class="col-lg-3 col-xs-6">
+              <div class="small-box bg-aqua">
+                <div class="inner"><h3>00</h3><p>Nuevas metas</p></div>
+                <div class="icon"><i class="ion ion-arrow-graph-up-right"></i></div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+              <div class="small-box bg-green">
+                <div class="inner"><h3>00<sup style="font-size: 20px">%</sup></h3><p>Visitas actuales</p></div>
+                <div class="icon"><i class="ion ion-calendar"></i></div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-xs-6">
+              <div class="small-box bg-orange">
+                <div class="inner"><h3>00</h3><p>Talleres actuales</p></div>
+                <div class="icon"><i class="ion ion-briefcase"></i></div>
+              </div>
             </div>
           </div>
-          <div class="col-lg-4 col-xs-6">
-            <div class="small-box bg-green">
-              <div class="inner"><h3>53<sup style="font-size: 20px">%</sup></h3><p>Visitas actuales</p></div>
-              <div class="icon"><i class="ion ion-calendar"></i></div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-xs-6">
-            <div class="small-box bg-red">
-              <div class="inner"><h3>65</h3><p>Talleres actuales</p></div>
-              <div class="icon"><i class="ion ion-briefcase"></i></div>
-            </div>
-          </div>
-        </div>-->
-    </div>
+      </div>
+      </div>
 
     <footer class="main-footer">
       <div class="pull-right hidden-xs"><b>Control de Visitas</b></div>
@@ -194,12 +205,20 @@
     <!--{!!Html::script('js/demo.js')!!}-->
     <script>
       $(function(){
+        if ('{{Request::path()}}' == 'admin'){
+          $('#dashboard').fadeIn();
+        }
+
         $.get('/usuarios/detalle/'+{!!Auth::user()->id!!}, function(res){
           $('#user_type').html(res[0].tipo);
           $('#user_type').attr('value', res[0].id);
           $('#user_area').html(res[0].area);
           $('#user_area').attr('value', res[0].id_area);
           $('#user_oficial').attr('value', res[0].oficial);
+
+          if(res[0].id_area != null && res[0].id_area != '3'){
+            $('#tallerEdu').fadeOut();
+          }
         });
       });
     </script>

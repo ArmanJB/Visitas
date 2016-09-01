@@ -89,10 +89,12 @@ class VisitaController extends Controller
     }
 
     public function detail($id){
-        $visita = DB::select("SELECT visitas.fecha, escuelas.nombre AS escuela, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, 
+        $visita = DB::select("SELECT visitas.fecha, escuelas.nombre AS escuela, departamentos.nombre AS dep, 
+                            CONCAT(oficiales.nombres, ' ', oficiales.apellidos) as oficial, 
                             visita_oficial.aulas, visita_oficial.viaticos, visita_oficial.pendientes, visita_oficial.observaciones
                             FROM visitas RIGHT JOIN visita_oficial ON visita_oficial.id_visita = visitas.id
                             INNER JOIN escuelas ON visitas.id_escuela = escuelas.id
+                            INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id
                             INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id
                             WHERE visita_oficial.id = '$id'");
 
