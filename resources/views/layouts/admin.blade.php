@@ -47,7 +47,7 @@
                   </p>
                 </li>
                 <li class="user-footer">
-                  <!--<div class="pull-left"><a href="#" class="btn btn-default btn-flat">Conf</a></div>-->
+                  <div class="pull-left"><button id="userPassButton" class="btn btn-default btn-flat" data-toggle="tooltip" title="Cambiar Contraseña"><i class="fa fa-lock"></i></button></div>
                   <div class="pull-right"><a href="{!!URL::to('logout')!!}" class="btn btn-default btn-flat">Cerrar Sesión</a></div>
                 </li>
               </ul>
@@ -132,6 +132,7 @@
 
     <div class="content-wrapper">
       @include('alerts.errors')
+      @include('layouts.userPass')
       @yield('content')
       <div id="dashboard" style="display:none;">
         <section class="content-header">
@@ -202,24 +203,20 @@
     {!!Html::script('js/jquery.slimscroll.min.js')!!}
     {!!Html::script('js/fastclick.js')!!}
     {!!Html::script('js/app.min.js')!!}
+    {!!Html::script('js/userPass.js')!!}
     <!--{!!Html::script('js/demo.js')!!}-->
     <script>
       $(function(){
         if ('{{Request::path()}}' == 'admin'){
           $('#dashboard').fadeIn();
         }
+        setDetails({!!Auth::user()->id!!});
 
-        $.get('/usuarios/detalle/'+{!!Auth::user()->id!!}, function(res){
-          $('#user_type').html(res[0].tipo);
-          $('#user_type').attr('value', res[0].id);
-          $('#user_area').html(res[0].area);
-          $('#user_area').attr('value', res[0].id_area);
-          $('#user_oficial').attr('value', res[0].oficial);
-
-          if(res[0].id_area != null && res[0].id_area != '3'){
-            $('#tallerEdu').fadeOut();
-          }
+        $('#userPassButton').on('click', function(){
+          $('#modalUserPass').modal('toggle');
+          mostrar({!!Auth::user()->id!!})
         });
+        
       });
     </script>
 
