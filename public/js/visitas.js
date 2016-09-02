@@ -1,3 +1,4 @@
+var list = null;
 $(function(){
 	setTimeout(function(){ listar(); }, 1500);
 });
@@ -5,6 +6,7 @@ $(function(){
 function listar(){
 	if ($('#user_type').attr('value')=='1') {
 		$.get('/visitas', function(res){
+			list = res;
 			$('#datos').empty();
 			$(res).each(function(key, value){
 				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
@@ -15,6 +17,7 @@ function listar(){
 		});
 	}else if($('#user_type').attr('value')=='2'){
 		$.get('/visitas/c/'+$('#user_area').attr('value'), function(res){
+			list = res;
 			$('#datos').empty();
 			$(res).each(function(key, value){
 				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
@@ -23,6 +26,7 @@ function listar(){
 		});
 	}else if($('#user_type').attr('value')=='3'){
 		$.get('/visitas/o/'+$('#user_oficial').attr('value'), function(res){
+			list = res;
 			$('#datos').empty();
 			$(res).each(function(key, value){
 				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
@@ -76,3 +80,28 @@ function eliminar(btn){
 		}
 	});
 }
+
+$('#search').on('click', function(){
+	if ($('#desde').val() != '' && $('#hasta').val() != '') {
+		$('#datos').empty();
+		if ($('#user_type').attr('value')=='1') {
+			$(list).each(function(key, value){
+				if (value.fecha >= $('#desde').val() && value.fecha <= $('#hasta').val() ) {
+					$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
+						'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
+						'<a value='+value.id+' href="/visita/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
+						'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+				}
+			})
+		}else{
+			$(list).each(function(key, value){
+				if (value.fecha >= $('#desde').val() && value.fecha <= $('#hasta').val() ) {
+					$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></td></tr>');
+				}
+			})
+		}
+	}else{
+		listar();
+	}
+});

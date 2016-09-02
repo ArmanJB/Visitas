@@ -205,6 +205,7 @@
 			<div class="box-body">
 				<section class="col-lg-5">
 					<div class="form-group">
+						{!!Form::label('Cantidad de mujeres participantes: ')!!}
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-female" style="color:black;width:15px;"></i></span>
 							{!!Form::number('cant_mujeres', null, ["class"=>"form-control", "id"=>"cant_mujeres", "placeholder"=>"Cantidad de mujeres", "min"=>"0"]);!!}
@@ -213,6 +214,7 @@
 				</section>
 				<section class="col-lg-5">
 					<div class="form-group">
+						{!!Form::label('Cantidad de hombres participantes: ')!!}
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-male" style="color:black;width:15px;"></i></span>
 							{!!Form::number('cant_hombres', null, ["class"=>"form-control", "id"=>"cant_hombres", "placeholder"=>"Cantidad de hombres", "min"=>"0"]);!!}
@@ -221,6 +223,7 @@
 				</section>
 				<section class="col-lg-2">
 					<div class="form-group">
+						{!!Form::label('Total: ')!!}
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-calculator" style="color:black;width:15px;"></i></span>
 							{!!Form::text('total', null, ["placeholder"=>"Total", "class"=>"form-control", "id"=>"total", "disabled"]);!!}
@@ -229,6 +232,7 @@
 				</section>
 				<section class="col-lg-5">
 					<div class="form-group">
+						{!!Form::label('Viáticos usados: ')!!}
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-usd" style="color:black;width:15px;"></i></span>
 							{!!Form::number('viaticos', null, ["class"=>"form-control", "id"=>"viaticos", "placeholder"=>"Viáticos usados en la visita", "min"=>"0"]);!!}
@@ -237,6 +241,7 @@
 				</section>
 				<section class="col-lg-12">
 					<div class="form-group">
+						{!!Form::label('Observaciones: ')!!}
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-pencil" style="color:black;width:15px;"></i></span>
 							{!!Form::textArea('observaciones', null, ['id'=>'observaciones', 'class'=>'form-control', 'placeholder'=>'Observaciones...', 'style'=>'resize: vertical'])!!}
