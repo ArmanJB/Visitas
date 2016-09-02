@@ -3,6 +3,8 @@ $(function(){
 	setTimeout(function(){ listar(); }, 1500);
 });
 
+$('#listing').on('click', function(){listar();});
+
 function listar(){
 	if ($('#user_type').attr('value')=='1') {
 		$.get('/visitas', function(res){
@@ -30,7 +32,7 @@ function listar(){
 			$('#datos').empty();
 			$(res).each(function(key, value){
 				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
-					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button</td>></tr>');
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button</td></tr>');
 			})
 		});
 	}
@@ -101,7 +103,5 @@ $('#search').on('click', function(){
 				}
 			})
 		}
-	}else{
-		listar();
 	}
 });

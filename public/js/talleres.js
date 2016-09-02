@@ -1,9 +1,13 @@
+var list = null;
 $(function(){
 	setTimeout(function(){ listar(); }, 1500);
 });
 
+$('#listing').on('click', function(){listar();});
+
 function listar(){
 	$.get('/talleres', function(res){
+		list = res;
 		$('#datos').empty();
 		if ($('#user_type').attr('value') == '1') {
 			$(res.group).each(function(key, value){
@@ -88,3 +92,34 @@ function eliminar(btn){
 		}
 	});
 }
+
+$('#search').on('click', function(){
+	if ($('#desde').val() != '' && $('#hasta').val() != '') {
+		$('#datos').empty();
+		if ($('#user_type').attr('value') == '1') {
+			$(list.group).each(function(key, value){
+				var ofcs = "";
+				$(list.taller).each(function(key2, value2){
+					if (value.id==value2.id) {ofcs+=' ║ '+value2.nombres+' '+value2.apellidos;}
+				});
+				if (value.fecha >= $('#desde').val() && value.fecha <= $('#hasta').val() ) {
+					$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.nombre+'</td><td>'+ofcs+'</td><td>'+
+						'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
+						'<a value='+value.id+' href="/taller/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
+						'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+				}
+			})
+		}else{
+			$(list.group).each(function(key, value){
+				var ofcs = "";
+				$(list.taller).each(function(key2, value2){
+					if (value.id==value2.id) {ofcs+=' ║ '+value2.nombres+' '+value2.apellidos;}
+				});
+				if (value.fecha >= $('#desde').val() && value.fecha <= $('#hasta').val() ) {
+					$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.nombre+'</td><td>'+ofcs+'</td><td>'+
+						'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></td></tr>');
+				}
+			})
+		}
+	}
+});

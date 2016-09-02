@@ -10,7 +10,7 @@
 
 				<div class="box box-success">
 					<div class="box-header with-border">
-						<h3 class="box-title"><span class="fa fa-suitcase"></span> Talleres</h3>
+						<h3 class="box-title"><a href="#" style="color:black;" id="listing"><span class="fa fa-suitcase"></span> Talleres</a></h3>
 
 						<div class="box-tools">
 							<div class="input-group input-group-sm" style="width: 100px;">
