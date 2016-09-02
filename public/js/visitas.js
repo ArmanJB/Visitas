@@ -18,7 +18,7 @@ function listar(){
 			$('#datos').empty();
 			$(res).each(function(key, value){
 				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
-					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></tr>');
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></td></tr>');
 			})
 		});
 	}else if($('#user_type').attr('value')=='3'){
@@ -26,7 +26,7 @@ function listar(){
 			$('#datos').empty();
 			$(res).each(function(key, value){
 				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.oficial+'</td><td>'+value.escuela+'</td><td>'+
-					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></tr>');
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button</td>></tr>');
 			})
 		});
 	}

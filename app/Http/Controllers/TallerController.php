@@ -102,9 +102,10 @@ class TallerController extends Controller
                                 FROM taller_audiencia INNER JOIN audiencia ON taller_audiencia.id_audiencia=audiencia.id
                                 WHERE taller_audiencia.id_taller = $id");
 
-        $detalles = DB::select("SELECT detalle_taller.id, escuelas.nombre AS 'escuela', 
+        $detalles = DB::select("SELECT detalle_taller.id, escuelas.nombre AS 'escuela', departamentos.nombre AS 'departamento',
                                 internacionales.nombre AS 'pais', zonas_receptoras.nombre AS 'zona'
                                 FROM detalle_taller LEFT JOIN escuelas ON detalle_taller.id_escuela=escuelas.id
+                                LEFT JOIN departamentos ON escuelas.id_departamento = departamentos.id
                                 LEFT JOIN internacionales ON detalle_taller.id_internacional=internacionales.id
                                 LEFT JOIN zonas_receptoras ON detalle_taller.id_zona=zonas_receptoras.id
                                 WHERE detalle_taller.id_taller = $id");

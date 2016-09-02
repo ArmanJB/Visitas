@@ -1,20 +1,31 @@
 $(function(){
-	listar();
+	setTimeout(function(){ listar(); }, 1500);
 });
 
 function listar(){
 	$.get('/talleres', function(res){
 		$('#datos').empty();
-		$(res.group).each(function(key, value){
-			var ofcs = "";
-			$(res.taller).each(function(key2, value2){
-				if (value.id==value2.id) {ofcs+=' ║ '+value2.nombres+' '+value2.apellidos;}
-			});
-			$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.nombre+'</td><td>'+ofcs+'</td><td>'+
-				'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
-				'<a value='+value.id+' href="/taller/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
-				'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
-		})
+		if ($('#user_type').attr('value') == '1') {
+			$(res.group).each(function(key, value){
+				var ofcs = "";
+				$(res.taller).each(function(key2, value2){
+					if (value.id==value2.id) {ofcs+=' ║ '+value2.nombres+' '+value2.apellidos;}
+				});
+				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.nombre+'</td><td>'+ofcs+'</td><td>'+
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button> '+
+					'<a value='+value.id+' href="/taller/'+value.id+'/edit" class="btn btn-primary">Editar</a> '+
+					'<button value='+value.id+' OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+			})
+		}else{
+			$(res.group).each(function(key, value){
+				var ofcs = "";
+				$(res.taller).each(function(key2, value2){
+					if (value.id==value2.id) {ofcs+=' ║ '+value2.nombres+' '+value2.apellidos;}
+				});
+				$('#datos').append('<tr><td>'+(key+1)+'</td><td>'+value.fecha+'</td><td>'+value.nombre+'</td><td>'+ofcs+'</td><td>'+
+					'<button value='+value.id+' OnClick="detalle(this);" class="btn btn-default" data-toggle="modal" data-target="#modalDetail">Detalles</button></td></tr>');
+			})
+		}	
 	});
 }
 
@@ -46,7 +57,7 @@ function detalle(btn){
 		$('#zonas').empty();
 		$(res.detalles).each(function(key, value){
 			if (value.escuela!=null) {
-				$('#zonas').append('<li style="list-style-type: circle;">Escuela <i class="fa fa-long-arrow-right"></i> '+value.escuela+'</li>');
+				$('#zonas').append('<li style="list-style-type: circle;">Escuela <i class="fa fa-long-arrow-right"></i> '+value.escuela+' (<b>'+value.departamento+'</b>)</li>');
 			}else if (value.pais!=null) {
 				$('#zonas').append('<li style="list-style-type: circle;">Internacional <i class="fa fa-long-arrow-right"></i> '+value.pais+'</li>');
 			}else if (value.zona!=null) {

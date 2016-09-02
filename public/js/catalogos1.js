@@ -6,11 +6,24 @@ $(document).ready(function(){
 function listar(model){
 	$('#datos'+model).empty();
 	$.get('/'+model+'s', function(res){
-		$(res).each(function(key, value){
-			$('#datos'+model).append('<tr><td>'+value.nombre+'</td><td>'+
-				'<button value='+value.id+' data="'+model+'" OnClick="mostrar(this);" class="btn btn-default" data-toggle="modal" data-target="#modalEdit">Editar</button> '+
-				'<button value='+value.id+' data="'+model+'" OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
-		})
+		if (model == 'area') {
+			$(res).each(function(key, value){
+				if (value.id <= 4) {
+					$('#datos'+model).append('<tr><td>'+value.nombre+'</td><td>'+
+					'<button value='+value.id+' data="'+model+'" OnClick="mostrar(this);" class="btn btn-default" data-toggle="modal" data-target="#modalEdit">Editar</button></tr>');
+				}else{
+					$('#datos'+model).append('<tr><td>'+value.nombre+'</td><td>'+
+					'<button value='+value.id+' data="'+model+'" OnClick="mostrar(this);" class="btn btn-default" data-toggle="modal" data-target="#modalEdit">Editar</button> '+
+					'<button value='+value.id+' data="'+model+'" OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+				}
+			})
+		}else{
+			$(res).each(function(key, value){
+				$('#datos'+model).append('<tr><td>'+value.nombre+'</td><td>'+
+					'<button value='+value.id+' data="'+model+'" OnClick="mostrar(this);" class="btn btn-default" data-toggle="modal" data-target="#modalEdit">Editar</button> '+
+					'<button value='+value.id+' data="'+model+'" OnClick="danger(this);" class="btn btn-danger" data-toggle="modal" data-target="#modalRemove">Eliminar</button></td></tr>');
+			})
+		}
 	});
 }
 
