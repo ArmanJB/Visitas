@@ -24,7 +24,7 @@ class ZonareceptoraRequest extends Request
     public function rules()
     {
         return [
-            'nombre' => 'required|min:3'
+            'nombre' => 'required|min:3|unique:zonas_receptoras'
         ];
     }
 }
