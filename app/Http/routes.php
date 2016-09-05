@@ -16,7 +16,6 @@ Route::get('/', 'FrontController@index');
 Route::get('menu', 'FrontController@menu');
 Route::get('admin', 'FrontController@admin');
 Route::get('visitaAdmin', 'FrontController@visitaAdmin');
-Route::get('visita/charts', 'FrontController@charts');
 Route::get('visita/informe', 'FrontController@informe');
 Route::get('catalogos', 'FrontController@catalogos');
 Route::get('personas', 'FrontController@personas');
@@ -68,6 +67,7 @@ Route::get('visitas/c/{area}', 'VisitaController@listingC');
 Route::get('visitas/o/{oficial}', 'VisitaController@listingO');
 Route::get('visita/detail/{id}', 'VisitaController@detail');
 Route::get('visita/infoVisita/{id}', 'VisitaController@infoVisita');
+Route::get('charts', 'VisitaController@charts');
 
 Route::get('visitasU/{name}', 'VisitaController@listingU');
 

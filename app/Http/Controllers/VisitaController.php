@@ -261,8 +261,12 @@ class VisitaController extends Controller
         return response()->json(['mensaje'=>'registros eliminados']);
     }
 
+    public function charts(){
+        return view('visita.charts');
+    }
 
-    public function listingU($name){
+
+    /*public function listingU($name){
         $visitas = DB::select("SELECT * FROM
             (SELECT visitas.id, visitas.fecha, 
             escuelas.nombre AS escuela, departamentos.nombre AS dep, 
@@ -881,7 +885,7 @@ class VisitaController extends Controller
         );
     }
 
-    /*********************************************/
+    /********************************************
 
     public function cantByArea($idArea){
         $visita = DB::select("SELECT visitas.id, visitas.fecha FROM visitas, oficiales 
@@ -916,7 +920,7 @@ class VisitaController extends Controller
             GROUP BY visitas.fecha, visitas.id_escuela");
 
         return response()->json($visita);
-    }
+    }*/
 
 
 }
