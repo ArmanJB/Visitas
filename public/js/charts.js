@@ -84,7 +84,7 @@ $('#actualizar').on('click', function(){
 	chart();
 });
 
-var titulo = 'Visitas por Área';
+var titulo = ' ';
 var subtitulo = '';
 var tituloY = 'Cantidad de visitas';
 
