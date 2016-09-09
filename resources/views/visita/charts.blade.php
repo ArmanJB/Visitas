@@ -55,7 +55,7 @@
 								</div>
 								{!!Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'hasta', 'class'=>'form-control ', 'dataDate'=>\Carbon\Carbon::now()->toDateString()])!!}
 								<div class="input-group-btn">
-									<button type="submit" id="actualizar" class="btn btn-success"><i class="fa fa-refresh"></i></button>
+									<button type="submit" id="actualizar" class="btn btn-success" data-toggle="tooltip" title="Actualizar"><i class="fa fa-refresh"></i></button>
 								</div>
 							</div>
 						</div>

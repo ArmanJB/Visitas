@@ -105,6 +105,7 @@ Route::get('usuario/upd/{id}/{name}/{email}/{pass}', 'UsuarioController@updateU'
 Route::get('usuario/correct/{id}', 'UsuarioController@correct');
 
 //*******USUARIOS-CHART************
+Route::get('charts/areas', 'InformeController@resumenArea');
 
 Route::get('visitas/byDepU/{ini}/{fin}/{area}', 'VisitaController@visitasByDepU');
 Route::get('visitas/byDepDetU/{ini}/{fin}/{idDep}/{area}', 'VisitaController@visitasByDepDetU');
