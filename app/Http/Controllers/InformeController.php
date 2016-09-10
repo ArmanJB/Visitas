@@ -15,8 +15,8 @@ class InformeController extends Controller
     }
 
     public function resumenArea($desde, $hasta){
-        $areas = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id GROUP BY areas.id");
-        $areasCant = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id");
+        $areas = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta' GROUP BY areas.id");
+        $areasCant = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
 
         $area = [];
         $oficiales = [];
@@ -31,8 +31,8 @@ class InformeController extends Controller
         	array_push($area, json_encode(['name'=> $value->nombre, 'y'=> $cant, 'drilldown'=> $value->nombre]));
         	
         	$aux = [];
-        	$ofcArea = DB::select("SELECT visita_oficial.id_oficial, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS oficial, oficiales.id_area FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id WHERE oficiales.id_area = $value->id_area GROUP BY visita_oficial.id_oficial");
-        	$ofcAreaCant = DB::select("SELECT visita_oficial.id_oficial, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS oficial, oficiales.id_area FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id WHERE oficiales.id_area = $value->id_area");
+        	$ofcArea = DB::select("SELECT visita_oficial.id_oficial, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS oficial, oficiales.id_area FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE oficiales.id_area = $value->id_area AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta' GROUP BY visita_oficial.id_oficial");
+        	$ofcAreaCant = DB::select("SELECT visita_oficial.id_oficial, CONCAT(oficiales.nombres, ' ', oficiales.apellidos) AS oficial, oficiales.id_area FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE oficiales.id_area = $value->id_area AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
 
         	foreach ($ofcArea as $key3 => $value3) {
         		$cant2 = 0;
@@ -44,8 +44,8 @@ class InformeController extends Controller
         		array_push($aux, json_encode(['name'=> $value3->oficial, 'y'=> $cant2, 'drilldown'=> $value3->oficial]));
         	
         		$aux2 = [];
-        		$depOfc = DB::select("SELECT escuelas.id_departamento, departamentos.nombre, visita_oficial.id_oficial FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id WHERE visita_oficial.id_oficial = $value3->id_oficial GROUP BY escuelas.id_departamento");
-        		$depOfcCant = DB::select("SELECT escuelas.id_departamento, departamentos.nombre, visita_oficial.id_oficial FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id WHERE visita_oficial.id_oficial = $value3->id_oficial");
+        		$depOfc = DB::select("SELECT escuelas.id_departamento, departamentos.nombre, visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta' GROUP BY escuelas.id_departamento");
+        		$depOfcCant = DB::select("SELECT escuelas.id_departamento, departamentos.nombre, visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
 
         		foreach ($depOfc as $key5 => $value5) {
         			$cant3 = 0;
@@ -57,8 +57,8 @@ class InformeController extends Controller
         			array_push($aux2, json_encode(['name'=> $value5->nombre, 'y'=> $cant3, 'drilldown'=> $value5->nombre]));
         		
         			$aux3 = [];
-        			$escDep = DB::select("SELECT visitas.id_escuela, escuelas.nombre, visita_oficial.id_oficial, escuelas.id_departamento FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento GROUP BY visitas.id_escuela");
-        			$escDepCant = DB::select("SELECT visitas.id_escuela, escuelas.nombre, visita_oficial.id_oficial, escuelas.id_departamento FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento");
+        			$escDep = DB::select("SELECT visitas.id_escuela, escuelas.nombre, visita_oficial.id_oficial, escuelas.id_departamento FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta' GROUP BY visitas.id_escuela");
+        			$escDepCant = DB::select("SELECT visitas.id_escuela, escuelas.nombre, visita_oficial.id_oficial, escuelas.id_departamento FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
 
         			foreach ($escDep as $key7 => $value7) {
         				$cant4 = 0;
@@ -70,8 +70,8 @@ class InformeController extends Controller
         				array_push($aux3, json_encode(['name'=> $value7->nombre, 'y'=> $cant4, 'drilldown'=> $value7->nombre]));
         			
                         $aux4 = [];
-                        $motEsc = DB::select("SELECT visita_motivo.id_motivo, motivos.nombre, visita_oficial.id_oficial, escuelas.id_departamento, visitas.id_escuela FROM visita_motivo INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id INNER JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.id_escuela = $value7->id_escuela GROUP BY visita_motivo.id_motivo");
-                        $motEscCant = DB::select("SELECT visita_motivo.id_motivo, motivos.nombre, visita_oficial.id_oficial, escuelas.id_departamento, visitas.id_escuela FROM visita_motivo INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id INNER JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.id_escuela = $value7->id_escuela");
+                        $motEsc = DB::select("SELECT visita_motivo.id_motivo, motivos.nombre, visita_oficial.id_oficial, escuelas.id_departamento, visitas.id_escuela FROM visita_motivo INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id INNER JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.id_escuela = $value7->id_escuela AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta' GROUP BY visita_motivo.id_motivo");
+                        $motEscCant = DB::select("SELECT visita_motivo.id_motivo, motivos.nombre, visita_oficial.id_oficial, escuelas.id_departamento, visitas.id_escuela FROM visita_motivo INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id INNER JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.id_escuela = $value7->id_escuela AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
 
                         foreach ($motEsc as $key9 => $value9) {
                             $cant5 = 0;
