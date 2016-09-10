@@ -14,7 +14,7 @@ class InformeController extends Controller
         $this->middleware('auth');
     }
 
-    public function resumenArea(){
+    public function resumenArea($desde, $hasta){
         $areas = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id GROUP BY areas.id");
         $areasCant = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id");
 
@@ -68,7 +68,23 @@ class InformeController extends Controller
         					}
         				}
         				array_push($aux3, json_encode(['name'=> $value7->nombre, 'y'=> $cant4, 'drilldown'=> $value7->nombre]));
-        			}
+        			
+                        $aux4 = [];
+                        $motEsc = DB::select("SELECT visita_motivo.id_motivo, motivos.nombre, visita_oficial.id_oficial, escuelas.id_departamento, visitas.id_escuela FROM visita_motivo INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id INNER JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.id_escuela = $value7->id_escuela GROUP BY visita_motivo.id_motivo");
+                        $motEscCant = DB::select("SELECT visita_motivo.id_motivo, motivos.nombre, visita_oficial.id_oficial, escuelas.id_departamento, visitas.id_escuela FROM visita_motivo INNER JOIN motivos ON visita_motivo.id_motivo = motivos.id LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id INNER JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id WHERE visita_oficial.id_oficial = $value3->id_oficial AND escuelas.id_departamento = $value5->id_departamento AND visitas.id_escuela = $value7->id_escuela");
+
+                        foreach ($motEsc as $key9 => $value9) {
+                            $cant5 = 0;
+                            foreach ($motEscCant as $key10 => $value10) {
+                                if ($value9->id_motivo == $value10->id_motivo) {
+                                    $cant5++;
+                                }
+                            }
+                            array_push($aux4, json_encode(['name'=> $value9->nombre, 'y'=> $cant5, 'drilldown'=> $value9->nombre]));
+                        }
+                        array_push($oficiales, json_encode(['id'=> $value7->nombre, 'name'=> $value7->nombre, 'data'=> $aux4]));
+
+                    }
         			array_push($oficiales, json_encode(['id'=> $value5->nombre, 'name'=> $value5->nombre, 'data'=> $aux3]));
 
         		}
@@ -80,6 +96,14 @@ class InformeController extends Controller
         }
 
         return response()->json(['principal' => $area, 'secundarios' => $oficiales]);
+    }
+
+    public function resumenDep($desde, $hasta){
+        
+        $departamentos = [];
+        $escuelas = [];
+
+        return response()->json(['principal' => $departamentos, 'secundarios' => $escuelas]);
     }
     
 }

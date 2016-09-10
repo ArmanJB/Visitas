@@ -35,6 +35,7 @@
 @extends('layouts.admin')
 
 @section('content')
+	{!!Html::style('css/checkbox.css')!!}
 	<section class="content">
 		<div class="row">
 		<div class="col-md-1"></div>
@@ -42,16 +43,16 @@
 
 				<div class="box box-success">
 					<div class="box-header with-border">
-						<h3 class="box-title"><a href="#" style="color:black;" id="listing"><span class="fa fa-pie-chart"></span> Resumen de visitas</a></h3>
+						<h3 class="box-title"><span class="fa fa-pie-chart"></span> Resumen de visitas</h3>
 
 						<div class="box-tools">
 							<div class="input-group input-group-sm" style="width: 100px;">
-								<div class="input-group-btn">
-									<span class="input-group-addon" style="border:none;color:black;">Desde</span>
+								<div class="input-group-btn" style="background-color:#00a65a;">
+									<span class="input-group-addon" style="border:none;color:white;background-color:#00a65a;"><b>Desde</b></span>
 								</div>
 								{!!Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'desde', 'class'=>'form-control ', 'dataDate'=>\Carbon\Carbon::now()->toDateString()])!!}
-								<div class="input-group-btn">
-									<span class="input-group-addon" style="border:none;color:black;">hasta</span>
+								<div class="input-group-btn" style="background-color:#00a65a;">
+									<span class="input-group-addon" style="border:none;color:white;background-color:#00a65a;"><b>hasta</b></span>
 								</div>
 								{!!Form::date('fecha', \Carbon\Carbon::now(), ['id'=>'hasta', 'class'=>'form-control ', 'dataDate'=>\Carbon\Carbon::now()->toDateString()])!!}
 								<div class="input-group-btn">
@@ -60,6 +61,16 @@
 							</div>
 						</div>
 
+					</div>
+					<div class="box-header">
+						<div class="row">
+							<div class="col-md-1">
+								<input type="checkbox" class="filled-in" id="areasChart" value=""/><label for="areasChart" style="color:black;" id="labelView">Áreas</label>	
+							</div>
+							<div class="col-md-1">
+								<input type="checkbox" class="filled-in" id="depChart" value=""/><label for="depChart" style="color:black;" id="labelView">Departamentos</label>	
+							</div>	
+						</div>
 					</div>
 					<div class="box-body table-responsive no-padding">
 						<div id="container"></div>	
@@ -76,4 +87,5 @@
 	{!!Html::script('js/highcharts.js')!!}
 	{!!Html::script('js/data.js')!!}
 	{!!Html::script('js/drilldown.js')!!}
+	{!!Html::script('js/materialize.min.js')!!}
 @endsection
