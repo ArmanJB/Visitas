@@ -105,8 +105,11 @@ Route::get('usuario/upd/{id}/{name}/{email}/{pass}', 'UsuarioController@updateU'
 Route::get('usuario/correct/{id}', 'UsuarioController@correct');
 
 //*******USUARIOS-CHART************
+//Visitas
 Route::get('charts/areas/{desde}/{hasta}', 'InformeController@resumenArea');
 Route::get('charts/departamentos/{desde}/{hasta}', 'InformeController@resumenDep');
+//Talleres
+Route::get('charts/talleres/{desde}/{hasta}', 'InformeController@resumenTaller');
 
 Route::get('visitas/byDepU/{ini}/{fin}/{area}', 'VisitaController@visitasByDepU');
 Route::get('visitas/byDepDetU/{ini}/{fin}/{idDep}/{area}', 'VisitaController@visitasByDepDetU');
@@ -118,12 +121,13 @@ Route::get('visitas/byOfiU/{ini}/{fin}/{area}', 'VisitaController@visitasByOfiU'
 Route::get('visitas/byOfiDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@visitasByOfiDetU');
 
 /***************Informes*********************/
-
+//Visitas
 Route::get('visitas/cantArea/{idArea}', 'VisitaController@cantByArea');
 Route::get('visitas/cant', 'VisitaController@cant');
 Route::get('visitas/cantDet/{idArea}', 'VisitaController@cantDetByArea');
 Route::get('visitas/cantOfi/{idArea}', 'VisitaController@cantOfiByArea');
 Route::get('visitas/cantEsc/{idArea}', 'VisitaController@cantEscByArea');
+//Talleres
 
 /***************Nuevos*********************/
 Route::resource('contenido', 'ContenidoController');
@@ -157,6 +161,7 @@ Route::resource('taller', 'TallerController');
 Route::get('talleres', 'TallerController@listing');
 Route::get('taller/detail/{id}', 'TallerController@detail');
 Route::get('taller/infoTaller/{id}', 'TallerController@infoTaller');
+Route::get('chartsT', 'TallerController@charts');
 
 Route::resource('detalleTaller', 'DetalleTallerController');
 Route::get('detallesTaller', 'DetalleTallerController@listing');

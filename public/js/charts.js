@@ -1,8 +1,8 @@
 var principal = null;
 var secundario = null;
+var titulo = ' ';
 
 $(function(){
-	//getData();
 	$('#areasChart').prop('checked', true);
 });
 $('#areasChart').change(function(){
@@ -20,7 +20,6 @@ $('#depChart').change(function(){
 	}
 });
 
-
 $('#desde').on('change', function(){
 	if ($('#desde').val() == '' || $('#hasta').val() == '') {$('#actualizar').attr('disabled', true)}
 	else{$('#actualizar').removeAttr('disabled')}
@@ -37,8 +36,6 @@ $('#hasta').on('change', function(){
 $('#actualizar').on('click', function(){
 	getData($('#desde').val(), $('#hasta').val());
 });
-
-var titulo = ' ';
 
 function getData(desde, hasta){
 	var route = '';
@@ -84,4 +81,24 @@ function chart(){
 	});
 }
 
+$('#actualizarT').on('click', function(){
+	getDataT($('#desde').val(), $('#hasta').val());
+});
 
+function getDataT(desde, hasta){
+	titulo = 'Talleres';
+	$.get('/charts/talleres/'+desde+'/'+hasta, function(res){
+		principal = [];
+		secundario = [];
+		$(res.principal).each(function(key, value){principal.push(JSON.parse(value))});
+		$(res.secundarios).each(function(key, value){
+			secundario.push(JSON.parse(value))
+			var aux = [];
+			$(secundario[key].data).each(function(key2, value2){
+				aux.push(JSON.parse(value2));
+			});
+			secundario[key].data = aux;
+		});
+		chart();
+	});
+}

@@ -104,7 +104,7 @@
             <ul class="treeview-menu">
               <li><a href="{!!URL::to('/taller/create')!!}"><i class="fa fa-plus"></i> Agregar talleres</a></li>
               <li><a href="{!!URL::to('/taller')!!}"><i class="fa fa-list"></i> Listar talleres</a></li>
-              <li><a href="#"><i class="fa fa-pie-chart"></i> Resumen de talleres</a></li>
+              <li><a href="{!!URL::to('/chartsT')!!}"><i class="fa fa-pie-chart"></i> Resumen de talleres</a></li>
               <li><a href="#"><i class="fa fa-line-chart"></i> Informes de talleres</a></li>
             </ul>
           </li>

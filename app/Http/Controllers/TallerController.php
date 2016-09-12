@@ -270,4 +270,8 @@ class TallerController extends Controller
 
         return response()->json(['mensaje'=>'registros eliminados']);
     }
+
+    public function charts(){
+        return view('taller.charts');
+    }
 }
