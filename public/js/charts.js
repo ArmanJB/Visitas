@@ -4,6 +4,11 @@ var titulo = ' ';
 
 $(function(){
 	$('#areasChart').prop('checked', true);
+	setTimeout(function(){
+		if ($('#user_type').attr('value') == 1) {
+			$('#chart_type').fadeIn();
+		}
+	},1000);
 });
 $('#areasChart').change(function(){
 	if ($(this).is(':checked')) {
@@ -39,12 +44,22 @@ $('#actualizar').on('click', function(){
 
 function getData(desde, hasta){
 	var route = '';
-	if ($('#areasChart').prop('checked') == true) {
-		route = '/charts/areas/'+desde+'/'+hasta;
-		titulo = 'Resumen por áreas';
+	if ($('#user_type').attr('value') == 1) {
+		if ($('#areasChart').prop('checked') == true) {
+			route = '/charts/areas/'+desde+'/'+hasta;
+			titulo = 'Resumen por áreas';
+		}else{
+			route = '/charts/departamentos/'+desde+'/'+hasta;
+			titulo = 'Resumen por departamentos';
+		}
 	}else{
-		route = '/charts/departamentos/'+desde+'/'+hasta;
-		titulo = 'Resumen por departamentos';
+		if ($('#user_type').attr('value') == 2) {
+			route = '/charts/coordinador/'+desde+'/'+hasta+'/'+$('#user_area').attr('value');
+			titulo = 'Resumen por área';
+		}else if ($('#user_type').attr('value') == 3){
+			route = '/charts/oficial/'+desde+'/'+hasta+'/'+$('#user_oficial').attr('value');
+			titulo = 'Resumen por oficial';
+		}
 	}
 
 	$.get(route, function(res){

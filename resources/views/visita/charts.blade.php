@@ -62,7 +62,7 @@
 						</div>
 
 					</div>
-					<div class="box-header">
+					<div class="box-header" id="chart_type" style="display:none;">
 						<div class="row">
 							<div class="col-md-1">
 								<input type="checkbox" class="filled-in" id="areasChart" value=""/><label for="areasChart" style="color:black;" id="labelView">Áreas</label>	

@@ -108,6 +108,8 @@ Route::get('usuario/correct/{id}', 'UsuarioController@correct');
 //Visitas
 Route::get('charts/areas/{desde}/{hasta}', 'InformeController@resumenArea');
 Route::get('charts/departamentos/{desde}/{hasta}', 'InformeController@resumenDep');
+Route::get('charts/coordinador/{desde}/{hasta}/{area}', 'InformeController@resumenCoordinador');
+Route::get('charts/oficial/{desde}/{hasta}/{oficial}', 'InformeController@resumenOficial');
 //Talleres
 Route::get('charts/talleres/{desde}/{hasta}', 'InformeController@resumenTaller');
 
