@@ -12,6 +12,7 @@ use Redirect;
 use Auth;
 use visitas\User;
 use DB;
+use Carbon\Carbon;
 
 class UsuarioController extends Controller
 {
@@ -52,7 +53,23 @@ class UsuarioController extends Controller
 			LEFT JOIN oficiales ON users.id_oficial=oficiales.id 
 			LEFT JOIN areas ON oficiales.id_area=areas.id 
 			WHERE users.id = $id");
-		return response()->json($user);
+
+
+		$visitasMes = DB::select("SELECT visita_oficial.id, visita_oficial.id_oficial 
+			FROM visita_oficial
+			LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
+			WHERE visita_oficial.id_oficial = ".$user[0]->oficial." AND visitas.fecha >= '".
+			Carbon::now()->format('Y-m')."-01' AND visitas.fecha <= '".
+			Carbon::now()->format('Y-m')."-31'");
+
+		$escuelasMes = DB::select("SELECT visitas.id_escuela, visita_oficial.id_oficial 
+			FROM visita_oficial
+			LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
+			WHERE visita_oficial.id_oficial = ".$user[0]->oficial." AND visitas.fecha >= '".
+			Carbon::now()->format('Y-m')."-01' AND visitas.fecha <= '".
+			Carbon::now()->format('Y-m')."-31' GROUP BY visitas.id_escuela");			
+
+		return response()->json(['user'=>$user, 'visitasMes'=>count($visitasMes), 'escuelasMes'=>count($escuelasMes)]);
 	}
 
 	public function create(){

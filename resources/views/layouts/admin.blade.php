@@ -141,22 +141,32 @@
 
         <section class="content">
           <div class="row">
-            <div class="col-lg-3 col-xs-6">
-              <div class="small-box bg-aqua">
-                <div class="inner"><h3>00</h3><p>Nuevas metas</p></div>
-                <div class="icon"><i class="ion ion-arrow-graph-up-right"></i></div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-2 col-xs-6"></div>
+            <div class="col-lg-4 col-xs-6">
               <div class="small-box bg-green">
-                <div class="inner"><h3>00<sup style="font-size: 20px">%</sup></h3><p>Visitas actuales</p></div>
+                <div class="inner"><h3><b id="visitas_user_mes">00</b></h3><p>Visitas en el mes</p></div>
                 <div class="icon"><i class="ion ion-calendar"></i></div>
               </div>
             </div>
-            <div class="col-lg-3 col-xs-6">
-              <div class="small-box bg-orange">
-                <div class="inner"><h3>00</h3><p>Talleres actuales</p></div>
+            <div class="col-lg-4 col-xs-6">
+              <div class="small-box bg-purple">
+                <div class="inner"><h3><b id="talleres_user_mes">00</b></h3><p>Talleres en el mes</p></div>
                 <div class="icon"><i class="ion ion-briefcase"></i></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2 col-xs-6"></div>
+            <div class="col-lg-4 col-xs-6">
+              <div class="small-box bg-aqua">
+                <div class="inner"><h3><b id="cumplimiento_user_mes">00</b><sup style="font-size: 20px">%</sup></h3><p>Cumplimiento mensual</p></div>
+                <div class="icon"><i class="ion ion-arrow-graph-up-right"></i></div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-xs-6">
+              <div class="small-box bg-red">
+                <div class="inner"><h3><b id="escuelas_user_mes">00</b></h3><p>Escuelas visitadas en el mes</p></div>
+                <div class="icon"><i class="ion ion-university"></i></div>
               </div>
             </div>
           </div>

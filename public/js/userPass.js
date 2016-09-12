@@ -1,14 +1,17 @@
 function setDetails(id){
+	var mes = new Date().getMonth()+1;
 	$.get('/usuarios/detalle/'+id, function(res){
-		$('#user_type').html(res[0].tipo);
-		$('#user_type').attr('value', res[0].id);
-		$('#user_area').html(res[0].area);
-		$('#user_area').attr('value', res[0].id_area);
-		$('#user_oficial').attr('value', res[0].oficial);
+		$('#user_type').html(res['user'][0].tipo);
+		$('#user_type').attr('value', res['user'][0].id);
+		$('#user_area').html(res['user'][0].area);
+		$('#user_area').attr('value', res['user'][0].id_area);
+		$('#user_oficial').attr('value', res['user'][0].oficial);
 
-		if(res[0].id_area != null && res[0].id_area != '3'){
+		if(res['user'][0].id_area != null && res['user'][0].id_area != '3'){
 			$('#tallerEdu').fadeOut();
 		}
+		$('#visitas_user_mes').html(res['visitasMes']);
+		$('#escuelas_user_mes').html(res['escuelasMes']);
 	});
 }
 
