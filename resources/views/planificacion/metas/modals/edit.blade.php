@@ -8,7 +8,32 @@
 			<div class="modal-body">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}" id="token">
 				<input type="hidden" id="idn">
-				
+				<div class="row">
+					<section class="col-lg-6">
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon" style="color:black;">{!!Form::label('Periodo: ', null, ['style'=>'width:50px;'])!!}</span>
+								{!!Form::select('periodo', ['placeholder'=>'Selecciona'], null, ['id'=>'periodoA', 'class'=>'form-control select2', 'style'=>'width:100%;'])!!}
+							</div>
+						</div>
+					</section>
+					<section class="col-lg-6">
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon" style="color:black;">{!!Form::label('Oficial: ', null, ['style'=>'width:50px;'])!!}</span>
+								{!!Form::select('oficial', ['placeholder'=>'Selecciona'], null, ['id'=>'oficialA', 'class'=>'form-control select2', 'style'=>'width:100%;'])!!}
+							</div>
+						</div>
+					</section>	
+					<section class="col-lg-6">
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon" style="color:black;">{!!Form::label('Meta: ', null, ['style'=>'width:50px;'])!!}</span>
+								{!!Form::number('meta', null, ['id'=>'metaA', 'class'=>'form-control', 'min'=>0, 'max'=>150])!!}
+							</div>
+						</div>
+					</section>
+				</div>
 			</div>
 				
 			<div class="modal-footer">

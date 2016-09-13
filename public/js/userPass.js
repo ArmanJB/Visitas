@@ -17,7 +17,7 @@ function setDetails(id){
 	});
 }
 
-function mostrar(id){
+function mostrarUP(id){
 	$.get('/usuario/'+id+'/edit', function(res){
 		$('#idn').val(res.id);
 		$('#nombreU').val(res.name);

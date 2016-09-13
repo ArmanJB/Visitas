@@ -4,7 +4,7 @@ var audiencias = null;
 
 $(function(){
 	$(".select2").select2();
-	$(".timepicker").timepicker({showMeridian: false, showInputs: false, defaultTime: '01:00'});
+	$(".timepicker").timepicker({showMeridian: false, showInputs: false, defaultTime: '00:00'});
 	$('#section2').fadeOut();
 	$('#section3').fadeOut();
 	$('#section4').fadeOut();

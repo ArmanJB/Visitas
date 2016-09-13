@@ -23,20 +23,26 @@ function setAnio(){
 
 function setOficial(){
 	$('#oficial').empty();
+	$('#oficialA').empty();
 	$('#oficial').append('<option value="placeholder">Seleccione un oficial</option>');
+	$('#oficialA').append('<option value="placeholder">Seleccione un oficial</option>');
 	$.get('/oficials', function(res){
 		$(res).each(function(key, value){
 			$('#oficial').append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
+			$('#oficialA').append('<option value="'+value.id+'">'+value.nombres+' '+value.apellidos+'</option>');
 		})
 	});
 }
 
 function setPeriodo(){
 	$('#periodo').empty();
+	$('#periodoA').empty();
 	$('#periodo').append('<option value="placeholder">Seleccione un periodo</option>');
+	$('#periodoA').append('<option value="placeholder">Seleccione un periodo</option>');
 	$.get('/periodos', function(res){
 		$(res).each(function(key, value){
 			$('#periodo').append('<option value="'+value.id+'">'+meses[(value.mes-1)]+', '+value.anio+'</option>');
+			$('#periodoA').append('<option value="'+value.id+'">'+meses[(value.mes-1)]+', '+value.anio+'</option>');
 		})
 	});
 }
@@ -192,6 +198,15 @@ function eliminar(btn){
 			$('#msjlist').fadeIn();
 			window.setTimeout(function(){$('#msjlist').fadeOut();}, 2000);
 		}
+	});
+}
+
+function mostrar(btn){
+	$.get('/meta/'+$(btn).val()+'/edit', function(res){
+		$('#idn').val(res.id);
+		$('#periodoA').val(res.id_periodo).trigger('change');
+		$('#oficialA').val(res.id_oficial).trigger('change');
+		$('#metaA').val(res.meta);
 	});
 }
 /*

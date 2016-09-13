@@ -224,7 +224,7 @@
 
         $('#userPassButton').on('click', function(){
           $('#modalUserPass').modal('toggle');
-          mostrar({!!Auth::user()->id!!})
+          mostrarUP({!!Auth::user()->id!!})
         });
         
       });
