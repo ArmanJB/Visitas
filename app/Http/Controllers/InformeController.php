@@ -13,6 +13,7 @@ class InformeController extends Controller
 	public function __construct(){
         $this->middleware('auth');
     }
+    /********RESUMEN*****************/
 
     public function resumenArea($desde, $hasta){
         $areas = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area, areas.nombre FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta' GROUP BY areas.id");
@@ -338,4 +339,9 @@ class InformeController extends Controller
         return response()->json(['principal' => $area, 'secundarios' => $oficiales]);
     }
     
+    /**********INFORMES************/
+
+    public function reportTaller(){
+
+    }
 }

@@ -105,7 +105,7 @@
               <li><a href="{!!URL::to('/taller/create')!!}"><i class="fa fa-plus"></i> Agregar talleres</a></li>
               <li><a href="{!!URL::to('/taller')!!}"><i class="fa fa-list"></i> Listar talleres</a></li>
               <li><a href="{!!URL::to('/chartsT')!!}"><i class="fa fa-pie-chart"></i> Resumen de talleres</a></li>
-              <li><a href="#"><i class="fa fa-line-chart"></i> Informes de talleres</a></li>
+              <li><a href="{!!URL::to('/reportT')!!}"><i class="fa fa-line-chart"></i> Informes de talleres</a></li>
             </ul>
           </li>
           @if (Auth::user()->id_type == 1)
@@ -159,7 +159,7 @@
             <div class="col-lg-2 col-xs-6"></div>
             <div class="col-lg-4 col-xs-6">
               <div class="small-box bg-aqua">
-                <div class="inner"><h3><b id="cumplimiento_user_mes">00</b><sup style="font-size: 20px">%</sup></h3><p>Cumplimiento mensual</p></div>
+                <div class="inner"><h3><b id="cumplimiento_user_mes">00</b><sup style="font-size: 20px">%</sup></h3><p>Cumplimiento mensual de visitas</p></div>
                 <div class="icon"><i class="ion ion-arrow-graph-up-right"></i></div>
               </div>
             </div>

@@ -131,6 +131,7 @@ Route::get('visitas/cantOfi/{idArea}', 'VisitaController@cantOfiByArea');
 Route::get('visitas/cantEsc/{idArea}', 'VisitaController@cantEscByArea');
 //Talleres
 
+
 /***************Nuevos*********************/
 Route::resource('contenido', 'ContenidoController');
 Route::get('contenidos', 'ContenidoController@listing');
@@ -164,6 +165,7 @@ Route::get('talleres', 'TallerController@listing');
 Route::get('taller/detail/{id}', 'TallerController@detail');
 Route::get('taller/infoTaller/{id}', 'TallerController@infoTaller');
 Route::get('chartsT', 'TallerController@charts');
+Route::get('reportT', 'TallerController@report');
 
 Route::resource('detalleTaller', 'DetalleTallerController');
 Route::get('detallesTaller', 'DetalleTallerController@listing');

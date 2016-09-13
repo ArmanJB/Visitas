@@ -12,6 +12,8 @@ function setDetails(id){
 		}
 		$('#visitas_user_mes').html(res['visitasMes']);
 		$('#escuelas_user_mes').html(res['escuelasMes']);
+		$('#talleres_user_mes').html(res['talleresMes']);
+		$('#cumplimiento_user_mes').html(res['cumplimientoMes']);
 	});
 }
 

@@ -274,4 +274,8 @@ class TallerController extends Controller
     public function charts(){
         return view('taller.charts');
     }
+
+    public function report(){
+        return view('taller.report');
+    }
 }

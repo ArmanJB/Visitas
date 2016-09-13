@@ -54,22 +54,71 @@ class UsuarioController extends Controller
 			LEFT JOIN areas ON oficiales.id_area=areas.id 
 			WHERE users.id = $id");
 
+		if ($user[0]->oficial != null) {
+			$visitasMes = DB::select("SELECT visita_oficial.id, visita_oficial.id_oficial 
+				FROM visita_oficial
+				LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
+				WHERE visita_oficial.id_oficial = ".$user[0]->oficial." AND visitas.fecha >= '".
+				Carbon::now()->format('Y-m')."-01' AND visitas.fecha <= '".
+				Carbon::now()->format('Y-m')."-31'");
 
-		$visitasMes = DB::select("SELECT visita_oficial.id, visita_oficial.id_oficial 
-			FROM visita_oficial
-			LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
-			WHERE visita_oficial.id_oficial = ".$user[0]->oficial." AND visitas.fecha >= '".
-			Carbon::now()->format('Y-m')."-01' AND visitas.fecha <= '".
-			Carbon::now()->format('Y-m')."-31'");
+			$escuelasMes = DB::select("SELECT visitas.id_escuela, visita_oficial.id_oficial 
+				FROM visita_oficial
+				LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
+				WHERE visita_oficial.id_oficial = ".$user[0]->oficial." AND visitas.fecha >= '".
+				Carbon::now()->format('Y-m')."-01' AND visitas.fecha <= '".
+				Carbon::now()->format('Y-m')."-31' GROUP BY visitas.id_escuela");
 
-		$escuelasMes = DB::select("SELECT visitas.id_escuela, visita_oficial.id_oficial 
-			FROM visita_oficial
-			LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
-			WHERE visita_oficial.id_oficial = ".$user[0]->oficial." AND visitas.fecha >= '".
-			Carbon::now()->format('Y-m')."-01' AND visitas.fecha <= '".
-			Carbon::now()->format('Y-m')."-31' GROUP BY visitas.id_escuela");			
+			$talleresMes = DB::select("SELECT talleres.id, taller_oficial.id_oficial 
+				FROM taller_oficial
+				LEFT JOIN talleres ON taller_oficial.id_taller = talleres.id
+				WHERE taller_oficial.id_oficial = ".$user[0]->oficial." AND talleres.fecha >= '".
+				Carbon::now()->format('Y-m')."-01' AND talleres.fecha <= '".
+				Carbon::now()->format('Y-m')."-31'");
 
-		return response()->json(['user'=>$user, 'visitasMes'=>count($visitasMes), 'escuelasMes'=>count($escuelasMes)]);
+			$cumplimiento = 0;
+			$cumplimientoMes = DB::select("SELECT metas.meta, periodos.mes, periodos.anio
+				FROM metas
+				LEFT JOIN periodos ON metas.id_periodo = periodos.id
+				WHERE metas.id_oficial = ".$user[0]->oficial." AND periodos.mes = '".
+				intval(Carbon::now()->format('m'))."' AND periodos.anio = '".Carbon::now()->format('Y')."'");
+			if (count($cumplimientoMes) != 0) {
+				$cumplimiento = intval((100*count($visitasMes))/intval($cumplimientoMes[0]->meta));	
+			}	
+		}else{
+			$visitasMes = DB::select("SELECT visitas.id, visitas.fecha 
+				FROM visitas
+				WHERE visitas.fecha >= '".Carbon::now()->format('Y-m').
+				"-01' AND visitas.fecha <= '".Carbon::now()->format('Y-m')."-31'");
+
+			$escuelasMes = DB::select("SELECT visitas.id_escuela, visita_oficial.id_oficial 
+				FROM visita_oficial
+				LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id
+				WHERE visitas.fecha >= '".Carbon::now()->format('Y-m').
+				"-01' AND visitas.fecha <= '".Carbon::now()->format('Y-m').
+				"-31' GROUP BY visitas.id_escuela");
+
+			$talleresMes = DB::select("SELECT talleres.id, talleres.fecha 
+				FROM talleres
+				WHERE talleres.fecha >= '".Carbon::now()->format('Y-m').
+				"-01' AND talleres.fecha <= '".Carbon::now()->format('Y-m')."-31'");
+
+			$cumplimiento = 0;
+			$cumplimientoMes = DB::select("SELECT metas.meta, periodos.mes, periodos.anio
+				FROM metas
+				LEFT JOIN periodos ON metas.id_periodo = periodos.id
+				WHERE periodos.mes = '".intval(Carbon::now()->format('m')).
+				"' AND periodos.anio = '".Carbon::now()->format('Y')."'");
+			foreach ($cumplimientoMes as $key => $value) {
+				$cumplimiento += intval($value->meta);
+			}
+
+			if (count($cumplimientoMes) != 0) {
+				$cumplimiento = intval((100*count($visitasMes))/intval($cumplimiento));	
+			}
+		}
+
+		return response()->json(['user'=>$user, 'visitasMes'=>count($visitasMes), 'escuelasMes'=>count($escuelasMes), 'talleresMes'=>count($talleresMes), 'cumplimientoMes'=>$cumplimiento]);
 	}
 
 	public function create(){
@@ -114,16 +163,6 @@ class UsuarioController extends Controller
 	public function correct($id){
 		$user = User::find($id);
 		return $user;
-	}
-
-	public function updateU($id, $name, $email, $pass){
-		$user = User::find($id);
-		$user->fill(['name'=>$name, 'email'=>$email, 'password'=>$pass]);
-		$user->save();
-
-		return response()->json([
-            'mensaje' => 'actualizado'
-        ]); 
 	}
 
 	public function types(){
