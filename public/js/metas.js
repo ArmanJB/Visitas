@@ -209,47 +209,22 @@ function mostrar(btn){
 		$('#metaA').val(res.meta);
 	});
 }
-/*
-$('#actualizar').on('click', function(){
-	var value = $('#id').val();	
-	var idPeriodo = $('#periodo').val();
-	var idOficial = $('#oficial').val();
-	var meta = $('#meta').val();
 
+$('#actualizar').on('click', function(){
 	$.ajax({
-		url: '/metas/'+value+'',
+		url: '/meta/'+$('#idn').val(),
 		headers: {'X-CSRF-TOKEN': $('#token').val()},
 		type: 'PUT',
 		dataType: 'json',
-		data: {meta: meta, id_oficial: idOficial, id_periodo: idPeriodo},
+		data: {meta: $('#metaA').val(), id_oficial: $('#oficialA').val(), id_periodo: $('#periodoA').val()},
 
-		success: function(){
-			listar();
-			$('#myModal').modal('toggle');
-			$('#msj-success').fadeIn();
-			window.setTimeout(function(){$('#msj-success').fadeOut();}, 2000);
-		}
-	});
-})
-
-$('#actualizar').on('click', function(){
-	var tab = $(this).attr('data');
-	var dJson;
-	if ($(this).attr('data') == 'motivo') {
-		dJson = {nombre: $('#nombren').val(), id_area: $('#selectn').val()}
-	}else{
-		dJson = {nombre: $('#nombren').val(), id_motivo: $('#selectn').val()}
-	}
-	$.ajax({
-		url: '/'+$(this).attr('data')+'/'+$('#idn').val(),
-		headers: {'X-CSRF-TOKEN': $('#token').val()},
-		type: 'PUT',
-		dataType: 'json',
-		data: dJson,
 		success: function(){
 			listar();
 			$('#modalEdit').modal('toggle');
-			$('#nombren').val('');
+			$('#idn').val('');
+			$('#metaA').val('');
+			$('#oficialA').val('placeholder').trigger('change');
+			$('#periodoA').val('placeholder').trigger('change');
 			$('#msjlist').removeClass('alert-danger');
 			$('#msjlist').addClass('alert-success');
 			$('#msjlist'+'-text').html('Registros actualizados exitosamente!');
@@ -257,4 +232,5 @@ $('#actualizar').on('click', function(){
 			window.setTimeout(function(){$('#msjlist').fadeOut();}, 2000);
 		}
 	});
-})*/
+});
+
