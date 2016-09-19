@@ -130,7 +130,7 @@ Route::get('visitas/cantDet/{idArea}', 'VisitaController@cantDetByArea');
 Route::get('visitas/cantOfi/{idArea}', 'VisitaController@cantOfiByArea');
 Route::get('visitas/cantEsc/{idArea}', 'VisitaController@cantEscByArea');
 //Talleres
-
+Route::get('talleres/reporte/{desde}/{hasta}', 'InformeController@reportTaller');
 
 /***************Nuevos*********************/
 Route::resource('contenido', 'ContenidoController');

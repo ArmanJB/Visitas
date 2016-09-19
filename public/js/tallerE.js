@@ -454,6 +454,10 @@ $('#registrar').on('click', function(){
 
 function validar(){
 	var cantE = 0;
+	if ($('#duracion').val()=='' || $('#duracion').val()=='00:00' || $('#duracion').val()=='00:00:00') {
+		$('#duracion').parents('.form-group').addClass('has-error');
+		cantE++;
+	}
 	if ($('#fecha').attr('dataDate') < $('#fecha').val()) {
 		$('#fecha').parents('.form-group').addClass('has-error');
 		cantE++;

@@ -341,7 +341,75 @@ class InformeController extends Controller
     
     /**********INFORMES************/
 
-    public function reportTaller(){
+    public function reportTaller($desde, $hasta){
+        $talleresAnual = DB::select("SELECT * FROM talleres WHERE talleres.fecha >= '".Carbon::now()->format('Y')."-01-01' AND talleres.fecha <= '".Carbon::now()->format('Y')."-12-31'");
+        $talleresRango = DB::select("SELECT * FROM talleres WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
 
+        $actividades = [];
+        $tallerAct = DB::select("SELECT talleres.duracion, talleres.cant_mujeres, talleres.cant_hombres, talleres.id_actividad FROM talleres WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
+        $actividad = DB::select("SELECT * FROM actividades");
+        $cantT = 0; $persT = 0; $horasT = '00:00:00';
+        foreach ($actividad as $key => $value) {
+            $cant = 0;
+            $pers = 0;
+            $horas = '00:00:00';
+            foreach ($tallerAct as $key2 => $value2) {
+                if ($value->id == $value2->id_actividad) {
+                    $cant++;
+                    $pers+=($value2->cant_mujeres+$value2->cant_hombres);
+                    $horas = strtotime($horas)+strtotime($value2->duracion)-strtotime('00:00:00');
+                    $horas = date('H:i', $horas);
+                }
+            }
+            if ($cant > 0) {
+                array_push($actividades, ['actividad'=>$value->nombre, 'cant'=>$cant, 'pers'=>$pers, 'duracion'=>$horas]);
+            }
+            $cantT+=$cant;
+            $persT+=$pers;
+            $horasT = strtotime($horasT)+strtotime($horas)-strtotime('00:00:00');
+            $horasT = date('H:i', $horasT);
+        }
+
+        $audiencias = [];
+        $tallerAud = DB::select("SELECT taller_audiencia.id_audiencia, talleres.id FROM taller_audiencia LEFT JOIN talleres ON taller_audiencia.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta'");
+        $audiencia = DB::select("SELECT * FROM audiencia");
+        foreach ($audiencia as $key => $value) {
+            $cant = 0;
+            foreach ($tallerAud as $key2 => $value2) {
+                if ($value->id == $value2->id_audiencia) {
+                    $cant++;
+                }
+            }
+            if ($cant > 0) {
+                array_push($audiencias, ['audiencia'=>$value->nombre, 'cant'=>$cant]);
+            }
+        }
+
+        $contenidos = [];
+        $tallerCont = DB::select("SELECT taller_contenido.id_contenido, talleres.id FROM taller_contenido LEFT JOIN talleres ON taller_contenido.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta'");
+        $contenido = DB::select("SELECT * FROM contenidos");
+        foreach ($contenido as $key => $value) {
+            $cant = 0;
+            foreach ($tallerCont as $key2 => $value2) {
+                if ($value->id == $value2->id_contenido) {
+                    $cant++;
+                }
+            }
+            if ($cant > 0) {
+                array_push($contenidos, ['contenido'=>$value->nombre, 'cant'=>$cant]);
+            }
+        }
+
+        $zonas = [];
+        $tallerZona = DB::select("SELECT talleres.id, detalle_taller.id_escuela, detalle_taller.id_internacional, detalle_taller.id_zona
+FROM detalle_taller 
+RIGHT JOIN talleres ON detalle_taller.id_taller = talleres.id
+WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
+        //aqui quede XD
+        
+        return response()->json(['anual'=>count($talleresAnual), 'cant'=>count($talleresRango), 
+            'actividades'=>$actividades, 'actividadesT'=>['cant'=>$cantT, 'pers'=>$persT, 'duracion'=>$horasT], 
+            'audiencias'=>$audiencias, 'contenidos'=>$contenidos]);
     }
+
 }

@@ -8,7 +8,7 @@
 
 				<div class="box box-primary">
 					<div class="box-header with-border">
-						<h3 class="box-title"><span class="fa fa-line-chart"></span> Informes de talleres</h3>
+						<h3 class="box-title"><span class="glyphicon glyphicon-copy"></span> Informes de talleres</h3>
 
 						<div class="box-tools">
 							<div class="input-group input-group-sm" style="width: 100px;">
@@ -28,7 +28,38 @@
 
 					</div>
 					<div class="box-body table-responsive no-padding">
-						<div id="container"></div>	
+						<div id="report-container">
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<table class="table table-hover informe">
+										<thead><th colspan="2">Rango</th><th>Cantidad</th><th>%</th></thead>
+										<tbody id="consolidado"></tbody>
+									</table>
+								</div>
+								<div class="col-md-6">
+									<table class="table table-hover informe">
+										<thead><th>Tipo de actividad desarrollada</th><th>Cantidad</th><th>Personas atendidas</th><th>Tiempo invertido</th></thead>
+										<tbody id="actividades"></tbody>
+									</table>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<table class="table table-hover informe">
+										<thead><th>Audiencia de los talleres</th><th>Cantidad</th></thead>
+										<tbody id="audiencias"></tbody>
+									</table>
+								</div>
+								<div class="col-md-6">
+									<table class="table table-hover informe">
+										<thead><th>Contenido de los talleres</th><th>Cantidad</th></thead>
+										<tbody id="contenidos"></tbody>
+									</table>
+								</div>
+							</div>
+									
+						</div>
 					</div>
 				</div>
 			</div>
@@ -38,8 +69,5 @@
 @endsection
 
 @section('scripts')
-	{!!Html::script('js/charts.js')!!}
-	{!!Html::script('js/highcharts.js')!!}
-	{!!Html::script('js/data.js')!!}
-	{!!Html::script('js/drilldown.js')!!}
+	{!!Html::script('js/report.js')!!}
 @endsection
