@@ -30,51 +30,71 @@
 					<div class="box-body table-responsive no-padding">
 						<div id="report-container">
 							<div class="col-md-12">
+								<div class="col-md-3"></div>
 								<div class="col-md-6">
+									<h3>Consolidado </h3>
 									<table class="table table-hover informe">
-										<thead><th colspan="2">Rango</th><th>Cantidad</th><th>%</th></thead>
+										<thead><th colspan="2">Rango</th><th>Cantidad</th><th>% alcanzado</th></thead>
 										<tbody id="consolidado"></tbody>
-									</table>
+									</table><div id="divider"></div>
 								</div>
+								
+							</div>
+							<div class="col-md-12">
+								<div class="col-md-3"></div>
 								<div class="col-md-6">
+									<h4>Actividades desarrolladas</h4>
 									<table class="table table-hover informe">
 										<thead><th>Tipo de actividad desarrollada</th><th>Cantidad</th><th>Personas atendidas</th><th>Tiempo invertido</th></thead>
 										<tbody id="actividades"></tbody>
-									</table>
+									</table><div id="divider"></div>
 								</div>
 							</div>
 
 							<div class="col-md-12">
+								<div class="col-md-3"></div>
 								<div class="col-md-6">
+									<h4>Audiencias</h4>
 									<table class="table table-hover informe">
-										<thead><th>Audiencia de los talleres</th><th>Cantidad</th></thead>
+										<thead><th>#</th><th>Audiencia de los talleres</th><th>Cantidad</th><th>Tiempo invertido</th></thead>
 										<tbody id="audiencias"></tbody>
-									</table>
+									</table><div id="divider"></div>
 								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="col-md-3"></div>
 								<div class="col-md-6">
+									<h4>Contenidos</h4>
 									<table class="table table-hover informe">
-										<thead><th>Contenido de los talleres</th><th>Cantidad</th></thead>
+										<thead><th>#</th><th>Contenido de los talleres</th><th>Cantidad</th><th>Tiempo invertido</th></thead>
 										<tbody id="contenidos"></tbody>
-									</table>
+									</table><div id="divider"></div>
 								</div>
 							</div>
 
+
 							<div class="col-md-12">
+								<div class="col-md-3"></div>
 								<div class="col-md-6">
+									<h4>Zonas de atención</h4>
 									<table class="table table-hover informe">
-										<thead><th>#</th><th>Zonas de atención de los talleres</th><th>Cantidad</th></thead>
+										<thead><th>#</th><th>Zonas de atención de los talleres</th><th>Cantidad</th><th>Tiempo invertido</th></thead>
 										<tbody id="zonas"></tbody>
-									</table>
+									</table><div id="divider"></div>
 								</div>
 							</div>
 
+
 							<div class="col-md-12">
-								<div class="col-md-12" id="comparativoVisitas"></div>
+							<div class="col-md-2"></div>
+								<div class="col-md-8"><div id="comparativoVisitas"></div><div id="divider"></div></div>
 							</div>
+
 									
 						</div>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</section>

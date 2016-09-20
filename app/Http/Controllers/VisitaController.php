@@ -265,6 +265,10 @@ class VisitaController extends Controller
         return view('visita.charts');
     }
 
+    public function report(){
+        return view('visita.report');
+    }
+
 
     /*public function listingU($name){
         $visitas = DB::select("SELECT * FROM

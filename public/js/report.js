@@ -1,6 +1,13 @@
 $(function(){
-	listar();
-	clear();
+	$('#areas').empty();
+	$.get('/areas', function(res){
+		$(res).each(function(key, value){
+			$('#areas').append('<div class="col-md-2"><input type="checkbox" class="filled-in" id="area'+value.id+'" value="" checked/><label for="area'+value.id+'" style="color:black;" id="labelView">'+value.nombre+'</label></div>');
+		});
+	});
+
+	$('#actualizarT').click();
+	$('#actualizar').click();
 });
 
 $('#actualizarT').on('click', function(){
@@ -14,6 +21,7 @@ function clear(){
 	$('#audiencias').empty();
 	$('#contenidos').empty();
 	$('#zonas').empty();
+	$('#comparativoVisitas').empty();
 }
 
 function listar(){
@@ -27,13 +35,13 @@ function listar(){
 		$('#actividades').append('<tr class="tfoot"><td class="informeM">Total</td><td>'+res.actividadesT['cant']+'</td><td>'+res.actividadesT['pers']+'</td><td>'+res.actividadesT['duracion']+'</td></tr>');
 		//
 		$(res.audiencias).each(function(key, value){
-			$('#audiencias').append('<tr><td class="informeM">'+value.audiencia+'</td><td>'+value.cant+'</td></tr>');
+			$('#audiencias').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.audiencia+'</td><td>'+value.cant+'</td><td>'+value.duracion+'</td></tr>');
 		});
 		$(res.contenidos).each(function(key, value){
-			$('#contenidos').append('<tr><td class="informeM">'+value.contenido+'</td><td>'+value.cant+'</td></tr>');
+			$('#contenidos').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.contenido+'</td><td>'+value.cant+'</td><td>'+value.duracion+'</td></tr>');
 		});
 		$(res.zonas).each(function(key, value){
-			$('#zonas').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.zona+'</td><td>'+value.cant+'</td></tr>');
+			$('#zonas').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.zona+'</td><td>'+value.cant+'</td><td>'+value.duracion+'</td></tr>');
 		});
         var data = [{
             name: 'Tokyo',
@@ -51,21 +59,39 @@ function listar(){
 }
 
 function comparativo(oficiales, data){
-	$('#comparativoVisitas').highcharts({
-        chart: {type: 'column'},
-        title: {text: 'Consolidado de actividades'},
-        subtitle: {text: 'desde '+$('#desde').val()+' hasta '+$('#hasta').val()},
-        xAxis: {categories: oficiales,crosshair: true},
-        yAxis: {min: 0, title: {text: 'Cantidad de visitas o talleres'} },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {column: {pointPadding: 0.2, borderWidth: 0} },
-        series: data
-    });
+	if (oficiales.length != 0) {
+		$('#comparativoVisitas').highcharts({
+	        chart: {type: 'column'},
+	        title: {text: 'Consolidado de actividades'},
+	        subtitle: {text: 'desde '+$('#desde').val()+' hasta '+$('#hasta').val()},
+	        xAxis: {categories: oficiales,crosshair: true},
+	        yAxis: {min: 0, title: {text: 'Cantidad de visitas o talleres'} },
+	        tooltip: {
+	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+	            footerFormat: '</table>',
+	            shared: true,
+	            useHTML: true
+	        },
+	        plotOptions: {column: {pointPadding: 0.2, borderWidth: 0} },
+	        series: data
+	    });
+	}
 }
+
+$('#actualizar').on('click', function(){
+	listarV();
+	clearV();
+});
+
+function clearV(){
+	
+}
+
+function listarV(){
+	$.get('/visitas/reporte/'+$('#desde').val()+'/'+$('#hasta').val(), function(res){
+		console.log(res)
+	});
+}
+

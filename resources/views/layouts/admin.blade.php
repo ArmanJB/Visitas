@@ -92,7 +92,7 @@
               <li><a href="{!!URL::to('/visita/create')!!}"><i class="fa fa-plus"></i> Agregar visitas</a></li>
               <li><a href="{!!URL::to('/visita')!!}"><i class="fa fa-list"></i> Listar visitas</a></li>
               <li><a href="{!!URL::to('/charts')!!}"><i class="fa fa-pie-chart"></i> Resumen de visitas</a></li>
-              <li><a href="#"><i class="fa fa-line-chart"></i> Informes de visitas</a></li>
+              <li><a href="{!!URL::to('/report')!!}"><i class="fa fa-line-chart"></i> Informes de visitas</a></li>
             </ul>
           </li>
           @if (Auth::user()->id_type != 1)

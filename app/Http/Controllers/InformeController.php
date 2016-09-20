@@ -371,80 +371,92 @@ class InformeController extends Controller
         }
 
         $audiencias = [];
-        $tallerAud = DB::select("SELECT taller_audiencia.id_audiencia, talleres.id FROM taller_audiencia LEFT JOIN talleres ON taller_audiencia.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta'");
+        $tallerAud = DB::select("SELECT taller_audiencia.id_audiencia, talleres.id, talleres.duracion FROM taller_audiencia LEFT JOIN talleres ON taller_audiencia.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta'");
         $audiencia = DB::select("SELECT * FROM audiencia");
         foreach ($audiencia as $key => $value) {
             $cant = 0;
+            $duracion = '00:00:00';
             foreach ($tallerAud as $key2 => $value2) {
                 if ($value->id == $value2->id_audiencia) {
                     $cant++;
+                    $duracion = strtotime($duracion)+strtotime($value2->duracion)-strtotime('00:00:00');
+                    $duracion = date('H:i', $duracion);
                 }
             }
             if ($cant > 0) {
-                array_push($audiencias, ['audiencia'=>$value->nombre, 'cant'=>$cant]);
+                array_push($audiencias, ['audiencia'=>$value->nombre, 'cant'=>$cant, 'duracion'=>$duracion]);
             }
         }
 
         $contenidos = [];
-        $tallerCont = DB::select("SELECT taller_contenido.id_contenido, talleres.id FROM taller_contenido LEFT JOIN talleres ON taller_contenido.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta'");
+        $tallerCont = DB::select("SELECT taller_contenido.id_contenido, talleres.id, talleres.duracion FROM taller_contenido LEFT JOIN talleres ON taller_contenido.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta'");
         $contenido = DB::select("SELECT * FROM contenidos");
         foreach ($contenido as $key => $value) {
             $cant = 0;
+            $duracion = '00:00:00';
             foreach ($tallerCont as $key2 => $value2) {
                 if ($value->id == $value2->id_contenido) {
                     $cant++;
+                    $duracion = strtotime($duracion)+strtotime($value2->duracion)-strtotime('00:00:00');
+                    $duracion = date('H:i', $duracion);
                 }
             }
             if ($cant > 0) {
-                array_push($contenidos, ['contenido'=>$value->nombre, 'cant'=>$cant]);
+                array_push($contenidos, ['contenido'=>$value->nombre, 'cant'=>$cant, 'duracion'=>$duracion]);
             }
         }
 
         $zonas = [];
-        $tallerZona = DB::select("SELECT talleres.id, detalle_taller.id_escuela, detalle_taller.id_internacional, detalle_taller.id_zona
-FROM detalle_taller 
-RIGHT JOIN talleres ON detalle_taller.id_taller = talleres.id
-WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
+        $tallerZona = DB::select("SELECT talleres.id, talleres.duracion, detalle_taller.id_escuela, detalle_taller.id_internacional, detalle_taller.id_zona FROM detalle_taller RIGHT JOIN talleres ON detalle_taller.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
         $zona = DB::select("SELECT * FROM zonas_receptoras");
         foreach ($zona as $key => $value) {
             $cant = 0;
+            $duracion = '00:00:00';
             foreach ($tallerZona as $key2 => $value2) {
                 if ($value2->id_zona != null) {
                     if ($value->id == $value2->id_zona) {
                         $cant++;
+                        $duracion = strtotime($duracion)+strtotime($value2->duracion)-strtotime('00:00:00');
+                        $duracion = date('H:i', $duracion);
                     }
                 }
             }
             if ($cant > 0) {
-                array_push($zonas, ['zona'=>$value->nombre, 'cant'=>$cant]);
+                array_push($zonas, ['zona'=>$value->nombre, 'cant'=>$cant, 'duracion'=>$duracion]);
             }
         }
         $zona = DB::select("SELECT * FROM internacionales");
         foreach ($zona as $key => $value) {
             $cant = 0;
+            $duracion = '00:00:00';
             foreach ($tallerZona as $key2 => $value2) {
                 if ($value2->id_internacional != null) {
                     if ($value->id == $value2->id_internacional) {
                         $cant++;
+                        $duracion = strtotime($duracion)+strtotime($value2->duracion)-strtotime('00:00:00');
+                        $duracion = date('H:i', $duracion);
                     }
                 }
             }
             if ($cant > 0) {
-                array_push($zonas, ['zona'=>$value->nombre.' (Internacional)', 'cant'=>$cant]);
+                array_push($zonas, ['zona'=>$value->nombre.' (Internacional)', 'cant'=>$cant, 'duracion'=>$duracion]);
             }
         }
         $zona = DB::select("SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS departamento FROM escuelas INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id");
         foreach ($zona as $key => $value) {
             $cant = 0;
+            $duracion = '00:00:00';
             foreach ($tallerZona as $key2 => $value2) {
                 if ($value2->id_escuela != null) {
                     if ($value->id == $value2->id_escuela) {
                         $cant++;
+                        $duracion = strtotime($duracion)+strtotime($value2->duracion)-strtotime('00:00:00');
+                        $duracion = date('H:i', $duracion);
                     }
                 }
             }
             if ($cant > 0) {
-                array_push($zonas, ['zona'=>$value->nombre.' (Escuela en '.$value->departamento.')', 'cant'=>$cant]);
+                array_push($zonas, ['zona'=>$value->nombre.' (Escuela en '.$value->departamento.')', 'cant'=>$cant, 'duracion'=>$duracion]);
             }
         }
 
@@ -479,6 +491,11 @@ WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
             'actividades'=>$actividades, 'actividadesT'=>['cant'=>$cantT, 'pers'=>$persT, 'duracion'=>$horasT], 
             'audiencias'=>$audiencias, 'contenidos'=>$contenidos, 'zonas'=>$zonas, 
             'comparativo'=>['oficiales'=>$oficiales, 'data'=>$data]]);
+    }
+
+    public function reportVisita($desde, $hasta){
+        
+        return response()->json([]);
     }
 
 }

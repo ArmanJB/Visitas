@@ -68,6 +68,7 @@ Route::get('visitas/o/{oficial}', 'VisitaController@listingO');
 Route::get('visita/detail/{id}', 'VisitaController@detail');
 Route::get('visita/infoVisita/{id}', 'VisitaController@infoVisita');
 Route::get('charts', 'VisitaController@charts');
+Route::get('report', 'VisitaController@report');
 
 Route::get('visitasU/{name}', 'VisitaController@listingU');
 
@@ -124,6 +125,8 @@ Route::get('visitas/byOfiDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@vis
 
 /***************Informes*********************/
 //Visitas
+Route::get('visitas/reporte/{desde}/{hasta}', 'InformeController@reportVisita');
+
 Route::get('visitas/cantArea/{idArea}', 'VisitaController@cantByArea');
 Route::get('visitas/cant', 'VisitaController@cant');
 Route::get('visitas/cantDet/{idArea}', 'VisitaController@cantDetByArea');
