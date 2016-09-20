@@ -405,11 +405,80 @@ class InformeController extends Controller
 FROM detalle_taller 
 RIGHT JOIN talleres ON detalle_taller.id_taller = talleres.id
 WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
-        //aqui quede XD
+        $zona = DB::select("SELECT * FROM zonas_receptoras");
+        foreach ($zona as $key => $value) {
+            $cant = 0;
+            foreach ($tallerZona as $key2 => $value2) {
+                if ($value2->id_zona != null) {
+                    if ($value->id == $value2->id_zona) {
+                        $cant++;
+                    }
+                }
+            }
+            if ($cant > 0) {
+                array_push($zonas, ['zona'=>$value->nombre, 'cant'=>$cant]);
+            }
+        }
+        $zona = DB::select("SELECT * FROM internacionales");
+        foreach ($zona as $key => $value) {
+            $cant = 0;
+            foreach ($tallerZona as $key2 => $value2) {
+                if ($value2->id_internacional != null) {
+                    if ($value->id == $value2->id_internacional) {
+                        $cant++;
+                    }
+                }
+            }
+            if ($cant > 0) {
+                array_push($zonas, ['zona'=>$value->nombre.' (Internacional)', 'cant'=>$cant]);
+            }
+        }
+        $zona = DB::select("SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS departamento FROM escuelas INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id");
+        foreach ($zona as $key => $value) {
+            $cant = 0;
+            foreach ($tallerZona as $key2 => $value2) {
+                if ($value2->id_escuela != null) {
+                    if ($value->id == $value2->id_escuela) {
+                        $cant++;
+                    }
+                }
+            }
+            if ($cant > 0) {
+                array_push($zonas, ['zona'=>$value->nombre.' (Escuela en '.$value->departamento.')', 'cant'=>$cant]);
+            }
+        }
+
+        $oficiales = []; $data = [];
+        $visitas = []; $talleres = [];
+        $tallerOfc = DB::select("SELECT taller_oficial.id_oficial, talleres.fecha FROM taller_oficial LEFT JOIN talleres ON taller_oficial.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
+        $visitaOfc = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE oficiales.id_area = 3 AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
+        $oficial = DB::select("SELECT * FROM oficiales WHERE oficiales.id_area = 3");
+        foreach ($oficial as $key => $value) {
+            $cant = 0;
+            foreach ($visitaOfc as $key2 => $value2) {
+                if ($value->id == $value2->id_oficial) {
+                    $cant++;
+                }
+            }
+            $cant2 = 0;
+            foreach ($tallerOfc as $key3 => $value3) {
+                if ($value->id == $value3->id_oficial) {
+                    $cant2++;
+                }
+            }
+            if ($cant > 0 || $cant2 > 0) {
+                array_push($oficiales, $value->nombres.' '.$value->apellidos);
+                array_push($visitas, $cant);
+                array_push($talleres, $cant2);
+            }
+        }
+        array_push($data, json_encode(['name'=> 'Visitas', 'data'=> $visitas]));
+        array_push($data, json_encode(['name'=> 'Talleres', 'data'=> $talleres]));
         
         return response()->json(['anual'=>count($talleresAnual), 'cant'=>count($talleresRango), 
             'actividades'=>$actividades, 'actividadesT'=>['cant'=>$cantT, 'pers'=>$persT, 'duracion'=>$horasT], 
-            'audiencias'=>$audiencias, 'contenidos'=>$contenidos]);
+            'audiencias'=>$audiencias, 'contenidos'=>$contenidos, 'zonas'=>$zonas, 
+            'comparativo'=>['oficiales'=>$oficiales, 'data'=>$data]]);
     }
 
 }

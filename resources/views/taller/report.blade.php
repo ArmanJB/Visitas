@@ -58,6 +58,19 @@
 									</table>
 								</div>
 							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<table class="table table-hover informe">
+										<thead><th>#</th><th>Zonas de atención de los talleres</th><th>Cantidad</th></thead>
+										<tbody id="zonas"></tbody>
+									</table>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-12" id="comparativoVisitas"></div>
+							</div>
 									
 						</div>
 					</div>
@@ -70,4 +83,6 @@
 
 @section('scripts')
 	{!!Html::script('js/report.js')!!}
+	{!!Html::script('js/highcharts.js')!!}
+	{!!Html::script('js/exporting.js')!!}
 @endsection
