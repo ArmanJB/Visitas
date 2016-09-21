@@ -1,5 +1,19 @@
 var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre'];
 $(function(){
+	$('#periodos').empty();
+	$.get('/periodos', function(res){
+		$(res).each(function(key, value){
+			$('#periodos').append('<li><a href="#" onclick="setPeriodo(this);" value="'+value.id+'">'+value.anio+', '+meses[(value.mes-1)]+'</a></li>');
+		});
+	});
+
+	$('#areas').empty();
+	$.get('/areas', function(res){
+		$(res).each(function(key, value){
+			$('#areas').append('<div class="col-md-2"><input type="checkbox" class="filled-in" id="area'+value.id+'" value="" checked/><label for="area'+value.id+'" style="color:black;" id="labelView" onclick="setArea(this);">'+value.nombre+'</label></div>');
+		});
+	});
+
 	$('#actualizarT').click();
 	$('#actualizar').click();
 });
@@ -7,6 +21,13 @@ function setPeriodo(btn){
 	$('#periodos-text').val(btn.text);
 	$('#periodos-text').attr('data', $(btn).attr('value'));
 };
+function setArea(btn){
+	if ($('#'+$(btn).attr('for')).is(':checked')) {
+		$('.'+$(btn).attr('for')).fadeOut();
+	}else{
+		$('.'+$(btn).attr('for')).fadeIn();
+	}
+}
 
 $('#actualizarT').on('click', function(){
 	listar();
@@ -81,34 +102,28 @@ function comparativo(oficiales, data){
 $('#actualizar').on('click', function(){
 	listarV();
 	clearV();
+	$(':checkbox').each(function(key, value){$(value).prop('checked', true)});
 });
 
 function clearV(){
-	
+	$('#consolidado').empty();
+	$('#report-container').empty();
 }
 
 function listarV(){
-	initVisitas();
 	$.get('/visitas/reporte/'+$('#periodos-text').attr('data'), function(res){
 		console.log(res)
 		$('#consolidado').append('<tr><td>'+$('#periodos-text').val()+'</td><td>'+res.consolidado['mes']['planeado']+'</td><td>'+res.consolidado['mes']['ejecutado']+'</td><td>'+parseInt((100*parseInt(res.consolidado['mes']['ejecutado']))/parseInt(res.consolidado['mes']['planeado']))+'%</td></tr>');
-		$('#consolidado').append('<tr class="tfoot"><td>Total</td><td>'+res.consolidado['anual']['planeado']+'</td><td>'+res.consolidado['anual']['ejecutado']+'</td><td>'+parseInt((100*parseInt(res.consolidado['anual']['ejecutado']))/parseInt(res.consolidado['anual']['planeado']))+'%</td></tr>');
+		$('#consolidado').append('<tr class="tfoot"><td>Total anual</td><td>'+res.consolidado['anual']['planeado']+'</td><td>'+res.consolidado['anual']['ejecutado']+'</td><td>'+parseInt((100*parseInt(res.consolidado['anual']['ejecutado']))/parseInt(res.consolidado['anual']['planeado']))+'%</td></tr>');
+		//
+		$(res.areas).each(function(key, value){
+			$('#report-container').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4>'+
+				'<table class="table table-hover informe"><thead><th>Periodo</th><th>Meta planeada</th><th>Meta ejecutada</th><th>% alcanzado</th></thead><tbody>'+
+				'<tr><td>'+$('#periodos-text').val()+'</td><td>'+value.planeado+'</td><td>'+value.ejecutado+'</td><td>'+((value.planeado == 0)?'--':parseInt((100*value.ejecutado)/value.planeado))+'%</td></tr>'+
+				'<tr class="tfoot"><td>Total anual</td><td>'+value.planeadoAnual+'</td><td>'+value.ejecutadoAnual+'</td><td>'+((value.planeado == 0)?'--':parseInt((100*value.ejecutadoAnual)/value.planeadoAnual))+'%</td></tr>'+
+				'</tbody></table><div id="divider"></div></div></div>');
+		});
+		
 	});
 }
 
-function initVisitas(){
-	$('#areas').empty();
-	$('#report-container').empty();
-	$.get('/areas', function(res){
-		$(res).each(function(key, value){
-			$('#areas').append('<div class="col-md-2"><input type="checkbox" class="filled-in" id="area'+value.id+'" value="" checked/><label for="area'+value.id+'" style="color:black;" id="labelView">'+value.nombre+'</label></div>');
-			$('#report-container').append('<div class="col-md-12"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.nombre+'</h4><table class="table table-hover informe"><thead><th>Periodo</th><th>Meta planeada</th><th>Meta ejecutada</th><th>% alcanzado</th></thead><tbody id="consolidado"></tbody></table><div id="divider"></div></div></div>');
-		});
-	});
-	$('#periodos').empty();
-	$.get('/periodos', function(res){
-		$(res).each(function(key, value){
-			$('#periodos').append('<li><a href="#" onclick="setPeriodo(this);" value="'+value.id+'">'+value.anio+', '+meses[(value.mes-1)]+'</a></li>');
-		});
-	});
-}
