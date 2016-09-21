@@ -493,9 +493,30 @@ class InformeController extends Controller
             'comparativo'=>['oficiales'=>$oficiales, 'data'=>$data]]);
     }
 
-    public function reportVisita($desde, $hasta){
+    public function reportVisita($periodo){
+        $planeado = DB::select("SELECT metas.meta, periodos.mes, periodos.anio FROM metas LEFT JOIN periodos ON metas.id_periodo = periodos.id WHERE periodos.id = '$periodo'");
+        $cant = 0;
+        foreach ($planeado as $key => $value) {
+            $cant += intval($value->meta);
+        }
+        $ejecutado = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '".$planeado[0]->anio."-".$planeado[0]->mes."-01' AND visitas.fecha <= '".$planeado[0]->anio."-".$planeado[0]->mes."-31'");
+
+        $planeadoAnual = DB::select("SELECT metas.meta, periodos.mes, periodos.anio FROM metas LEFT JOIN periodos ON metas.id_periodo = periodos.id WHERE periodos.anio = '".$planeado[0]->anio."'");
+        $cantAnual = 0;
+        foreach ($planeadoAnual as $key => $value) {
+            $cantAnual += intval($value->meta);
+        }
+        $ejecutadoAnual = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '".$planeadoAnual[0]->anio."-01-01' AND visitas.fecha <= '".$planeadoAnual[0]->anio."-12-31'");
+
+        // AREAS
+        $areas = [];
+        $area = DB::select("SELECT * FROM areas");
+
         
-        return response()->json([]);
+        return response()->json([
+            'consolidado'=>['mes'=>['planeado'=>$cant, 'ejecutado'=>count($ejecutado)], 'anual'=>['planeado'=>$cantAnual, 'ejecutado'=>count($ejecutadoAnual)]],
+            'areas'=>$areas
+            ]);
     }
 
 }

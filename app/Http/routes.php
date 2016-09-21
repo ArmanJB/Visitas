@@ -125,7 +125,7 @@ Route::get('visitas/byOfiDetU/{ini}/{fin}/{idOfi}/{area}', 'VisitaController@vis
 
 /***************Informes*********************/
 //Visitas
-Route::get('visitas/reporte/{desde}/{hasta}', 'InformeController@reportVisita');
+Route::get('visitas/reporte/{periodo}', 'InformeController@reportVisita');
 
 Route::get('visitas/cantArea/{idArea}', 'VisitaController@cantByArea');
 Route::get('visitas/cant', 'VisitaController@cant');
