@@ -56,7 +56,16 @@
 									<h3>Meta mensual por área</h3>
 									<div id="divider"></div>
 								</div>
-								<div class="col-md-12" id="report-container">
+								<div class="col-md-12" id="report-container"></div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
+									<h3>Motivos de visita</h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-motivos"></div>
 							</div>
 									
 						</div>

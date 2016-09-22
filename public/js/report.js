@@ -123,6 +123,12 @@ function listarV(){
 				'<tr class="tfoot"><td>Total anual</td><td>'+value.planeadoAnual+'</td><td>'+value.ejecutadoAnual+'</td><td>'+((value.planeado == 0)?'--':parseInt((100*value.ejecutadoAnual)/value.planeadoAnual))+'%</td></tr>'+
 				'</tbody></table><div id="divider"></div></div></div>');
 		});
+		$(res.motivos).each(function(key, value){
+			$('#report-motivos').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Motivos</th><th>Cantidad</th><th>Tiempo Invertido</th></thead><tbody id="tabla-motivos-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
+			$(value.motivos).each(function(key2, value2){
+				$('#tabla-motivos-'+value.id).append('<tr><td>'+(key2+1)+'</td><td class="informeM">'+value2.motivo+'</td><td>'+value2.cantidad+'</td><td>'+value2.tiempo+'</td></tr>');
+			});
+		});
 		
 	});
 }

@@ -511,7 +511,10 @@ class InformeController extends Controller
         $ejecutadoAnual = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '".$planeadoAnual[0]->anio."-01-01' AND visitas.fecha <= '".$planeadoAnual[0]->anio."-12-31'");
 
         // AREAS
+        $motivosAux = DB::select("SELECT * FROM motivos");
         $areas = [];
+        $motivos = [];
+
         $area = DB::select("SELECT * FROM areas");
         foreach ($area as $key => $value) {
             $planArea = DB::select("SELECT metas.meta, periodos.mes, periodos.anio, oficiales.id_area FROM metas LEFT JOIN periodos ON metas.id_periodo = periodos.id INNER JOIN oficiales ON metas.id_oficial = oficiales.id INNER JOIN areas ON oficiales.id_area = areas.id WHERE periodos.id = '$periodo' AND oficiales.id_area = '$value->id'");
@@ -527,13 +530,34 @@ class InformeController extends Controller
             }
             $ejecAreaAnual = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha, oficiales.id_area FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE visitas.fecha >= '".$periodoAux[0]->anio."-01-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-12-31' AND oficiales.id_area = '$value->id'");
             array_push($areas, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'planeado'=>$cantAux, 'ejecutado'=>count($ejecArea), 'planeadoAnual'=>$cantAnualAux, 'ejecutadoAnual'=>count($ejecAreaAnual)]);
+            
+            //motivos
+            $motivo = DB::select("SELECT visita_motivo.id_motivo, visita_motivo.tiempo, oficiales.id_area, visitas.fecha FROM visita_motivo LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE oficiales.id_area = '$value->id' AND visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+            $motivosCantDur = [];
+            foreach ($motivosAux as $key2 => $value2) {
+                $cantMot = 0;
+                $duracionMot = '00:00:00';
+                foreach ($motivo as $key3 => $value3) {
+                    if ($value2->id == $value3->id_motivo) {
+                        $cantMot++;
+                        $duracionMot = strtotime($duracionMot)+strtotime($value3->tiempo)-strtotime('00:00:00');
+                        $duracionMot = date('H:i', $duracionMot);
+                    }
+                }
+                if ($cantMot > 0) {
+                    array_push($motivosCantDur, ['motivo'=>$value2->nombre, 'cantidad'=>$cantMot, 'tiempo'=>$duracionMot]);   
+                }
+            }
+            array_push($motivos, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'motivos'=>$motivosCantDur]);
 
         }
+
 
         
         return response()->json([
             'consolidado'=>['mes'=>['planeado'=>$cant, 'ejecutado'=>count($ejecutado)], 'anual'=>['planeado'=>$cantAnual, 'ejecutado'=>count($ejecutadoAnual)]],
-            'areas'=>$areas
+            'areas'=>$areas,
+            'motivos'=>$motivos
             ]);
     }
 
