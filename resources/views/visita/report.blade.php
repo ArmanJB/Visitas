@@ -85,6 +85,15 @@
 								</div>
 								<div class="col-md-12" id="report-escuelas"></div>
 							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
+									<h3>Escuelas pendientes de visitar</h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-escuelasP"></div>
+							</div>
 									
 						</div>
 					</div>

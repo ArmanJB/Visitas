@@ -515,6 +515,8 @@ class InformeController extends Controller
         $areas = [];
         $motivos = [];
         $oficiales = [];
+        $escuelas = [];
+        $escuelasP = [];
 
         $area = DB::select("SELECT * FROM areas");
         foreach ($area as $key => $value) {
@@ -561,17 +563,34 @@ class InformeController extends Controller
             array_push($oficiales, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'oficiales'=>$oficialesMeta]);
 
             //escuelas
-            
+            $escuela = DB::select("SELECT visitas.id_escuela, escuelas.nombre, departamentos.nombre AS departamento, visitas.fecha, oficiales.id_area FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE oficiales.id_area = '$value->id' AND visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31' GROUP BY visitas.id_escuela ORDER BY departamentos.nombre");
+            $escuelasvisita = [];
+            $tiempoTotal = '00:00';
+            foreach ($escuela as $key2 => $value2) {
+                $escuelaVisitaAux = DB::select("SELECT visita_motivo.tiempo, visita_oficial.id_visita, visitas.id_escuela, oficiales.id_area FROM visita_motivo LEFT JOIN visita_oficial ON visita_motivo.id_visitaO = visita_oficial.id LEFT JOIN oficiales ON visita_oficial.id_oficial = oficiales.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE oficiales.id_area = '$value->id' AND visitas.id_escuela = '$value2->id_escuela' AND visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+                $tiempo = '00:00';
+                foreach ($escuelaVisitaAux as $key3 => $value3) {
+                    $tiempo = strtotime($tiempo)+strtotime($value3->tiempo)-strtotime('00:00:00');
+                    $tiempo = date('H:i', $tiempo);
+                }
+                array_push($escuelasvisita, ['departamento'=>$value2->departamento, 'escuela'=>$value2->nombre, 'tiempo'=>$tiempo]);
+                $tiempoTotal = strtotime($tiempoTotal)+strtotime($tiempo)-strtotime('00:00:00');
+                $tiempoTotal = date('H:i', $tiempoTotal);
+            }
+            array_push($escuelas, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'total'=>$tiempoTotal, 'escuelas'=>$escuelasvisita]);
+
+            //escuelas pendientes
+            $escuelaP = DB::select("");
 
         }
 
-
-        
         return response()->json([
             'consolidado'=>['mes'=>['planeado'=>$cant, 'ejecutado'=>count($ejecutado)], 'anual'=>['planeado'=>$cantAnual, 'ejecutado'=>count($ejecutadoAnual)]],
             'areas'=>$areas,
             'motivos'=>$motivos,
-            'oficiales'=>$oficiales
+            'oficiales'=>$oficiales,
+            'escuelas'=>$escuelas,
+            'esucelasP'=>$escuelasP
             ]);
     }
 
