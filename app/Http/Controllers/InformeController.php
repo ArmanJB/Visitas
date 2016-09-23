@@ -514,6 +514,7 @@ class InformeController extends Controller
         $motivosAux = DB::select("SELECT * FROM motivos");
         $areas = [];
         $motivos = [];
+        $oficiales = [];
 
         $area = DB::select("SELECT * FROM areas");
         foreach ($area as $key => $value) {
@@ -550,6 +551,18 @@ class InformeController extends Controller
             }
             array_push($motivos, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'motivos'=>$motivosCantDur]);
 
+            //oficiales
+            $oficial = DB::select("SELECT metas.meta, metas.id_oficial, oficiales.nombres, oficiales.apellidos, oficiales.id_area FROM metas LEFT JOIN oficiales ON metas.id_oficial = oficiales.id WHERE oficiales.id_area = '$value->id' AND metas.id_periodo = '$periodo'");
+            $oficialesMeta = [];
+            foreach ($oficial as $key2 => $value2) {
+                $oficialMetaAux = DB::select("SELECT visita_oficial.id_visita, visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visita_oficial.id_oficial = '$value2->id_oficial' AND visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+                array_push($oficialesMeta, ['oficial'=>$value2->nombres.' '.$value2->apellidos, 'meta'=>$value2->meta, 'visitas'=>count($oficialMetaAux)]);
+            }
+            array_push($oficiales, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'oficiales'=>$oficialesMeta]);
+
+            //escuelas
+            
+
         }
 
 
@@ -557,7 +570,8 @@ class InformeController extends Controller
         return response()->json([
             'consolidado'=>['mes'=>['planeado'=>$cant, 'ejecutado'=>count($ejecutado)], 'anual'=>['planeado'=>$cantAnual, 'ejecutado'=>count($ejecutadoAnual)]],
             'areas'=>$areas,
-            'motivos'=>$motivos
+            'motivos'=>$motivos,
+            'oficiales'=>$oficiales
             ]);
     }
 

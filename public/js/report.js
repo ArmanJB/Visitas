@@ -62,15 +62,6 @@ function listar(){
 		$(res.zonas).each(function(key, value){
 			$('#zonas').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.zona+'</td><td>'+value.cant+'</td><td>'+value.duracion+'</td></tr>');
 		});
-        var data = [{
-            name: 'Tokyo',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-        }, {
-            name: 'New York',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-        }];
         var data = [];
         $(res.comparativo['data']).each(function(key, value){data.push(JSON.parse(value));});
 		comparativo(res.comparativo['oficiales'], data);
@@ -108,6 +99,9 @@ $('#actualizar').on('click', function(){
 function clearV(){
 	$('#consolidado').empty();
 	$('#report-container').empty();
+	$('#report-motivos').empty();
+	$('#report-oficiales').empty();
+	$('#report-escuelas').empty();
 }
 
 function listarV(){
@@ -129,7 +123,17 @@ function listarV(){
 				$('#tabla-motivos-'+value.id).append('<tr><td>'+(key2+1)+'</td><td class="informeM">'+value2.motivo+'</td><td>'+value2.cantidad+'</td><td>'+value2.tiempo+'</td></tr>');
 			});
 		});
-		
+		$(res.oficiales).each(function(key, value){
+			var metasT = 0;
+			var visitasT = 0;
+			$('#report-oficiales').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Oficial</th><th>Meta en el periodo</th><th>'+$('#periodos-text').val()+'</th><th>% alcanzado</th></thead><tbody id="tabla-oficiales-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
+			$(value.oficiales).each(function(key2, value2){
+				metasT += value2.meta;
+				visitasT += value2.visitas;
+				$('#tabla-oficiales-'+value.id).append('<tr><td>'+(key2+1)+'</td><td class="informeM">'+value2.oficial+'</td><td>'+value2.meta+'</td><td>'+value2.visitas+'</td><td>'+parseInt((100*value2.visitas)/value2.meta)+'%</td></tr>');
+			});
+			$('#tabla-oficiales-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>'+metasT+'</td><td>'+visitasT+'</td><td>'+((metasT == 0)?'--':parseInt((100*visitasT)/metasT))+'%</td></tr>');
+		});
 	});
 }
 

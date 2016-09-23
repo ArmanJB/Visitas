@@ -67,6 +67,24 @@
 								</div>
 								<div class="col-md-12" id="report-motivos"></div>
 							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
+									<h3>Cumplimiento de metas por oficial</h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-oficiales"></div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
+									<h3>Escuelas visitadas</h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-escuelas"></div>
+							</div>
 									
 						</div>
 					</div>
