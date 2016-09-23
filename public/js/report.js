@@ -142,6 +142,13 @@ function listarV(){
 			});	
 			$('#tabla-escuelas-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>'+value.escuelas.length+'</td><td>'+value.total+'</td></tr>');
 		});
+		$(res.escuelasP).each(function(key, value){
+			$('#report-escuelasP').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Departamento</th><th>Escuela</th></thead><tbody id="tabla-escuelasP-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
+			$(value.escuelas).each(function(key2, value2){
+				$('#tabla-escuelasP-'+value.id).append('<tr><td>'+(key2+1)+'</td><td class="informeM">'+value2.departamento+'</td><td class="informeM">'+value2.escuela+'</td></tr>');
+			});	
+			$('#tabla-escuelasP-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>'+value.escuelas.length+'</td></tr>');
+		});
 	});
 }
 

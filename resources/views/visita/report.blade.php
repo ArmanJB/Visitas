@@ -53,46 +53,46 @@
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-									<h3>Meta mensual por área</h3>
+									<h3 id="report-container-label"><a href="#report-container-label" data-toggle="collapse" data-target="#report-container">Meta mensual por área</a></h3>
 									<div id="divider"></div>
 								</div>
-								<div class="col-md-12" id="report-container"></div>
+								<div class="col-md-12" id="report-container" class="collapse"></div>
 							</div>
 
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-									<h3>Motivos de visita</h3>
+									<h3 id="report-motivos-label"><a href="#report-motivos-label" data-toggle="collapse" data-target="#report-motivos">Motivos de visita</a></h3>
 									<div id="divider"></div>
 								</div>
-								<div class="col-md-12" id="report-motivos"></div>
+								<div class="col-md-12" id="report-motivos" class="collapse"></div>
 							</div>
 
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-									<h3>Cumplimiento de metas por oficial</h3>
+									<h3 id="report-oficiales-label"><a href="#report-oficiales-label" data-toggle="collapse" data-target="#report-oficiales">Cumplimiento de metas por oficial</a></h3>
 									<div id="divider"></div>
 								</div>
-								<div class="col-md-12" id="report-oficiales"></div>
+								<div class="col-md-12" id="report-oficiales" class="collapse"></div>
 							</div>
 
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-									<h3>Escuelas visitadas</h3>
+									<h3 id="report-escuelas-label"><a href="#report-escuelas-label" data-toggle="collapse" data-target="#report-escuelas">Escuelas visitadas</a></h3>
 									<div id="divider"></div>
 								</div>
-								<div class="col-md-12" id="report-escuelas"></div>
+								<div class="col-md-12" id="report-escuelas" class="collapse"></div>
 							</div>
 
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
-									<h3>Escuelas pendientes de visitar</h3>
+									<h3 id="report-escuelasP-label"><a href="#report-escuelasP-label" data-toggle="collapse" data-target="#report-escuelasP">Escuelas pendientes de visitar</a></h3>
 									<div id="divider"></div>
 								</div>
-								<div class="col-md-12" id="report-escuelasP"></div>
+								<div class="col-md-12" id="report-escuelasP" class="collapse"></div>
 							</div>
 									
 						</div>

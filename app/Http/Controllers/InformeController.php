@@ -512,6 +512,7 @@ class InformeController extends Controller
 
         // AREAS
         $motivosAux = DB::select("SELECT * FROM motivos");
+        $escuelasAux = DB::select("SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS departamento FROM escuelas LEFT JOIN departamentos ON escuelas.id_departamento = departamentos.id");
         $areas = [];
         $motivos = [];
         $oficiales = [];
@@ -580,8 +581,31 @@ class InformeController extends Controller
             array_push($escuelas, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'total'=>$tiempoTotal, 'escuelas'=>$escuelasvisita]);
 
             //escuelas pendientes
-            $escuelaP = DB::select("");
+            $escuelaP = DB::select("SELECT visitas.id_escuela, visitas.fecha, visita_oficial.id_oficial, oficiales.id_area FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id LEFT JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE oficiales.id_area = '$value->id' AND visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31' GROUP BY visitas.id_escuela");
+            $escuelasPvisita = [];
+            foreach ($escuelasAux as $key2 => $value2) {
+                $cantEscuelas = 0;
+                foreach ($escuelaP as $key3 => $value3) {
+                    if ($value2->id == $value3->id_escuela) {
+                        $cantEscuelas++;
+                    }
+                }
+                if ($cantEscuelas == 0) {
+                    array_push($escuelasPvisita, ['escuela'=>$value2->nombre, 'departamento'=>$value2->departamento]);   
+                }
+            }
+            array_push($escuelasP, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'escuelas'=>$escuelasPvisita]);
 
+        }
+
+        $articuladas = [];
+        $visitas = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_escuela, escuelas.nombre, departamentos.nombre as departamento FROM visitas INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id WHERE visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+        foreach ($visitas as $key => $value) {
+            $visitasOfc = DB::select("SELECT visita_oficial.id, visita_oficial.id_visita FROM visita_oficial WHERE visita_oficial.id_visita = '$value->id'");
+            if (count($visitasOfc) > 1) {
+                array_push($articuladas, ['escuela'=>$value->nombre, 'departamento'=>$value->departamento]);
+            }
+            //falta terminar este algoritmo con la cantidad de visitas en conjunto XD e.e
         }
 
         return response()->json([
@@ -590,7 +614,8 @@ class InformeController extends Controller
             'motivos'=>$motivos,
             'oficiales'=>$oficiales,
             'escuelas'=>$escuelas,
-            'esucelasP'=>$escuelasP
+            'escuelasP'=>$escuelasP,
+            'articuladas'=>$articuladas
             ]);
     }
 
