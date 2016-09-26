@@ -80,6 +80,15 @@
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
+									<h3 id="report-viaticos-label"><a href="#report-viaticos-label" data-toggle="collapse" data-target="#report-viaticos">Viáticos por oficial</a></h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-viaticos" class="collapse"></div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
 									<h3 id="report-escuelas-label"><a href="#report-escuelas-label" data-toggle="collapse" data-target="#report-escuelas">Escuelas visitadas</a></h3>
 									<div id="divider"></div>
 								</div>

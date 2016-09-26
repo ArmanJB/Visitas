@@ -101,6 +101,7 @@ function clearV(){
 	$('#report-container').empty();
 	$('#report-motivos').empty();
 	$('#report-oficiales').empty();
+	$('#report-viaticos').empty();
 	$('#report-escuelas').empty();
 	$('#report-escuelasP').empty();
 }
@@ -134,6 +135,15 @@ function listarV(){
 				$('#tabla-oficiales-'+value.id).append('<tr><td>'+(key2+1)+'</td><td class="informeM">'+value2.oficial+'</td><td>'+value2.meta+'</td><td>'+value2.visitas+'</td><td>'+parseInt((100*value2.visitas)/value2.meta)+'%</td></tr>');
 			});
 			$('#tabla-oficiales-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>'+metasT+'</td><td>'+visitasT+'</td><td>'+((metasT == 0)?'--':parseInt((100*visitasT)/metasT))+'%</td></tr>');
+		});
+		$(res.viaticos).each(function(key, value){
+			var viaticosT = 0;
+			$('#report-viaticos').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Oficial</th><th>Gastos de viáticos en '+$('#periodos-text').val()+'</th></thead><tbody id="tabla-viaticos-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
+			$(value.oficiales).each(function(key2, value2){
+				viaticosT += value2.viaticos;
+				$('#tabla-viaticos-'+value.id).append('<tr><td>'+(key2+1)+'</td><td class="informeM">'+value2.oficial+'</td><td>C$ '+value2.viaticos+'</td></tr>');
+			});
+			$('#tabla-viaticos-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>C$ '+viaticosT+'</td></tr>');
 		});
 		$(res.escuelas).each(function(key, value){
 			$('#report-escuelas').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Departamento</th><th>Escuela</th><th>Tiempo Invertido</th></thead><tbody id="tabla-escuelas-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
