@@ -569,12 +569,17 @@ class InformeController extends Controller
             $oficialViatico = [];
             foreach ($oficial as $key2 => $value2) {
                 $viatico = DB::select("SELECT visitas.fecha, visita_oficial.viaticos, oficiales.id_area FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE visita_oficial.id_oficial = '$value2->id' AND visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+                $viaticoAnual = DB::select("SELECT visitas.fecha, visita_oficial.viaticos, oficiales.id_area FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE visita_oficial.id_oficial = '$value2->id' AND visitas.fecha >= '".$periodoAux[0]->anio."-01-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-12-31'");
                 $cantViatico = 0;
+                $cantViaticoAnual = 0;
                 foreach ($viatico as $key3 => $value3) {
                     $cantViatico += $value3->viaticos;
                 }
+                foreach ($viaticoAnual as $key3 => $value3) {
+                    $cantViaticoAnual += $value3->viaticos;
+                }
                 if ($cantViatico > 0) {
-                    array_push($oficialViatico, ['oficial'=>$value2->nombres.' '.$value2->apellidos, 'viaticos'=>$cantViatico]);   
+                    array_push($oficialViatico, ['oficial'=>$value2->nombres.' '.$value2->apellidos, 'viaticos'=>$cantViatico, 'anual'=>$cantViaticoAnual]);   
                 }
             }
             array_push($viaticos, ['area'=>$value->nombre, 'id'=>'area'.$value->id, 'oficiales'=>$oficialViatico]);
