@@ -102,6 +102,7 @@ function clearV(){
 	$('#report-motivos').empty();
 	$('#report-oficiales').empty();
 	$('#report-viaticos').empty();
+	$('#report-voluntarios').empty();
 	$('#report-escuelas').empty();
 	$('#report-escuelasP').empty();
 }
@@ -147,6 +148,11 @@ function listarV(){
 			});
 			$('#tabla-viaticos-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>C$ '+viaticosT+'</td><td>C$ '+viaticosAT+'</td</tr>');
 		});
+		$('#report-voluntarios').append('<div class="col-md-12 area1"><div class="col-md-2"></div><div class="col-md-8"><table class="table table-hover informe"><thead><th>#</th><th>Voluntario</th><th>Tiempo invertido durante '+$('#periodos-text').val()+'</th><th>Tiempo invertido anual</th></thead><tbody id="tabla-voluntarios"></tbody></table><div id="divider"></div></div></div>');
+		$(res.voluntarios).each(function(key, value){
+			$('#tabla-voluntarios').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.voluntario+'</td><td>'+value.tiempo+'</td><td>'+value.anual+'</td></tr>');
+		});
+		$('#tabla-voluntarios').append('<tr class="tfoot"><td></td><td class="informeM">Total</td><td>'+res.totalVol+'</td><td>'+res.totalVolAnual+'</td></tr>');
 		$(res.escuelas).each(function(key, value){
 			$('#report-escuelas').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Departamento</th><th>Escuela</th><th>Tiempo Invertido</th></thead><tbody id="tabla-escuelas-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
 			$(value.escuelas).each(function(key2, value2){

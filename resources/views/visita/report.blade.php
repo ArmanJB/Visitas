@@ -89,6 +89,16 @@
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
 								<div class="col-md-8">
+									<h3 id="report-voluntarios-label"><a href="#report-voluntarios-label" data-toggle="collapse" data-target="#report-voluntarios">Voluntarios participantes</a></h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-voluntarios" class="collapse"></div>
+							</div>
+
+							<!--Escuelas **-->
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
 									<h3 id="report-escuelas-label"><a href="#report-escuelas-label" data-toggle="collapse" data-target="#report-escuelas">Escuelas visitadas</a></h3>
 									<div id="divider"></div>
 								</div>

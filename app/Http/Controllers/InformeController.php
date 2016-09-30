@@ -621,16 +621,39 @@ class InformeController extends Controller
 
         }
 
-        //Pendiente de terminar algoritmo, ubicar antes de escuelas n.n
-
-        $articuladas = [];
-        $visitas = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_escuela, escuelas.nombre, departamentos.nombre as departamento FROM visitas INNER JOIN escuelas ON visitas.id_escuela = escuelas.id INNER JOIN departamentos ON escuelas.id_departamento = departamentos.id WHERE visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
-        foreach ($visitas as $key => $value) {
-            $visitasOfc = DB::select("SELECT visita_oficial.id, visita_oficial.id_visita FROM visita_oficial WHERE visita_oficial.id_visita = '$value->id'");
-            if (count($visitasOfc) > 1) {
-                array_push($articuladas, ['escuela'=>$value->nombre, 'departamento'=>$value->departamento]);
+        //VOLUNTARIOS
+        $voluntariosAux = DB::select("SELECT voluntarios.id, CONCAT(voluntarios.nombres, ' ', voluntarios.apellidos) as voluntario FROM voluntarios");
+        $voluntarios = [];
+        $voluntario = DB::select("SELECT visita_voluntario.id_voluntario, visita_voluntario.tiempo, visitas.fecha FROM visita_voluntario LEFT JOIN visita_oficial ON visita_voluntario.id_visitaO = visita_oficial.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+        $voluntarioAnual = DB::select("SELECT visita_voluntario.id_voluntario, visita_voluntario.tiempo, visitas.fecha FROM visita_voluntario LEFT JOIN visita_oficial ON visita_voluntario.id_visitaO = visita_oficial.id LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '".$periodoAux[0]->anio."-01-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-12-31'");
+        $totalVol = '00:00';
+        $totalVolAnual = '00:00';
+        foreach ($voluntariosAux as $key => $value) {
+            $tiempoVol = '00:00';
+            $tiempoVolAnual = '00:00';
+            foreach ($voluntario as $key2 => $value2) {
+                if ($value->id == $value2->id_voluntario) {
+                    $tiempoVol = strtotime($tiempoVol)+strtotime($value2->tiempo)-strtotime('00:00:00');
+                    $tiempoVol = date('H:i', $tiempoVol);
+                }
             }
+            foreach ($voluntarioAnual as $key2 => $value2) {
+                if ($value->id == $value2->id_voluntario) {
+                    $tiempoVolAnual = strtotime($tiempoVolAnual)+strtotime($value2->tiempo)-strtotime('00:00:00');
+                    $tiempoVolAnual = date('H:i', $tiempoVolAnual);
+                }
+            }
+            if ($tiempoVol != '00:00') {
+                array_push($voluntarios, ['voluntario'=>$value->voluntario, 'tiempo'=>$tiempoVol, 'anual'=>$tiempoVolAnual]);
+            }
+            $totalVol = strtotime($totalVol)+strtotime($tiempoVol)-strtotime('00:00:00');
+            $totalVol = date('H:i', $totalVol);
+            $totalVolAnual = strtotime($totalVolAnual)+strtotime($tiempoVolAnual)-strtotime('00:00:00');
+            $totalVolAnual = date('H:i', $totalVolAnual);
         }
+
+        //ARTICULADAS
+        $articuladas = DB::select("SELECT visitas.fecha, visitas.id_escuela FROM visitas WHERE visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
 
         return response()->json([
             'consolidado'=>['mes'=>['planeado'=>$cant, 'ejecutado'=>count($ejecutado)], 'anual'=>['planeado'=>$cantAnual, 'ejecutado'=>count($ejecutadoAnual)]],
@@ -640,8 +663,11 @@ class InformeController extends Controller
             'escuelas'=>$escuelas,
             'escuelasP'=>$escuelasP,
             'viaticos'=>$viaticos,
-            'articuladas'=>$articuladas
-            ]);
+            'articuladas'=>$articuladas,
+            'voluntarios'=>$voluntarios,
+            'totalVol'=>$totalVol,
+            'totalVolAnual'=>$totalVolAnual
+        ]);
     }
 
 }
