@@ -95,6 +95,15 @@
 								<div class="col-md-12" id="report-voluntarios" class="collapse"></div>
 							</div>
 
+							<div class="col-md-12">
+								<div class="col-md-2"></div>
+								<div class="col-md-8">
+									<h3 id="report-articuladas-label"><a href="#report-articuladas-label" data-toggle="collapse" data-target="#report-articuladas">Visitas articuladas</a></h3>
+									<div id="divider"></div>
+								</div>
+								<div class="col-md-12" id="report-articuladas" class="collapse"></div>
+							</div>
+
 							<!--Escuelas **-->
 							<div class="col-md-12">
 								<div class="col-md-2"></div>
@@ -112,6 +121,11 @@
 									<div id="divider"></div>
 								</div>
 								<div class="col-md-12" id="report-escuelasP" class="collapse"></div>
+							</div>
+
+							<div class="col-md-12">
+							<div class="col-md-2"></div>
+								<div class="col-md-8"><div id="comparativoVisitas"></div><div id="divider"></div></div>
 							</div>
 									
 						</div>

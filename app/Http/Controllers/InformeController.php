@@ -460,11 +460,27 @@ class InformeController extends Controller
             }
         }
 
+        $oficial = DB::select("SELECT * FROM oficiales WHERE oficiales.id_area = 3");
+
+        $viaticos = [];
+        $tallerVia = DB::select("SELECT talleres.id, talleres.viaticos, taller_oficial.id_oficial FROM talleres INNER JOIN taller_oficial ON taller_oficial.id_taller = talleres.id INNER JOIN oficiales ON taller_oficial.id_oficial = oficiales.id WHERE talleres.fecha >= '$desde' AND talleres.id <= '$hasta' GROUP BY talleres.id");
+        foreach ($oficial as $key => $value) {
+            $cant = 0;
+            foreach ($tallerVia as $key2 => $value2) {
+                if ($value->id == $value2->id_oficial) {
+                    $cant += $value2->viaticos;
+                }
+            }
+            if ($cant > 0) {
+                array_push($viaticos, ['oficial'=>$value->nombres.' '.$value->apellidos, 'viatico'=>$cant]);
+            }
+        }        
+
+
         $oficiales = []; $data = [];
         $visitas = []; $talleres = [];
         $tallerOfc = DB::select("SELECT taller_oficial.id_oficial, talleres.fecha FROM taller_oficial LEFT JOIN talleres ON taller_oficial.id_taller = talleres.id WHERE talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
         $visitaOfc = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE oficiales.id_area = 3 AND visitas.fecha >= '$desde' AND visitas.fecha <= '$hasta'");
-        $oficial = DB::select("SELECT * FROM oficiales WHERE oficiales.id_area = 3");
         foreach ($oficial as $key => $value) {
             $cant = 0;
             foreach ($visitaOfc as $key2 => $value2) {
@@ -486,10 +502,30 @@ class InformeController extends Controller
         }
         array_push($data, json_encode(['name'=> 'Visitas', 'data'=> $visitas]));
         array_push($data, json_encode(['name'=> 'Talleres', 'data'=> $talleres]));
+
+        //ESCUELAS
+        $escuelasAux = DB::select("SELECT escuelas.id, escuelas.nombre, departamentos.nombre AS departamento FROM escuelas LEFT JOIN departamentos ON escuelas.id_departamento = departamentos.id");
+
+        $atendidas = [];
+        $atendidasF = [];
+        $atendida = DB::select("SELECT detalle_taller.id_escuela, talleres.fecha FROM detalle_taller LEFT JOIN talleres ON detalle_taller.id_taller = talleres.id WHERE detalle_taller.id_escuela IS NOT NULL AND talleres.fecha >= '$desde' AND talleres.fecha <= '$hasta'");
+        foreach ($escuelasAux as $key => $value) {
+            $cant = 0;
+            foreach ($atendida as $key2 => $value2) {
+                if ($value->id == $value2->id_escuela) {
+                    $cant++;
+                }
+            }
+            if ($cant > 0) {
+                array_push($atendidas, ['escuela'=>$value->nombre, 'departamento'=>$value->departamento, 'talleres'=>$cant]);
+            }else{
+                array_push($atendidasF, ['escuela'=>$value->nombre, 'departamento'=>$value->departamento]);
+            }
+        }
         
         return response()->json(['anual'=>count($talleresAnual), 'cant'=>count($talleresRango), 
             'actividades'=>$actividades, 'actividadesT'=>['cant'=>$cantT, 'pers'=>$persT, 'duracion'=>$horasT], 
-            'audiencias'=>$audiencias, 'contenidos'=>$contenidos, 'zonas'=>$zonas, 
+            'audiencias'=>$audiencias, 'contenidos'=>$contenidos, 'zonas'=>$zonas, 'viaticos'=>$viaticos, 'atendidas'=>$atendidas, 'atendidasF'=>$atendidasF, 
             'comparativo'=>['oficiales'=>$oficiales, 'data'=>$data]]);
     }
 
@@ -653,7 +689,33 @@ class InformeController extends Controller
         }
 
         //ARTICULADAS
-        $articuladas = DB::select("SELECT visitas.fecha, visitas.id_escuela FROM visitas WHERE visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+        $articulada = DB::select("SELECT visitas.id, visitas.fecha, visitas.id_escuela FROM visitas WHERE visitas.fecha >= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-01' AND visitas.fecha <= '".$periodoAux[0]->anio."-".$periodoAux[0]->mes."-31'");
+        $articuladas = [];
+        foreach ($escuelasAux as $key => $value) {
+            $cantArt = 0;
+            foreach ($articulada as $key2 => $value2) {
+                if ($value->id == $value2->id_escuela) {
+                    $artAux = DB::select("SELECT visita_oficial.id_oficial, oficiales.id_area FROM visita_oficial INNER JOIN oficiales ON visita_oficial.id_oficial = oficiales.id WHERE visita_oficial.id_visita = '$value2->id'");
+                    if (count($artAux) > 1) {
+                        $cantArt++;
+                    }   
+                }
+            }
+            if ($cantArt > 0) {
+                array_push($articuladas, ['escuela'=>$value->nombre, 'departamento'=>$value->departamento, 'cant'=>$cantArt]);   
+            }
+        }//
+        $data = [];
+        $visitasData = [];
+        $visitasDataAnt = [];
+        for ($i = 1; $i <12; $i++) { 
+            $visitasGral = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '2016-$i-01' AND visitas.fecha <= '2016-$i-31'");
+            $visitasGralAnt = DB::select("SELECT visita_oficial.id_oficial, visitas.fecha FROM visita_oficial LEFT JOIN visitas ON visita_oficial.id_visita = visitas.id WHERE visitas.fecha >= '".((Carbon::now()->format('Y'))-1)."-$i-01' AND visitas.fecha <= '".((Carbon::now()->format('Y'))-1)."-$i-31'");
+            array_push($visitasData, count($visitasGral));
+            array_push($visitasDataAnt, count($visitasGralAnt));
+        }
+        array_push($data, json_encode(['name'=> (Carbon::now()->format('Y'))-1, 'data'=> $visitasDataAnt]));
+        array_push($data, json_encode(['name'=> 'Visitas', 'data'=> $visitasData]));
 
         return response()->json([
             'consolidado'=>['mes'=>['planeado'=>$cant, 'ejecutado'=>count($ejecutado)], 'anual'=>['planeado'=>$cantAnual, 'ejecutado'=>count($ejecutadoAnual)]],
@@ -666,7 +728,8 @@ class InformeController extends Controller
             'articuladas'=>$articuladas,
             'voluntarios'=>$voluntarios,
             'totalVol'=>$totalVol,
-            'totalVolAnual'=>$totalVolAnual
+            'totalVolAnual'=>$totalVolAnual,
+            'data'=>$data
         ]);
     }
 

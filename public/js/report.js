@@ -40,6 +40,9 @@ function clear(){
 	$('#audiencias').empty();
 	$('#contenidos').empty();
 	$('#zonas').empty();
+	$('#viaticos').empty();
+	$('#atendidas').empty();
+	$('#atendidasF').empty();
 	$('#comparativoVisitas').empty();
 }
 
@@ -62,6 +65,22 @@ function listar(){
 		$(res.zonas).each(function(key, value){
 			$('#zonas').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.zona+'</td><td>'+value.cant+'</td><td>'+value.duracion+'</td></tr>');
 		});
+		var totalv = 0;
+		$(res.viaticos).each(function(key, value){
+			$('#viaticos').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.oficial+'</td><td>C$ '+value.viatico+'</td></tr>');
+			totalv += value.viatico;
+		});
+		$('#viaticos').append('<tr class="tfoot"><td></td><td class="informeM">Total</td><td>C$ '+totalv+'</td></tr>');
+        var totala = 0;
+        $(res.atendidas).each(function(key, value){
+			$('#atendidas').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.departamento+'</td><td class="informeM">'+value.escuela+'</td><td>'+value.talleres+'</td></tr>');
+			totala += value.talleres;
+		});
+		$('#atendidas').append('<tr class="tfoot"><td></td><td class="informeM" colspan="2">Total</td><td>'+totala+'</td></tr>');
+        $(res.atendidasF).each(function(key, value){
+			$('#atendidasF').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.departamento+'</td><td class="informeM">'+value.escuela+'</td></tr>');
+		});
+        //
         var data = [];
         $(res.comparativo['data']).each(function(key, value){data.push(JSON.parse(value));});
 		comparativo(res.comparativo['oficiales'], data);
@@ -105,6 +124,8 @@ function clearV(){
 	$('#report-voluntarios').empty();
 	$('#report-escuelas').empty();
 	$('#report-escuelasP').empty();
+	$('#report-articuladas').empty();
+	$('#comparativoVisitas').empty();
 }
 
 function listarV(){
@@ -148,11 +169,21 @@ function listarV(){
 			});
 			$('#tabla-viaticos-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>C$ '+viaticosT+'</td><td>C$ '+viaticosAT+'</td</tr>');
 		});
+		//
 		$('#report-voluntarios').append('<div class="col-md-12 area1"><div class="col-md-2"></div><div class="col-md-8"><table class="table table-hover informe"><thead><th>#</th><th>Voluntario</th><th>Tiempo invertido durante '+$('#periodos-text').val()+'</th><th>Tiempo invertido anual</th></thead><tbody id="tabla-voluntarios"></tbody></table><div id="divider"></div></div></div>');
 		$(res.voluntarios).each(function(key, value){
 			$('#tabla-voluntarios').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.voluntario+'</td><td>'+value.tiempo+'</td><td>'+value.anual+'</td></tr>');
 		});
 		$('#tabla-voluntarios').append('<tr class="tfoot"><td></td><td class="informeM">Total</td><td>'+res.totalVol+'</td><td>'+res.totalVolAnual+'</td></tr>');
+		//
+		$('#report-articuladas').append('<div class="col-md-12 area1"><div class="col-md-2"></div><div class="col-md-8"><table class="table table-hover informe"><thead><th>#</th><th>Departamento</th><th>Escuela</th><th>Cantidad de visitas articuladas</th></thead><tbody id="tabla-articuladas"></tbody></table><div id="divider"></div></div></div>');
+		var totalArticuladas = 0;
+		$(res.articuladas).each(function(key, value){
+			$('#tabla-articuladas').append('<tr><td>'+(key+1)+'</td><td class="informeM">'+value.departamento+'</td><td>'+value.escuela+'</td><td>'+value.cant+'</td></tr>');
+			totalArticuladas += value.cant;
+		});
+		$('#tabla-articuladas').append('<tr class="tfoot"><td></td><td class="informeM">Total</td><td></td><td>'+totalArticuladas+'</td></tr>');
+		//
 		$(res.escuelas).each(function(key, value){
 			$('#report-escuelas').append('<div class="col-md-12 '+value.id+'"><div class="col-md-2"></div><div class="col-md-8"><h4>'+value.area+'</h4><table class="table table-hover informe"><thead><th>#</th><th>Departamento</th><th>Escuela</th><th>Tiempo Invertido</th></thead><tbody id="tabla-escuelas-'+value.id+'"></tbody></table><div id="divider"></div></div></div>');
 			$(value.escuelas).each(function(key2, value2){
@@ -178,6 +209,29 @@ function listarV(){
 			$('.dep'+value.id+depC).each(function(key3, function3){$(this).addClass('collapse');});	
 			$('#tabla-escuelasP-'+value.id).append('<tr class="tfoot"><td></td><td>Total área</td><td>'+value.escuelas.length+'</td></tr>');
 		});
+		//
+        var data = [];
+        $(res.data).each(function(key, value){data.push(JSON.parse(value));});
+		comparativoV(data);
 	});
 }
 
+function comparativoV(data){
+	$('#comparativoVisitas').highcharts({
+        chart: {type: 'column'},
+        title: {text: 'Visitas anuales'},
+        subtitle: {text: 'Año '+(new Date).getFullYear()},
+        xAxis: {categories: meses,crosshair: true},
+        yAxis: {min: 0, title: {text: 'Cantidad de visitas'} },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {column: {pointPadding: 0.2, borderWidth: 0} },
+        series: data
+    });
+}

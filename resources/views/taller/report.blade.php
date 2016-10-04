@@ -84,6 +84,39 @@
 								</div>
 							</div>
 
+							<div class="col-md-12">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<h4>Viáticos por oficial</h4>
+									<table class="table table-hover informe">
+										<thead><th>#</th><th>Oficial</th><th>Gastos de viáticos en el periodo</th></thead>
+										<tbody id="viaticos"></tbody>
+									</table><div id="divider"></div>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<h4>Escuelas atendidas</h4>
+									<table class="table table-hover informe">
+										<thead><th>#</th><th>Departamento</th><th>Escuela</th><th>Talleres</th></thead>
+										<tbody id="atendidas"></tbody>
+									</table><div id="divider"></div>
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="col-md-3"></div>
+								<div class="col-md-6">
+									<h4>Escuelas no atendidas</h4>
+									<table class="table table-hover informe">
+										<thead><th>#</th><th>Departamento</th><th>Escuela</th></thead>
+										<tbody id="atendidasF"></tbody>
+									</table><div id="divider"></div>
+								</div>
+							</div>
+
 
 							<div class="col-md-12">
 							<div class="col-md-2"></div>
