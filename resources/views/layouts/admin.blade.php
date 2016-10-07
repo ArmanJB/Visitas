@@ -9,7 +9,7 @@
     {!!Html::style('css/select2.css')!!}
     {!!Html::style('css/bootstrap.min.css')!!}
     {!!Html::style('css/font-awesome.min.css')!!}
-    {!!Html::style('https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css')!!}
+    {!!Html::style('css/ionicons.min.css')!!}
     {!!Html::style('css/AdminLTE.min.css')!!}
     {!!Html::style('css/skins/_all-skins.min.css')!!}
     {!!Html::style('css/blue.css')!!}
@@ -206,7 +206,7 @@
   </div>
 
     {!!Html::script('js/jquery.min.js')!!}
-    {!!Html::script('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js')!!}
+    {!!Html::script('js/jquery-ui.min.js')!!}
     <script>$.widget.bridge('uibutton', $.ui.button);</script>
     {!!Html::script('js/bootstrap.min.js')!!}
     {!!Html::script('js/bootstrap-datepicker.js')!!}

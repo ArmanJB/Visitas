@@ -29,3 +29,7 @@ VALUES
 ('Luis Gutiérrez','lgmolina@fundacionzt.org','$2y$10$sO4.4GQ388Rbs0QeS5JORu1VJTGMOBaApacE0btrsvVj7KmuNEwIC','jROWws8bvT1e7u79Mqmo22ltxoPfWtL7Am5XXeeqImaeJwhBLUpWrFdELNqm','2016-07-29 13:33:33','2016-08-05 21:54:00');
 
 -- Registros anteriores de visitas
+
+INSERT INTO `visita_oficial` (`id`, `fecha`, `id_escuela`, `id_oficial`, `aulas`) VALUES (1,'2016-07-12',29,13,1)
+INSERT INTO `pendientes` VALUES (1,'',0,1)
+INSERT INTO `visita_oficial` (`id`, `id_visita`, `id_oficial`, `aulas`, `pendientes`) VALUES (1,se tiene que hacer,13,1,'')
