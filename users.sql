@@ -30,6 +30,6 @@ VALUES
 
 -- Registros anteriores de visitas
 
---INSERT INTO `visita_oficial` (`id`, `fecha`, `id_escuela`, `id_oficial`, `aulas`) VALUES (1,'2016-07-12',29,13,1)
---INSERT INTO `pendientes` VALUES (1,'',0,1)
---INSERT INTO `visita_oficial` (`id`, `id_visita`, `id_oficial`, `aulas`, `pendientes`) VALUES (1,se tiene que hacer,13,1,'')
+-- INSERT INTO `visita_oficial` (`id`, `fecha`, `id_escuela`, `id_oficial`, `aulas`) VALUES (1,'2016-07-12',29,13,1)
+-- INSERT INTO `pendientes` VALUES (1,'',0,1)
+-- INSERT INTO `visita_oficial` (`id`, `id_visita`, `id_oficial`, `aulas`, `pendientes`) VALUES (1,se tiene que hacer,13,1,'')

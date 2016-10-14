@@ -16,6 +16,11 @@
 		
 		<div class="login-box-body">
 			<div class="login-logo"><a href="#" style="color: #fff;text-shadow: 0.5px 0.4px #000">Control de Visitas <b>FZT</b></a></div>
+
+			<div style="text-align:center;">
+				<img src="/img/logo-user.jpg" class="img-circle" style="width:100xp; height:100xp; border:3px solid; border-color:#85c23c; ">
+			</div>
+
 			<div id="divider"></div>
 			<p class="login-box-msg" style="color: #fff;text-shadow: 0.5px 0.4px #000">Ingresa tus datos para iniciar sesión</p>
 			{!!Form::open(['route'=>'log.store', 'method'=>'POST'])!!}
